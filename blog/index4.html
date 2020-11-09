@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Carey Metcalfe">
+  <meta name="description" content="Posts by Carey Metcalfe">
+
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+
+  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
+
+  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+
+  <title>Blog | Carey Metcalfe</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-28306875-1', 'cmetcalfe.ca');
+  ga('send', 'pageview');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="..">
+        <img src="/images/avatar.jpg" id="logo">
+      </a>
+      <h2><a href=".." class="nohover">Carey Metcalfe</a></h2>
+      <p>Software Developer</p>
+      <div class="social">
+          <a data-email="ac.eflactemc@yerac:otliam" data-title="Email" title="You need javascript enabled to view this email" class="email" target="_blank" rel="noopener noreferrer"><i class="fa fa-envelope fa-lg"></i></a>
+          <a href="https://github.com/pR0Ps" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa fa-github fa-lg"></i></a>
+          <a href="https://twitter.com/CareyMetcalfe" title="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-lg"></i></a>
+      </div>
+      <ul>
+      </ul>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header>
+      <p id="header">
+      <a href="..">Home</a>
+
+      &#124; <a href="../blog/index.html">Blog</a>
+      &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
+      </p>
+<p>
+<a href="../blog/index.html">Posts</a>
+&#124; <a href="../blog/tags/">Tags</a>
+&#124; <a href="../blog/archives.html">Archive</a>
+</p>    </header>
+
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/dynamic-dns-client-for-namecheap.html">Dynamic DNS client for Namecheap using bash & cron</a></h1>
+  </div>
+  <div class="article_text">
+    <p>In addition to running this website, I also run a home server. For convenience,
+I point a subdomain of <code>cmetcalfe.ca</code> at it so even though it's connected using
+a dynamic IP (and actually seems to change fairly frequently), I can get access
+to it from anywhere.</p>
+<p>As a bit of background, the domain for this website is registered and managed
+through <a href="http://namecheap.com">Namecheap</a>. While they do provide a <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/28">recommended DDNS client</a> for
+keeping a domain's DNS updated, it only runs on Windows.</p>
+<p>Instead, after <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/595">enabling DDNS for the domain</a> and reading <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29">Namecheap's article
+on using the browser to update DDNS</a> I came up with the following <code>dns-update</code>
+script.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
+<span class="nb">set</span> -e
+
+<span class="c1"># Uses drill instead of dig</span>
+resolve<span class="o">()</span> <span class="o">{</span>
+    <span class="c1">#dig &quot;$1&quot; @resolver1.opendns.com +short 2&gt; /dev/null</span>
+    <span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> @resolver1.opendns.com <span class="m">2</span>&gt; /dev/null <span class="p">|</span> sed <span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span> <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
+    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> <span class="p">|</span> head -1 <span class="p">|</span> cut -f5
+<span class="o">}</span>
+
+<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve &lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
+<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve myip.opendns.com<span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> curl -s <span class="s2">&quot;https://dynamicdns.park-your-domain.com/update?host=&lt;subdomain&gt;&amp;domain=cmetcalfe.ca&amp;password=&lt;my passkey&gt;&quot;</span> <span class="p">|</span> grep -q <span class="s2">&quot;&lt;ErrCount&gt;0&lt;/ErrCount&gt;&quot;</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+    <span class="k">fi</span>
+<span class="k">fi</span>
+</pre></div>
+</td></tr></table>
+
+<p>It basically checks if the IP returned by a DNS query for the subdomain matches
+the current IP of the server (as reported by an <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> resolver) and if it
+doesn't, sends a request to update the DNS. The <code>echo</code> commands are there just
+to output some record of the IP changing. Maybe I'll do some analysis of it at
+some point.</p>
+<p>To run the script every 30 minutes and redirect any output from it to the
+syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
+</pre></div>
+</td></tr></table>
+
+<p>With the script automatically running every 30 minutes I can now be confident
+that my subdomain will always be pointing at my home server whenever I need
+access to it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A previous version of this article used <code>curl -sf http://curlmyip.com</code> to
+find the server's current IP address. However, after curlmyip went down for
+a few days, I decided to take the advice in <a href="http://unix.stackexchange.com/a/81699">this StackExchange answer</a>
+and use <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> instead.</p>
+</div>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/remove-app-from-cmd-tab-switcher.html">Remove an application from the cmd-tab switcher on macOS</a></h1>
+  </div>
+  <div class="article_text">
+    <p>At work, I use <a href="http://iterm2.com">iTerm2</a> as my main terminal emulator. For quick access, I have
+it configured to drop down from the top of the screen when <code>F12</code> is pressed.</p>
+<p>Unfortunately, it also shows up in the application switcher, bumping up into
+the 'last used' position whenever it's activated and getting in the way. Since
+I already have access to the terminal via <code>F12</code>, there's no need for it to be
+shown in the application switcher as well.</p>
+<p>Changing how an application behaves can be done by editing its <code>Info.plist</code>
+file. The key <code>LSUIElement</code> (<a href="https://developer.apple.com/library/mac/documentation/General/Reference/InfoPlistKeyReference/Articles/LaunchServicesKeys.html#//apple_ref/doc/uid/20001431-108256">according to the Apple documentation</a>)
+"Specifies whether the app is an agent app, that is, an app that should not
+appear in the Dock or Force Quit window."</p>
+<p>To set this key, open the application's <code>Info.plist</code> at
+<code>/Applications/[application name].app/Contents/Info.plist</code> and add
+<code>&lt;key&gt;LSUIElement&lt;/key&gt;&lt;true/&gt;</code> after the first <code>&lt;dict&gt;</code> tag. The result should
+look something like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
+<span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;dict&gt;</span>
+<span class="hll">    <span class="nt">&lt;key&gt;</span>LSUIElement<span class="nt">&lt;/key&gt;&lt;true/&gt;</span>
+</span>    <span class="c">&lt;!-- The rest of the plist data --&gt;</span>
+<span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/plist&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Once the <code>LSUIElement</code> key is set to <code>true</code>, relaunch the application to see the
+changes.</p>
+<p>Be warned that not only does this remove the application from the
+application switcher, it also removes it from the dock and stops it from showing
+the menu bar on the top of the screen.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/adding-xbox360-controller-support-to-a-nexus5.html">Adding Xbox 360 controller support to a Nexus 5</a></h1>
+  </div>
+  <div class="article_text">
+    <div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>CyanogenMod has effectively been replaced by <a href="https://lineageos.org/">LineageOS</a>. The links in this article originally
+all pointed to CyanogenMod but since it no longer exists, I've updated them to use the LineageOS
+equivilents where possible. The instructions will also need to be slightly modified for use with
+LineageOS builds.</p>
+</div>
+<h2>Introduction</h2>
+<p>I finally just bought a new phone (a <a href="http://en.wikipedia.org/wiki/Nexus_5">Nexus 5</a>), and after flashing <a href="https://en.wikipedia.org/wiki/CyanogenMod">CyanogenMod</a> onto it, I've
+been messing around with its <a href="http://en.wikipedia.org/wiki/USB_On-The-Go">OTG</a> support. My old phone (a <a href="http://en.wikipedia.org/wiki/Nexus_4">Nexus 4</a>) <a href="http://blog.gsmarena.com/nexus-4-does-not-support-usb-otg-despite-google-saying-otherwise/">didn't have the
+capability</a> so being able to plug in keyboards, mice, external hard drives, and various other
+peripherals was (embarrassingly enough) a thrill.</p>
+<p>Keyboards worked, mice worked, but when an Xbox 360 controller was plugged in, nothing happened.
+Turns out that while the kernel didn't have support for it enabled out of the box, getting it
+enabled and pushing the change upstream into the CyanogenMod project was easier than I thought.</p>
+<p>Beware that this post is going to be more of a record of what I did so that I can do it again and
+less of a coherent tutorial.</p>
+<h2>Building CyanogenMod</h2>
+<p>First step was to download and compile CyanogenMod for my phone. I'm not going to go into this in
+any detail on this because there's already a <a href="https://web.archive.org/web/20161224200646/https://wiki.cyanogenmod.org/w/Development">good overview</a> on the CyanogenMod wiki that covers
+the entire process, as well as a <a href="https://wiki.lineageos.org/devices/hammerhead/build">customized guide for the Nexus 5</a>. If those articles are
+followed correctly, you should be able to build a fresh CyanogenMod image with:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>brunch hammerhead
+</pre></div>
+</td></tr></table>
+
+<h2>Enabling the kernel module</h2>
+<p>Once the image was flashed to the phone and verified to be working, the next step was to enable the
+<a href="https://www.kernel.org/doc/html/v4.16/input/devices/xpad.html">xpad kernel module</a>.</p>
+<p>Copy current kernel config to the kernel directory for editing:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;build dir&gt;/kernel/lge/hammerhead/
+cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
+</pre></div>
+</td></tr></table>
+
+<p>Edit the config:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>make menuconfig <span class="nv">ARCH</span><span class="o">=</span>arm
+</pre></div>
+</td></tr></table>
+
+<p>At this point, a menu will come up. Search for <code>xpad</code> (type <code>/xpad</code>), and take note of the paths.
+<code>ESC</code> out of the search, navigate the tree and enable the modules found with the search. Save and
+exit.</p>
+<p>Copy the config back and clean up any stray <code>*.o</code> files:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>cp .config arch/arm/configs/cyanogenmod_hammerhead_defconfig
+make mrproper
+</pre></div>
+</td></tr></table>
+
+<p>After enabling the module, rebuild CyanogenMod using the normal <code>brunch hammerhead</code> and flash it to
+the phone.</p>
+<h2>Submitting the change upstream</h2>
+<p>Since Xbox controller support had already been requested in <del><a href="https://jira.cyanogenmod.org/browse/CYAN-4469">a JIRA ticket</a></del>(dead link), I went
+through the process to submit <a href="https://review.lineageos.org/#/c/LineageOS/android_kernel_lge_hammerhead/+/87409/">the change</a> on the CyanogenMod Gerrit instance for inclusion in the
+next release. There's a guide for this <a href="https://wiki.lineageos.org/submitting-patch-howto.html">here</a>. As well as the guide, I found the people in
+<a href="https://webchat.freenode.net/?channels=#cyanogenmod-dev">#cyanogenmod-dev on Freenode</a> to be very helpful.</p>
+<p>A short while after submitting <a href="https://review.lineageos.org/#/c/LineageOS/android_kernel_lge_hammerhead/+/87409/">the change</a> to Gerrit, it was merged into the <code>cm-11.0</code> branch as
+commit <a href="https://github.com/LineageOS/android_kernel_lge_hammerhead/commit/7ef4f6a87cc114b5010b623d72840b1d38ea01ed"><code>i7ef4f6a</code></a> and pushed out in the next nightly build (<a href="../images/cyanogenmod-changelog-xbox-support.png">changelog screenshot</a>).</p>
+<h2>Wrap-up</h2>
+<p>It feels great to be able to contribute to an amazing open source project that had <a href="https://twitter.com/CyanogenMod/status/157378138802888704">at least a
+million people</a> using it at one point or another. I recognize that the change by itself was just
+changing a config file to enable functionality that already existed, but it's helped me get through
+some of the non-coding hurdles of contributing to an Android fork like CyanogenMod (adb, fastboot,
+unlocking and rooting phones, compiling AOSP, flashing images, the contribution process, etc). This
+time the actual contribution itself was minor, but it's gotten me more familier with the process,
+hopefully making it easier to contribute something more substantial in the future.</p>
+<p>In the end, I learned a lot about Android development and how all the different pieces that I had
+read about at one point or another actually fit together. During the whole process I also lost a lot
+of the fear I had about messing with phones and other more expensive locked down devices. Going
+forward, I'm going to attempt to compile and flash open source operating systems like CyanogenMod
+onto more devices that I own. I like being able to tweak things and feel like I really own them,
+hardware and software.</p>
+  </div>
+</article>
+
+<footer>
+<div id="paginator">
+  <span id="left">
+      <a href="../blog/index3.html"><i class="fa fa-arrow-circle-left"></i> Prev</a>
+  </span>
+  <span id="right">
+      <a href="../blog/index5.html">Next <i class="fa fa-arrow-circle-right"></i></a>
+  </span>
+  <div>
+      <a href="../blog/index.html"> 1 </a>
+      <a href="../blog/index2.html"> 2 </a>
+      <a href="../blog/index3.html"> 3 </a>
+      <a href="../blog/index4.html">[4]</a>
+      <a href="../blog/index5.html"> 5 </a>
+      <a href="../blog/index6.html"> 6 </a>
+      <a href="../blog/index7.html"> 7 </a>
+      <a href="../blog/index8.html"> 8 </a>
+      <a href="../blog/index9.html"> 9 </a>
+      <a href="../blog/index10.html"> 10 </a>
+      <a href="../blog/index11.html"> 11 </a>
+      <a href="../blog/index12.html"> 12 </a>
+  </div>
+</div>
+</footer>
+
+    <div id="ending_message">
+        <p>&copy; Carey Metcalfe. Built using <a href="http://getpelican.com">Pelican</a>. Theme is <a href="https://github.com/pR0Ps/pelican-subtle">subtle</a> by <a href="http://cmetcalfe.ca">Carey Metcalfe</a>. Based on <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a> by Giulio Fidente.</p>
+    </div>
+  </main>
+
+  <script type="text/javascript">
+    window.addEventListener('load', skipHeader)
+  </script>
+
+  <script type="text/javascript">
+  window.addEventListener('load', unmangleEmail)
+  </script>
+</body>
+</html>

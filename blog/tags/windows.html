@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Carey Metcalfe">
+  <meta name="description" content="Posts tagged with 'windows' on this site">
+
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+
+  <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
+
+
+  <title>Tag: windows | Carey Metcalfe</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-28306875-1', 'cmetcalfe.ca');
+  ga('send', 'pageview');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="../..">
+        <img src="/images/avatar.jpg" id="logo">
+      </a>
+      <h2><a href="../.." class="nohover">Carey Metcalfe</a></h2>
+      <p>Software Developer</p>
+      <div class="social">
+          <a data-email="ac.eflactemc@yerac:otliam" data-title="Email" title="You need javascript enabled to view this email" class="email" target="_blank" rel="noopener noreferrer"><i class="fa fa-envelope fa-lg"></i></a>
+          <a href="https://github.com/pR0Ps" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa fa-github fa-lg"></i></a>
+          <a href="https://twitter.com/CareyMetcalfe" title="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-lg"></i></a>
+      </div>
+      <ul>
+      </ul>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header>
+      <p id="header">
+      <a href="../..">Home</a>
+
+      &#124; <a href="../../blog/index.html">Blog</a>
+      &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
+      </p>
+<p>Tag: windows
+</p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h1><a href="../../blog/queens-university-resnet-without-ida-windows.html">Queen's University Resnet without IDA (Windows)</a></h1>
+  </div>
+  <div class="article_text">
+    <h2>Storytime</h2>
+<p>So you're in your first year at Queen's University residence and you
+want to access the internet. Sounds reasonable. You plug in your Windows
+laptop, open your browser, and...nothing. Well, mostly nothing. A page
+that tells you that you've been quarantined and to please click here,
+download IDA, install it, and let it work it's magic.</p>
+<p>Sounds easy right? What they don't tell you is that IDA holds ResNet
+access hostage until you've installed some garbage antivirus, downloaded
+all the new windows updates (IDA actually does this itself, it doesn't
+step back and let Windows Update do it's job), and a few other things.
+After all that, you enter your NetID and password, and it registers you.
+In theory.</p>
+<p>What I ran into every single time I ran it with my laptop (running Windows
+XP at the time) was it failing to download something, throwing an error
+message and refusing to register me. I gave up after a few times and
+plugged in my other computer (Running the relatively obscure Windows XP
+x64). What I noticed is that I didn't get the typical quarantine page, I
+got a simple page that asked for a NetID and password. I entered my
+information and got a message stating I was good to go. I checked a few
+pages and they all seemed to work.</p>
+<p>I plugged my laptop back in and tried to load a page. The same
+quarantine screen. Since the main way a webpage tells the difference
+between two operating systems is the user agent, I fired up <a href="https://addons.mozilla.org/en-us/firefox/addon/tamper-data/">Tamper
+Data</a> and submitted a request with a blank one. I got the same page
+that asked for my NetID and password.</p>
+<p>I assume this works because if the registration server decides (based on
+your user agent) that IDA won't run on your computer, instead of leaving
+you screwed, it'll give you an alternate way out. Since when you take
+away the user agent the server can't tell what kind of operating system
+you're running, they assume that IDA won't work on it and give you the
+simple "Enter your account details" prompt.  </p>
+<h2>Register a computer without IDA</h2>
+<ol>
+<li>Acquire unblocked internet (the queensu wireless is a good bet).</li>
+<li>Download and install <a href="http://www.mozilla.org/firefox/">Firefox</a> and the <a href="https://addons.mozilla.org/en-us/firefox/addon/tamper-data/">Tamper Data</a> addon.</li>
+<li>Disconnect from the internet and plug in to ResNet.</li>
+<li>In Firefox, click Tools,  Tamper Data.</li>
+<li>In the window that pops up, click "Start Tamper".</li>
+<li>Try to load a website.</li>
+<li>A window will pop up asking you if you want to tamper with the
+    request. Click the "Tamper" option.</li>
+<li>In the windows that pops up, delete everything in the "User-Agent"
+    field and hit OK.</li>
+<li>Repeat steps 8 and 9 until the popups stop and the page loads.</li>
+<li>Click "Stop Tamper" and close the Tamper Data window.</li>
+<li>You should be on a page that tells you to enter your NetID and
+    password, do so and hit OK.</li>
+</ol>
+<p>Your computer should now be able to use ResNet normally.</p>
+<h2>Registering other devices</h2>
+<p>Your computer is registered via it's MAC address. This means that if you
+want to use ResNet with a device that can't run IDA, doesn't have a web
+browser, and is against IT policy *cough* wireless router *cough*,
+you can't. In theory.</p>
+<p>The easy way of course, it to call up ITS and tell them your Xbox can't
+connect. They'll ask you for your Xbox's MAC address, you'll give them
+the router's MAC address, and they'll register it. Aside from lying to
+ITS being morally wrong, this works. However, I've heard complaints that
+devices registered via calling ITS have had their speed throttled.
+Throttling non-school-related devices on a school network makes sense,
+but I haven't seen any actual proof of this.</p>
+<p>The better way of registering your other devices though, is to trick the
+registration server into thinking that your device is just a normal
+computer. Since computers are registered by their MAC addresses, you
+just need to register the MAC address of your device with the system.</p>
+<p>The following steps will show you how to spoof your device's MAC address
+and register it from your computer.</p>
+<ol>
+<li>Find the MAC address of your device. It will probably be somewhere
+    in the Advanced Options.</li>
+<li>Unplug your device from ResNet and plug in your computer.</li>
+<li>Open Control Panel, Network and Internet, Network Connections
+    and note the name of your connection. Usually it's "Local Area
+    Connection"</li>
+<li>Download and extract <a href="http://devices.natetrue.com/macshift/">Macshift</a> into a folder somewhere.</li>
+<li>Open a command prompt window in the Macshift folder.</li>
+<li>
+<p>In the command prompt window type</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>macshift.exe -i &quot;[connection name]&quot; [device MAC address, no dashes]
+</pre></div>
+</td></tr></table>
+
+<p>For example, if my device's MAC address was "00-11-22-33-44-55" and my
+connection name was "Local Area Connection", I would run</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>macshift.exe -i &quot;Local Area Connection&quot; 001122334455
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>Wait until you have network access again and try to load a page. If
+    everything went as planned, you should be seeing the ResNet
+    quarantine page.</p>
+</li>
+<li>Use the steps in the section above to register your computer again.</li>
+<li>
+<p>Once you have ResNet access, go back to the command prompt and run</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>macshift.exe -i &quot;[connection name]&quot; -d
+</pre></div>
+</td></tr></table>
+
+<p>This restores your MAC address back to it's original value.</p>
+</li>
+</ol>
+<p>Your device should now be able to use ResNet normally.</p>
+<h2>Disclaimer</h2>
+<p>All information above is provided for informational purposes only. I
+take no responsibility for the outcome of your actions. Furthermore, all
+information on IDA is based on experiences in 2009, It may have
+improved over time (ha).</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
+    <h1><a href="../../blog/resolving-windows-netbios-names-in-linux.html">Resolving Windows NetBIOS names in Linux</a></h1>
+  </div>
+  <div class="article_text">
+    <p>When accessing computers on a LAN, it's often useful to access them by
+name instead of IP. This is especially true when dealing with dynamic IP
+addresses.</p>
+<p>In Windows, other Windows computer names are automatically resolved to
+an IP address. In most Linux distros however, this is not the case (by default).</p>
+<p>To resolve Windows NetBIOS names in Linux, you'll need the <a href="http://www.samba.org/samba/docs/man/manpages-3/winbindd.8.html">winbind</a>
+component of the <a href="http://www.samba.org/">Samba suite</a>. Winbind allows a UNIX box to become a
+full member of an NT domain, giving the ability to resolve names from
+it.</p>
+<p>Install winbind via your preferred package manager. For Debian and
+derivatives, the following should work.   </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>apt-get install winbind
+</pre></div>
+</td></tr></table>
+
+<p>Now that winbind is installed, the OS must be configured to use it when
+looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
+to the end of the line starting with "hosts:".</p>
+<p>For example, the line in my file now looks like</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>hosts: files dns wins
+</pre></div>
+</td></tr></table>
+
+<p>Save the file and reboot to start the winbindd deamon.</p>
+<p>To test if if worked, try pinging a computer on your LAN by name. For
+example:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ping windows-server
+PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
+<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
+<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
+<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
+</pre></div>
+</td></tr></table>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
+    <h1><a href="../../blog/setting-up-tortisehg-on-windows.html">Setting up TortiseHg on Windows</a></h1>
+  </div>
+  <div class="article_text">
+    <p>TortiseHg can be a bit of a pain to set up if you don't want to
+have <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">peagent</a> running in the background all the time for
+authentication. This method uses TortisePlink (comes with the install)
+for authentication, and runs it only when it needs to authenticate.  </p>
+<h2>Generating a public/private key pair</h2>
+<ol>
+<li>Download <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTYgen</a> and run it.</li>
+<li>Generate the key pair by clicking the generate button.</li>
+<li>Optionally, enter a passphrase to protect the private key.</li>
+<li>Save the public and private keys somewhere. I prefer to save them as
+   <code>id_rsa.pub</code> and <code>id_rsa.ppk</code> in <code>C:/Users/[username]/.ssh/</code> but it
+   doesn't really matter.</li>
+</ol>
+<h2>Setting up TortiseHg</h2>
+<ol>
+<li>Download <a href="http://tortoisehg.bitbucket.org/download/index.html">TortiseHg</a> and install it.</li>
+<li>When installing, make sure that SSH Utils are installed.</li>
+<li>When it finishes installing, run the program (it'll be called
+   "TortiseHg Workbench" in the start menu).</li>
+<li>Configure the settings as you see fit. This will generate a
+   configuration file at <code>C:/Users/[username]/mercurial.ini</code>.</li>
+<li>Close the program and open up <code>mercurial.ini</code> in a text editor.</li>
+<li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
+   entries (adjusting for your own custom settings):</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>username = [name] &lt;[email]@[domain]&gt;
+ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
+</pre></div>
+</td></tr></table>
+
+<p>Now all that's needed is to upload the generated public key to the
+server(s) you wish to pull from or push to.</p>
+<p>When asked, just open the
+key up in a text editor (make sure it's the public key, NEVER share your
+private key) and copy-paste the text.</p>
+<p>After configuring this, you'll be able to push to repositories on the
+servers you give your public key to, without having to enter your password every time.</p>
+  </div>
+</article>
+
+<footer>
+<div id="paginator">
+  <span id="left">
+  </span>
+  <span id="right">
+      <a href="../../blog/tags/windows2.html">Next <i class="fa fa-arrow-circle-right"></i></a>
+  </span>
+  <div>
+      <a href="../../blog/tags/windows.html">[1]</a>
+      <a href="../../blog/tags/windows2.html"> 2 </a>
+  </div>
+</div>
+</footer>
+
+    <div id="ending_message">
+        <p>&copy; Carey Metcalfe. Built using <a href="http://getpelican.com">Pelican</a>. Theme is <a href="https://github.com/pR0Ps/pelican-subtle">subtle</a> by <a href="http://cmetcalfe.ca">Carey Metcalfe</a>. Based on <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a> by Giulio Fidente.</p>
+    </div>
+  </main>
+
+  <script type="text/javascript">
+    window.addEventListener('load', skipHeader)
+  </script>
+
+  <script type="text/javascript">
+  window.addEventListener('load', unmangleEmail)
+  </script>
+</body>
+</html>

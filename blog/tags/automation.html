@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Carey Metcalfe">
+  <meta name="description" content="Posts tagged with 'automation' on this site">
+
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+
+  <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
+
+
+  <title>Tag: automation | Carey Metcalfe</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-28306875-1', 'cmetcalfe.ca');
+  ga('send', 'pageview');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="../..">
+        <img src="/images/avatar.jpg" id="logo">
+      </a>
+      <h2><a href="../.." class="nohover">Carey Metcalfe</a></h2>
+      <p>Software Developer</p>
+      <div class="social">
+          <a data-email="ac.eflactemc@yerac:otliam" data-title="Email" title="You need javascript enabled to view this email" class="email" target="_blank" rel="noopener noreferrer"><i class="fa fa-envelope fa-lg"></i></a>
+          <a href="https://github.com/pR0Ps" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa fa-github fa-lg"></i></a>
+          <a href="https://twitter.com/CareyMetcalfe" title="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-lg"></i></a>
+      </div>
+      <ul>
+      </ul>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header>
+      <p id="header">
+      <a href="../..">Home</a>
+
+      &#124; <a href="../../blog/index.html">Blog</a>
+      &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
+      </p>
+<p>Tag: automation
+</p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h1><a href="../../blog/proxied-access-to-namecheap-dns.html">Proxied access to the Namecheap DNS API</a></h1>
+  </div>
+  <div class="article_text">
+    <h2>Background</h2>
+<p>Both this site and my home server use HTTPS certificates provided by <a href="https://letsencrypt.org">Let's Encrypt</a>.
+<a href="../../blog/adding-https-support.html">Previously</a> I was using the <code>http-01</code> challenge method, but once <a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579">wildcard
+certificates became available</a>, I decided to switch to the <code>dns-01</code> method for simplicity.</p>
+<p>My domains are currently registered through <a href="https://www.namecheap.com/">Namecheap</a> which provides an API for modifying DNS
+records. The only catch is that it can only be accessed via manually-whitelisted IP addresses.
+Because the server I'm trying to access the API from is assigned a dynamic IP, this restriction was
+a bit of an issue.</p>
+<p>Back in November when I initially made the switch to the DNS-based challenge, I set it up the easy
+way: I manually added my current IP to the whitelist, added a TODO entry to fix it somehow, and set
+a reminder scheduled for the week before the cert would expire telling me to update the IP
+whitelist. Fast-forward to today when I was reminded to update my IP whitelist. Instead of
+continuing to kick the can down the road, I decided to actually fix the issue.</p>
+<h2>Setting up a temporary proxy</h2>
+<p>My home server is connected to the internet though a normal residential connection which is assigned
+a dynamic IP address. However, the server that I run this website on is configured with a static IP
+since it's a hosted <a href="https://en.wikipedia.org/wiki/Virtual_private_server">VPS</a>. By proxying all traffic to the Namecheap API through my VPS, I could
+add my VPS's static IP to the whitelist and not have to worry about my home IP changing all the
+time.</p>
+<p>SSH is perfect tool for this. The <a href="https://www.openssh.com/">OpenSSH client</a> supports port forwarding using the <code>-D</code> flag.
+By then setting the <code>HTTP[S]_PROXY</code> environment variables to point to the forwarded port, programs
+that support those environment variables will transparently forward all their requests through the
+proxy.</p>
+<p>After a bunch of research and testing, I came up with the following script to easily set up the
+temporary proxy:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="c1"># Source this file to automatically setup and teardown an HTTP* proxy through cmetcalfe.ca</span>
+<span class="c1"># Use the PROXY_PORT and PROXY_DEST environment variables to customize the proxy</span>
+
+<span class="nv">PROXY_PORT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROXY_PORT</span><span class="k">:-</span><span class="nv">11111</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">PROXY_DEST</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PROXY_DEST</span><span class="k">:-</span><span class="p">&lt;username&gt;@cmetcalfe.ca</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">PID</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$$</span><span class="s2">&quot;</span>
+
+<span class="c1"># Teardown the SSH connection when the script exits</span>
+<span class="nb">trap</span> <span class="s1">&#39;ssh -q -S &quot;.ctrl-socket-$PID&quot; -O exit &quot;$PROXY_DEST&quot;&#39;</span> EXIT
+
+<span class="c1"># Set up an SSH tunnel and wait for the port to be forwarded before continuing</span>
+<span class="k">if</span> ! ssh -o <span class="nv">ExitOnForwardFailure</span><span class="o">=</span>yes -M -S <span class="s2">&quot;.ctrl-socket-</span><span class="nv">$PID</span><span class="s2">&quot;</span> -f -N -D <span class="s2">&quot;</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$PROXY_DEST</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Failed to open SSH tunnel, exiting&quot;</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="c1"># Set environment variables to redirect HTTP* traffic through the proxy</span>
+<span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+<span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<p>This script is saved as <code>~/.config/tempproxy.rc</code> and can be sourced to automatically set up a proxy
+session and have it be torn down when the script exits.</p>
+<p>You'll want to use key-based authentication with an unencrypted private key so that you don't need
+to type anything to initiate the SSH session. For this reason you'll probably want to create a
+limited user on the target system that can only really do port forwarding. There's a good post on
+this <a href="https://askubuntu.com/questions/48129/how-to-create-a-restricted-ssh-user-for-port-forwarding/50000#50000">here</a>.</p>
+<h2>Talking to the API through the proxy</h2>
+<p>To allow programs that use the <code>tempproxy.rc</code> script to talk to the Namecheap API, the IP address of
+the VPS was added to the whitelist. Now that the proxying issue was taken care of, I just needed
+to wire up the actual certificate renewal process to use it.</p>
+<p>The tool I'm using to talk to the Namecheap DNS API is <a href="https://github.com/AnalogJ/lexicon">lexicon</a>. It can handle manipulating the
+DNS records of a ton of providers and integrates really nicely with my <a href="https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment">ACME</a> client of choice,
+<a href="https://github.com/lukas2511/dehydrated">dehydrated</a>. Also, because it's using the <a href="https://github.com/Bemmu/PyNamecheap">PyNamecheap</a> Python library, which in turn uses
+<a href="http://python-requests.org">requests</a> under the hood, it will <a href="http://docs.python-requests.org/en/master/user/advanced/#proxies">automatically use the <code>HTTP*_PROXY</code> environment
+variables</a> when making requests.</p>
+<p>The only tricky bit is that the base install of <code>lexicon</code> won't automatically pull in the packages
+required for accessing the Namecheap API. Likewise, <code>requests</code> won't install packages to support
+SOCKS proxies. To install all the required packages you'll need to run a command like:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Since lexicon can use environment variables as configuration, I created another small source-able
+file at <code>~/.config/lexicon.rc</code>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="c1"># Sets environment variables for accessing the Namecheap API</span>
+
+<span class="c1"># Turn on API access and get an API token here:</span>
+<span class="c1"># https://ap.www.namecheap.com/settings/tools/apiaccess/</span>
+<span class="nb">export</span> <span class="nv">PROVIDER</span><span class="o">=</span>namecheap
+<span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
+<span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api token&gt;
+</pre></div>
+</td></tr></table>
+
+<p>With that in place, the existing automation script that I had previously set up when I switched to
+using the <code>dns-01</code> challenge just needed some minor tweaks to source the two new files. I've
+provided the script below, along with some other useful ones that use the DNS API.</p>
+<h2>Scripts</h2>
+<h3><code>do-letsencrypt.sh</code></h3>
+<p>This is the main script that handles all the domain renewals. It's called via <code>cron</code> on the first
+of every month.</p>
+<p>Fun fact: The previous <code>http-01</code> version of this script was a mess - it involved juggling <code>nginx</code>
+configurations with symlinks, manually opening up the <code>.well-known/acme-challenge</code> endpoint, and
+some other terrible hacks. This version is <em>much</em> nicer.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="c1"># Generate/renew Let&#39;s Encrypt certificates using dehydrated and lexicon</span>
+
+<span class="nb">set</span> -e
+
+<span class="c1"># Set configuration variables and setup the proxy</span>
+<span class="nb">source</span> ~/.config/lexicon.rc
+<span class="nb">source</span> ~/.config/tempproxy.rc
+
+<span class="nb">cd</span> /etc/nginx/ssl
+
+<span class="c1"># Update the certs.</span>
+<span class="c1"># Hook script copied verbatim from</span>
+<span class="c1"># https://github.com/AnalogJ/lexicon/blob/master/examples/dehydrated.default.sh</span>
+<span class="k">if</span> ! dehydrated --accept-terms --cron --challenge dns-01 --hook dehydrated.default.sh<span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Failed to renew certificates&quot;</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="c1"># Reload the nginx config if it&#39;s currently running</span>
+<span class="k">if</span> ! systemctl is-active nginx.service &gt; /dev/null<span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;nginx isn&#39;t running, not reloading it&quot;</span>
+    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">fi</span>
+
+<span class="k">if</span> ! systemctl reload nginx.service<span class="p">;</span> <span class="k">then</span>
+    systemctl status nginx.service
+    <span class="nb">echo</span> <span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+</pre></div>
+</td></tr></table>
+
+<h3><code>dns.sh</code></h3>
+<p>This one is really simple - it just augments the normal lexicon CLI interface with the proxy and
+configuration variables.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="c1"># A simple wrapper around lexicon.</span>
+<span class="c1"># Sets up the proxy and configuration, then passes all the arguments to the configured provider</span>
+
+<span class="nb">source</span> ~/.config/lexicon.rc
+<span class="nb">source</span> ~/.config/tempproxy.rc
+lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ./dns.sh list cmetcalfe.ca A
+ID       TYPE NAME             CONTENT         TTL
+-------- ---- ---------------- --------------- ----
+xxxxxxxx A    @.cmetcalfe.ca   xxx.xxx.xxx.xxx <span class="m">1800</span>
+xxxxxxxx A    www.cmetcalfe.ca xxx.xxx.xxx.xxx <span class="m">1800</span>
+</pre></div>
+</td></tr></table>
+
+<h3><code>dns-update.sh</code></h3>
+<p>An updated version of my <a href="../../blog/dynamic-dns-client-for-namecheap.html">previous script</a> that uses the API instead of the
+<a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29/11/how-do-i-use-a-browser-to-dynamically-update-the-hosts-ip">DynamicDNS service Namecheap provides</a>. Called via <code>cron</code> every 30 minutes.</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>A previous version of this script didn't try to delete the DNS entry before setting the new one,
+resulting in multiple IPs being set as the same <code>A</code> record.</p>
+<p>This is because the <a href="https://github.com/AnalogJ/lexicon/blob/1feca5ead36cbf85ad92676dc853045e2c646097/lexicon/providers/namecheap.py#L233">update function of the Namecheap plugin for lexicon</a> is implemented as a
+2-step delete and add. When it tries to delete the old record, it looks for one with the same
+content as the old one. This means that if you update a record with a new IP, it doesn't find
+the old record to delete first, leaving you with all of your old IPs set as individual A
+records.</p>
+</div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="c1"># Check the server&#39;s current IP against the IP listed in its DNS entry.</span>
+<span class="c1"># Set the current IP if they differ.</span>
+
+<span class="nb">set</span> -e
+
+resolve<span class="o">()</span> <span class="o">{</span>
+    <span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> @resolver1.opendns.com <span class="m">2</span>&gt; /dev/null <span class="p">|</span> sed <span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span> <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
+    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> <span class="p">|</span> head -1 <span class="p">|</span> cut -f5
+<span class="o">}</span>
+
+<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve &lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
+<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve myip.opendns.com<span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">source</span> ~/.config/lexicon.rc
+    <span class="nb">source</span> ~/.config/tempproxy.rc
+    <span class="k">if</span> ! lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> delete cmetcalfe.ca A --name <span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Failed to delete old DNS record, not setting the new one.&quot;</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+    <span class="k">fi</span>
+    <span class="k">if</span> lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> update cmetcalfe.ca A --name <span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span> --content <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> --ttl<span class="o">=</span><span class="m">900</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+    <span class="k">fi</span>
+<span class="k">fi</span>
+</pre></div>
+</td></tr></table>
+  </div>
+</article>
+
+<footer>
+<div id="paginator">
+  <span id="left">
+  </span>
+  <span id="right">
+  </span>
+  <div>
+      <a href="../../blog/tags/automation.html">[1]</a>
+  </div>
+</div>
+</footer>
+
+    <div id="ending_message">
+        <p>&copy; Carey Metcalfe. Built using <a href="http://getpelican.com">Pelican</a>. Theme is <a href="https://github.com/pR0Ps/pelican-subtle">subtle</a> by <a href="http://cmetcalfe.ca">Carey Metcalfe</a>. Based on <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a> by Giulio Fidente.</p>
+    </div>
+  </main>
+
+  <script type="text/javascript">
+    window.addEventListener('load', skipHeader)
+  </script>
+
+  <script type="text/javascript">
+  window.addEventListener('load', unmangleEmail)
+  </script>
+</body>
+</html>

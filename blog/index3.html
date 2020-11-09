@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Carey Metcalfe">
+  <meta name="description" content="Posts by Carey Metcalfe">
+
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+
+  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
+
+  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+
+  <title>Blog | Carey Metcalfe</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-28306875-1', 'cmetcalfe.ca');
+  ga('send', 'pageview');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="..">
+        <img src="/images/avatar.jpg" id="logo">
+      </a>
+      <h2><a href=".." class="nohover">Carey Metcalfe</a></h2>
+      <p>Software Developer</p>
+      <div class="social">
+          <a data-email="ac.eflactemc@yerac:otliam" data-title="Email" title="You need javascript enabled to view this email" class="email" target="_blank" rel="noopener noreferrer"><i class="fa fa-envelope fa-lg"></i></a>
+          <a href="https://github.com/pR0Ps" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa fa-github fa-lg"></i></a>
+          <a href="https://twitter.com/CareyMetcalfe" title="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-lg"></i></a>
+      </div>
+      <ul>
+      </ul>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header>
+      <p id="header">
+      <a href="..">Home</a>
+
+      &#124; <a href="../blog/index.html">Blog</a>
+      &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
+      </p>
+<p>
+<a href="../blog/index.html">Posts</a>
+&#124; <a href="../blog/tags/">Tags</a>
+&#124; <a href="../blog/archives.html">Archive</a>
+</p>    </header>
+
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/bank-of-canada-conversion-rates-terminal.html">Bank of Canada currency conversion rates in the terminal</a></h1>
+  </div>
+  <div class="article_text">
+    <h1>Preface</h1>
+<p>In this entry I'll use two command line tools (<a href="https://curl.haxx.se/"><code>curl</code></a> and <a href="https://stedolan.github.io/jq/"><code>jq</code></a>) to request currency
+conversion rates from the <a href="https://www.bankofcanada.ca">Bank of Canada</a>. Now obviously getting the same data through the <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/">normal
+web interface</a> is possible as well. However, doing it this way returns the data in a
+machine-readable form, allowing it to be customized or used as input into other programs.</p>
+<p>The basic flow will be request the data using <code>curl</code>, then pipe it to <code>jq</code> for processing.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This article will request the USD/CAD exchange rate from 2017-01-01 to 2017-01-10. It should be
+fairly obvious how to switch this for any other currencies or date ranges. See the
+<a href="#appendix">Appendix</a> for more information and caveats with the dates and the conversion codes.</p>
+</div>
+<p>We'll go from seeing the raw data the server returns to something that we can more easily use. <strong>To
+skip to the final result, click <a href="#tldr">here</a></strong>.</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>The URLs for the data were originally reverse-engineered from the website. They have since been
+turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs">the API documentation</a> for more details.</p>
+</div>
+<h1>Lets go!</h1>
+<p>Hitting the server without any processing will give the following result:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;terms&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;seriesDetail&quot;</span><span class="p">:{</span>
+<span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;USD/CAD&quot;</span><span class="p">,</span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;US dollar to Canadian dollar daily exchange rate&quot;</span><span class="p">}</span>
+<span class="p">},</span>
+<span class="nt">&quot;observations&quot;</span><span class="p">:[</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-02&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;e&quot;</span><span class="p">:</span><span class="mi">-64</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-03&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3435</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-04&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3315</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-05&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3244</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-06&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3214</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-09&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3240</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>To get the information we want, we need to iterate over the elements in the <code>observations</code> list and
+map the date (<code>d</code>) to the conversion rate (<code>FXUSDCAD.v</code>). Since this will create a list of
+single-element dictionaries, we'll also need to "add" (merge) them together.</p>
+<p>To do this with <code>jq</code>, it looks like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add</span>
+<span class="s1">&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>That first <code>null</code> entry where there was no data is going to cause problems later, so let's just
+delete it using the <code>del</code> function:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls)</span>
+<span class="s1">&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>Now this may be good enough for most purposes, but it would be useful to compute some other
+statistics from this data. For example, we want to know the average exchange rate for the date
+range. Now that we have the data in an easy to use format, computing an average with <code>jq</code> is just a
+matter of passing the values to an <code>add / length</code> filter. For example:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) | add / length</span>
+<span class="s1">&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="mf">1.327683333333333</span>
+</pre></div>
+</td></tr></table>
+
+<p><a name="tldr"></a>We can now construct an object that has both the average, as well as all the
+data. Putting it all together we get:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) |</span>
+<span class="s1">    {</span>
+<span class="s1">        &quot;average&quot;: (add / length),</span>
+<span class="s1">        &quot;values&quot;: .</span>
+<span class="s1">    }</span>
+<span class="s1">&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;average&quot;</span><span class="p">:</span> <span class="mf">1.327683333333333</span><span class="p">,</span>
+  <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>And that's it! Hopefully you found this useful, if not for it's stated purpose of retrieving
+exchange rates, then at least for getting more familiar with <code>jq</code>. It's pretty much the best tool
+out there when it comes to manipulating JSON on the command line.</p>
+<h1>Appendix<a name="appendix"></a></h1>
+<h3>Date ranges</h3>
+<ul>
+<li>The server will only ever return data from <code>2017-01-03</code> and onwards. If the start range is before
+  that, it doesn't return an error, it just doesn't return any data for those dates.</li>
+<li>If the end date isn't specified, the server assumes the current date.</li>
+<li>There doesn't seem to be any limit on the amount of data retrieved</li>
+</ul>
+<h3>Currency codes</h3>
+<p>A list of codes can be easily scraped from the lookup page. The command and its result are below for
+reference.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
+&quot;FXBRLCAD&quot;&gt;Brazilian real&lt;
+&quot;FXCNYCAD&quot;&gt;Chinese renminbi&lt;
+&quot;FXEURCAD&quot;&gt;European euro&lt;
+&quot;FXHKDCAD&quot;&gt;Hong Kong dollar&lt;
+&quot;FXINRCAD&quot;&gt;Indian rupee&lt;
+&quot;FXIDRCAD&quot;&gt;Indonesian rupiah&lt;
+&quot;FXJPYCAD&quot;&gt;Japanese yen&lt;
+&quot;FXMYRCAD&quot;&gt;Malaysian ringgit&lt;
+&quot;FXMXNCAD&quot;&gt;Mexican peso&lt;
+&quot;FXNZDCAD&quot;&gt;New Zealand dollar&lt;
+&quot;FXNOKCAD&quot;&gt;Norwegian krone&lt;
+&quot;FXPENCAD&quot;&gt;Peruvian new sol&lt;
+&quot;FXRUBCAD&quot;&gt;Russian ruble&lt;
+&quot;FXSARCAD&quot;&gt;Saudi riyal&lt;
+&quot;FXSGDCAD&quot;&gt;Singapore dollar&lt;
+&quot;FXZARCAD&quot;&gt;South African rand&lt;
+&quot;FXKRWCAD&quot;&gt;South Korean won&lt;
+&quot;FXSEKCAD&quot;&gt;Swedish krona&lt;
+&quot;FXCHFCAD&quot;&gt;Swiss franc&lt;
+&quot;FXTWDCAD&quot;&gt;Taiwanese dollar&lt;
+&quot;FXTHBCAD&quot;&gt;Thai baht&lt;
+&quot;FXTRYCAD&quot;&gt;Turkish lira&lt;
+&quot;FXGBPCAD&quot;&gt;UK pound sterling&lt;
+&quot;FXUSDCAD&quot;&gt;US dollar&lt;
+&quot;FXVNDCAD&quot;&gt;Vietnamese dong&lt;
+</pre></div>
+</td></tr></table>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/adding-https-support.html">Adding HTTPS support to this site</a></h1>
+  </div>
+  <div class="article_text">
+    <p>Yesterday I finally ticked something off my todo list that'd been on there for a while - I added
+proper HTTPS support to this site, powered by <a href="https://letsencrypt.org/">Let's Encrypt</a>.</p>
+<p>The Qualys SSL Labs <a href="https://www.ssllabs.com/ssltest/index.html">SSL Server Test</a> now gives this site <a href="https://www.ssllabs.com/ssltest/analyze.html?d=cmetcalfe.ca">an A+ rating</a>. You can see all the
+certs (past and present) for it on <a href="https://crt.sh/?q=cmetcalfe.ca">crt.sh</a>, an online certificate search tool.</p>
+<h3>For those interested in how things work:</h3>
+<p><a href="https://letsencrypt.org/">Let's Encrypt</a> is a "free, automated, and open" certificate authority. They provide certificates
+via an <a href="https://letsencrypt.org/howitworks/technology/">automatable process</a> that are valid for <a href="https://letsencrypt.org/2015/11/09/why-90-days.html">90 days</a>.</p>
+<p>Exactly how I got it all working can be seen in my <a href="https://github.com/pR0Ps/website">website repo</a>, where this entire site and it's
+deployment scripts are kept, but here's the gist of it:</p>
+<p>I decided to use <a href="https://github.com/lukas2511/dehydrated"><code>dehydrated</code></a> instead of the <a href="https://github.com/letsencrypt/letsencrypt">official Let's Encrypt client</a> to
+generate the certificates. <code>dehydrated</code> is ~1000 lines of <code>bash</code> and only requires things like
+<code>openssl</code>, <code>curl</code>, and a few other programs that any UNIX system should already have. It takes a
+config file and a list of domains. Once those are in place running it from <code>cron</code> is easy.</p>
+<p>The <a href="https://github.com/letsencrypt/acme-spec">ACME protocol</a> that Let's Encrypt uses to verify domain ownership requires the web server to
+respond to certain requests. This check makes sure that only someone with control over the domain
+can generate a cert for it. To allow those requests to return the files generated by <code>dehydrated</code>,
+a <a href="https://github.com/pR0Ps/website/blob/8b3f9509e5f97522ac01789ca562409a7475cc60/web_config/https/letsencrypt.conf">location rule in the Nginx config</a> was added.</p>
+<p>Initially there were problems with the first time generating certs. Since the certs didn't exist
+yet, Nginx was failing to start (and therefore causing the domain validation to fail). The solution
+was to make two sets of configs. An HTTP set, and an HTTPS set. During the renewal process, the HTTPS
+configs are tried, and if running Nginx fails, it falls back to the HTTP set. Switching between HTTP
+and HTTPS configs is done by modifying a symlink.</p>
+<p>When all set up, this makes both generating a cert for the first time and renewing a cert as easy as
+deploying the site. For continual, automated renewals, a monthly <code>cron</code> job was added. With the
+expiry of certs being 90 days, this should be frequent enough that the certs should never expire.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/youtube-subscriptions-via-rss.html">YouTube subscriptions via RSS</a></h1>
+  </div>
+  <div class="article_text">
+    <p>The <a href="https://support.google.com/youtube/answer/4489286">subscription feature</a> on <a href="https://www.youtube.com">Youtube</a> allows you to keep up to date with content
+that people upload to the site.</p>
+<p>Since I use an RSS reader for every other blog or site that I follow, why not do
+the same for YouTube subscriptions?</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>This method no longer works. The YouTube v2 API (which is <a href="https://developers.google.com/youtube/2.0/reference#Subscriptions_Feed">what this method
+was using</a>) was <a href="http://youtube-eng.blogspot.ca/2014/03/committing-to-youtube-data-api-v3_4.html">retired on April 20th, 2015</a>.</p>
+<p>To work around this, each channel must be subscribed to separately. See the
+RSS reader section on <a href="https://support.google.com/youtube/answer/6098135">this support page</a>.</p>
+</div>
+<p>The feed for anyone's subscribed videos is at the URL:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>http://gdata.youtube.com/feeds/base/users/&lt;userID&gt;/newsubscriptionvideos
+</pre></div>
+</td></tr></table>
+
+<p>Where <code>&lt;userID&gt;</code> is either your YouTube account name or the long string of
+letters and numbers that can be found on the <a href="https://www.youtube.com/account_advanced">YouTube advanced settings page</a>.</p>
+<p>Try it out, it makes watching episodic content a breeze!</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You'll have to have "Keep all my subscriptions private" unchecked on the
+<a href="https://www.youtube.com/account_privacy">YouTube privacy settings page</a> for this to work.</p>
+<p>This will allow anyone to access the RSS feed of your subscriptions at the
+url above.</p>
+</div>
+  </div>
+</article>
+
+<footer>
+<div id="paginator">
+  <span id="left">
+      <a href="../blog/index2.html"><i class="fa fa-arrow-circle-left"></i> Prev</a>
+  </span>
+  <span id="right">
+      <a href="../blog/index4.html">Next <i class="fa fa-arrow-circle-right"></i></a>
+  </span>
+  <div>
+      <a href="../blog/index.html"> 1 </a>
+      <a href="../blog/index2.html"> 2 </a>
+      <a href="../blog/index3.html">[3]</a>
+      <a href="../blog/index4.html"> 4 </a>
+      <a href="../blog/index5.html"> 5 </a>
+      <a href="../blog/index6.html"> 6 </a>
+      <a href="../blog/index7.html"> 7 </a>
+      <a href="../blog/index8.html"> 8 </a>
+      <a href="../blog/index9.html"> 9 </a>
+      <a href="../blog/index10.html"> 10 </a>
+      <a href="../blog/index11.html"> 11 </a>
+      <a href="../blog/index12.html"> 12 </a>
+  </div>
+</div>
+</footer>
+
+    <div id="ending_message">
+        <p>&copy; Carey Metcalfe. Built using <a href="http://getpelican.com">Pelican</a>. Theme is <a href="https://github.com/pR0Ps/pelican-subtle">subtle</a> by <a href="http://cmetcalfe.ca">Carey Metcalfe</a>. Based on <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a> by Giulio Fidente.</p>
+    </div>
+  </main>
+
+  <script type="text/javascript">
+    window.addEventListener('load', skipHeader)
+  </script>
+
+  <script type="text/javascript">
+  window.addEventListener('load', unmangleEmail)
+  </script>
+</body>
+</html>
