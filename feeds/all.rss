@@ -1,5 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Carey Metcalfe</title><link>https://cmetcalfe.ca/</link><description></description><lastBuildDate>Tue, 17 Mar 2020 22:38:00 -0400</lastBuildDate><item><title>Diagnosing periodic high ping times on macOS</title><link>https://cmetcalfe.ca/blog/diagnosing-periodic-high-ping-times-on-macos.html</link><description>&lt;h2&gt;Background&lt;/h2&gt;
+<rss version="2.0"><channel><title>Carey Metcalfe</title><link>https://cmetcalfe.ca/</link><description></description><lastBuildDate>Thu, 10 Dec 2020 23:12:00 -0500</lastBuildDate><item><title>Preventing auto-locking and sleeping by simulating user activity</title><link>https://cmetcalfe.ca/blog/prevent-auto-lock-by-simulating-activity.html</link><description>&lt;p&gt;This post will detail how to simulate activity on your computer in order to prevent it from
+auto-locking or going into sleep mode. Note that this will usually also prevent the "auto-away"
+functionality of various chat programs from ever marking you as "away".&lt;/p&gt;
+&lt;p&gt;Generally you should change your operating system's settings to disable sleeping and auto-locking if
+possible instead. These methods are for when you don't have the access or permission to change those
+settings (ie. locked-down devices).&lt;/p&gt;
+&lt;h2&gt;Windows&lt;/h2&gt;
+&lt;p&gt;This method runs a &lt;a href="https://en.wikipedia.org/wiki/Powershell"&gt;Powershell&lt;/a&gt; script on login that toggles &lt;a href="https://en.wikipedia.org/wiki/Scroll_lock"&gt;scroll lock&lt;/a&gt; on/off every minute.
+Since scroll lock mostly doesn't do anything on modern systems and the script will press it twice to
+immediately unlock/relock it, this is basically unnoticeable to the user. However, if you have
+issues simply swap the two &lt;code&gt;{SCROLLLOCK}&lt;/code&gt;s in the below command to something else. A full list of
+special keys can be found &lt;a href="https://social.technet.microsoft.com/wiki/contents/articles/5169.vbscript-sendkeys-method.aspx"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open Explorer (shortcut: &lt;code&gt;Win+E&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Paste &lt;code&gt;%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup&lt;/code&gt; into the location bar and hit
+   enter to navigate there.&lt;/li&gt;
+&lt;li&gt;Right click in the folder and click &lt;code&gt;New &amp;gt; Shortcut&lt;/code&gt; to open the shortcut creation wizard.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Paste the following as the shortcut's location:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;powershell.exe -windowstyle hidden -command &amp;quot;$myshell=New-Object -com \&amp;quot;Wscript.Shell\&amp;quot;;while(1){$myshell.SendKeys(\&amp;quot;{SCROLLLOCK}{SCROLLLOCK}\&amp;quot;);Start-Sleep -Seconds 60}&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Give it any name you like and hit &lt;code&gt;Finish&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;macOS&lt;/h2&gt;
+&lt;p&gt;This method runs a shell script on login that uses a tool called &lt;a href="https://www.bluem.net/en/projects/cliclick/"&gt;&lt;code&gt;cliclick&lt;/code&gt;&lt;/a&gt; to move the
+mouse one pixel left and right every minute. This is such a small and fast movement that it's
+usually not noticeable unless you're really looking for it.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install &lt;code&gt;cliclick&lt;/code&gt; from &lt;a href="https://www.bluem.net/en/projects/cliclick/"&gt;the project website&lt;/a&gt; or via &lt;a href="https://brew.sh/"&gt;brew&lt;/a&gt; (&lt;code&gt;brew install cliclick&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Create a script called &lt;code&gt;jiggle&lt;/code&gt; with the following contents:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class="k"&gt;while&lt;/span&gt; true&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    cliclick &lt;span class="s1"&gt;&amp;#39;m:-1,+0&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;m:+1,+0&amp;#39;&lt;/span&gt;
+    sleep &lt;span class="m"&gt;60&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Make the script executable (&lt;code&gt;chmod +x jiggle&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Open System Preferences, search for "login items" and hit enter.&lt;/li&gt;
+&lt;li&gt;Click the &lt;code&gt;+&lt;/code&gt; button, select the &lt;code&gt;jiggle&lt;/code&gt; script and hit "Add". You should see it appear in the
+   list of programs as a "Unix executable". Check the "Hide" checkbox beside it and exit.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Xorg-based Linux&lt;/h2&gt;
+&lt;p&gt;Much like the macOS version above, this moves the mouse one pixel left and right every minute. If
+you would prefer to instead use a keyboard-based method like the above Windows version, use &lt;code&gt;xdotool
+key Scroll_Lock&lt;/code&gt; twice instead of the &lt;code&gt;xdotool mousemove_relative *&lt;/code&gt; commands in the following
+script. More special key names for &lt;code&gt;xdotool&lt;/code&gt; can be found &lt;a href="https://gitlab.com/cunidev/gestures/-/wikis/xdotool-list-of-key-codes"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install &lt;a href="https://www.semicomplete.com/projects/xdotool/"&gt;&lt;code&gt;xdotool&lt;/code&gt;&lt;/a&gt; (usually available via your package manager)&lt;/li&gt;
+&lt;li&gt;Create a script called &lt;code&gt;jiggle&lt;/code&gt; with the following contents:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class="k"&gt;while&lt;/span&gt; true&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    xdotool mousemove_relative --sync -- -1 &lt;span class="m"&gt;0&lt;/span&gt;
+    xdotool mousemove_relative &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+    sleep &lt;span class="m"&gt;60&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Make the script executable (&lt;code&gt;chmod +x jiggle&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Configure your OS to run the script at login. Usually this would be done through the desktop
+   environment's settings or via something like &lt;a href="https://www.freedesktop.org/wiki/Software/systemd/"&gt;&lt;code&gt;systemd&lt;/code&gt;&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Wayland-based Linux&lt;/h2&gt;
+&lt;p&gt;Some preliminary research suggests that this is possible on Wayland using &lt;a href="https://github.com/ReimuNotMoe/ydotool"&gt;&lt;code&gt;ydotool&lt;/code&gt;&lt;/a&gt; as a
+replacement for &lt;code&gt;xdotool&lt;/code&gt;. I don't currently run a Wayland-based setup so I can't test it. If you
+manage to find a solution for Wayland feel free to send it to me and I'll update the post.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Thu, 10 Dec 2020 23:12:00 -0500</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2020-12-10:/blog/prevent-auto-lock-by-simulating-activity.html</guid><category>windows</category><category>macOS</category><category>linux</category><category>shell script</category></item><item><title>Diagnosing periodic high ping times on macOS</title><link>https://cmetcalfe.ca/blog/diagnosing-periodic-high-ping-times-on-macos.html</link><description>&lt;h2&gt;Background&lt;/h2&gt;
 &lt;p&gt;Up until a few months ago, my home network setup was pretty terrible. The entire house ran off the
 WiFi provided by an &lt;a href="https://openwrt.org/"&gt;OpenWRT&lt;/a&gt;-powered &lt;a href="https://www.tp-link.com/us/products/details/TL-WDR3600.html"&gt;TP-Link WDR3600&lt;/a&gt; from 2013 in the far corner of the
 house. So when I fired up a game on my laptop via &lt;a href="https://store.steampowered.com/streaming/"&gt;Steam in-home streaming&lt;/a&gt; and got unplayable lag

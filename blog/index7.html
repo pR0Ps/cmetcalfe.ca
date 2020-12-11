@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -64,6 +64,25 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../blog/preventing-wine-from-registering-mimetypes.html">Preventing Wine from registering mimetypes</a></h1>
+  </div>
+  <div class="article_text">
+    <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
+<p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
+<p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
+</pre></div>
+</td></tr></table>
+
+<p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
+preventing the associations from being made when Wine installs.</p>
+<p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,
+the library can be properly disabled via the libraries tab of wineconf.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../blog/changes-to-the-blog-and-website.html">Changes to the blog and website</a></h1>
   </div>
   <div class="article_text">
@@ -107,47 +126,6 @@ Instead of exiting the program or mimimizing the application to the system tray,
 The developers have said that this is temporary and that it will be changed in the future, but for now, there is a workaround.</p>
 <p>To make Steam always minimize to the system tray, just add <code>STEAM_FRAME_FORCE_CLOSE=1</code> to your environment.</p>
 <p>For more information see the <a href="https://github.com/ValveSoftware/steam-for-linux/issues/1025">original GitHub issue</a>.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/github-convert-issue-to-pull-request.html">GitHub: Convert an issue to a pull request</a></h1>
-  </div>
-  <div class="article_text">
-    <p><a href="http://github.com">GitHub</a> currently doesn't provide a way to convert an issue to a pull request in their interface.
-However, the capability exists in their <a href="http://developer.github.com/v3/pulls/#alternative-input">Pull Request API</a>.</p>
-<div class="admonition update">
-<p class="admonition-title">Update</p>
-<p>I've built a self-hostable webapp called <a href="https://github.com/pR0Ps/gh-i2p">gh-i2p</a> that makes this process easier.</p>
-</div>
-<p>To call the API using a simple <code>curl</code> command, run the command:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
-     --request POST <span class="se">\</span>
-     --data <span class="s1">&#39;{&quot;issue&quot;: &quot;[issue num]&quot;, &quot;head&quot;: &quot;[branch to merge from]&quot;, &quot;base&quot;: &quot;[branch to merge into]&quot;}&#39;</span> <span class="se">\</span>
-     https://api.github.com/repos/<span class="o">[</span>user<span class="o">]</span>/<span class="o">[</span>repo<span class="o">]</span>/pulls
-</pre></div>
-</td></tr></table>
-
-<p>For example, to make <code>user1</code> change issue 13 into a pull request to merge branch <code>test_branch</code> into
-<code>master</code> in the <code>testing_repo</code> repository belonging to <code>user2</code>, the command would be:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
-     --request POST <span class="se">\</span>
-     --data <span class="s1">&#39;{&quot;issue&quot;: &quot;13&quot;, &quot;head&quot;: &quot;test_branch&quot;, &quot;base&quot;: &quot;master&quot;}&#39;</span> <span class="se">\</span>
-     https://api.github.com/repos/user2/testing_repo/pulls
-</pre></div>
-</td></tr></table>
-
-<p>To specify a fork of a repository to merge from, put the username followed by a semicolon in front
-of the branch name like so: <code>"username:branch_name"</code></p>
-<p>After running the command, you will be prompted for your GitHub password. Enter it and curl should
-output the JSON response from the API. Make sure to check this response for errors!</p>
   </div>
 </article>
 

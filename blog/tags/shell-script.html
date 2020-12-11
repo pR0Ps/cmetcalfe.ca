@@ -61,6 +61,100 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/prevent-auto-lock-by-simulating-activity.html">Preventing auto-locking and sleeping by simulating user activity</a></h1>
+  </div>
+  <div class="article_text">
+    <p>This post will detail how to simulate activity on your computer in order to prevent it from
+auto-locking or going into sleep mode. Note that this will usually also prevent the "auto-away"
+functionality of various chat programs from ever marking you as "away".</p>
+<p>Generally you should change your operating system's settings to disable sleeping and auto-locking if
+possible instead. These methods are for when you don't have the access or permission to change those
+settings (ie. locked-down devices).</p>
+<h2>Windows</h2>
+<p>This method runs a <a href="https://en.wikipedia.org/wiki/Powershell">Powershell</a> script on login that toggles <a href="https://en.wikipedia.org/wiki/Scroll_lock">scroll lock</a> on/off every minute.
+Since scroll lock mostly doesn't do anything on modern systems and the script will press it twice to
+immediately unlock/relock it, this is basically unnoticeable to the user. However, if you have
+issues simply swap the two <code>{SCROLLLOCK}</code>s in the below command to something else. A full list of
+special keys can be found <a href="https://social.technet.microsoft.com/wiki/contents/articles/5169.vbscript-sendkeys-method.aspx">here</a>.</p>
+<ol>
+<li>Open Explorer (shortcut: <code>Win+E</code>)</li>
+<li>Paste <code>%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup</code> into the location bar and hit
+   enter to navigate there.</li>
+<li>Right click in the folder and click <code>New &gt; Shortcut</code> to open the shortcut creation wizard.</li>
+<li>
+<p>Paste the following as the shortcut's location:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>powershell.exe -windowstyle hidden -command &quot;$myshell=New-Object -com \&quot;Wscript.Shell\&quot;;while(1){$myshell.SendKeys(\&quot;{SCROLLLOCK}{SCROLLLOCK}\&quot;);Start-Sleep -Seconds 60}&quot;
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>Give it any name you like and hit <code>Finish</code></p>
+</li>
+</ol>
+<h2>macOS</h2>
+<p>This method runs a shell script on login that uses a tool called <a href="https://www.bluem.net/en/projects/cliclick/"><code>cliclick</code></a> to move the
+mouse one pixel left and right every minute. This is such a small and fast movement that it's
+usually not noticeable unless you're really looking for it.</p>
+<ol>
+<li>Install <code>cliclick</code> from <a href="https://www.bluem.net/en/projects/cliclick/">the project website</a> or via <a href="https://brew.sh/">brew</a> (<code>brew install cliclick</code>)</li>
+<li>Create a script called <code>jiggle</code> with the following contents:</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+    cliclick <span class="s1">&#39;m:-1,+0&#39;</span> <span class="s1">&#39;m:+1,+0&#39;</span>
+    sleep <span class="m">60</span>
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+
+<ol>
+<li>Make the script executable (<code>chmod +x jiggle</code>)</li>
+<li>Open System Preferences, search for "login items" and hit enter.</li>
+<li>Click the <code>+</code> button, select the <code>jiggle</code> script and hit "Add". You should see it appear in the
+   list of programs as a "Unix executable". Check the "Hide" checkbox beside it and exit.</li>
+</ol>
+<h2>Xorg-based Linux</h2>
+<p>Much like the macOS version above, this moves the mouse one pixel left and right every minute. If
+you would prefer to instead use a keyboard-based method like the above Windows version, use <code>xdotool
+key Scroll_Lock</code> twice instead of the <code>xdotool mousemove_relative *</code> commands in the following
+script. More special key names for <code>xdotool</code> can be found <a href="https://gitlab.com/cunidev/gestures/-/wikis/xdotool-list-of-key-codes">here</a>.</p>
+<ol>
+<li>Install <a href="https://www.semicomplete.com/projects/xdotool/"><code>xdotool</code></a> (usually available via your package manager)</li>
+<li>Create a script called <code>jiggle</code> with the following contents:</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+    xdotool mousemove_relative --sync -- -1 <span class="m">0</span>
+    xdotool mousemove_relative <span class="m">1</span> <span class="m">0</span>
+    sleep <span class="m">60</span>
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+
+<ol>
+<li>Make the script executable (<code>chmod +x jiggle</code>)</li>
+<li>Configure your OS to run the script at login. Usually this would be done through the desktop
+   environment's settings or via something like <a href="https://www.freedesktop.org/wiki/Software/systemd/"><code>systemd</code></a>.</li>
+</ol>
+<h2>Wayland-based Linux</h2>
+<p>Some preliminary research suggests that this is possible on Wayland using <a href="https://github.com/ReimuNotMoe/ydotool"><code>ydotool</code></a> as a
+replacement for <code>xdotool</code>. I don't currently run a Wayland-based setup so I can't test it. If you
+manage to find a solution for Wayland feel free to send it to me and I'll update the post.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/proxied-access-to-namecheap-dns.html">Proxied access to the Namecheap DNS API</a></h1>
   </div>
   <div class="article_text">
@@ -610,89 +704,6 @@ reference.</p>
 </td></tr></table>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/dynamic-dns-client-for-namecheap.html">Dynamic DNS client for Namecheap using bash & cron</a></h1>
-  </div>
-  <div class="article_text">
-    <p>In addition to running this website, I also run a home server. For convenience,
-I point a subdomain of <code>cmetcalfe.ca</code> at it so even though it's connected using
-a dynamic IP (and actually seems to change fairly frequently), I can get access
-to it from anywhere.</p>
-<p>As a bit of background, the domain for this website is registered and managed
-through <a href="http://namecheap.com">Namecheap</a>. While they do provide a <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/28">recommended DDNS client</a> for
-keeping a domain's DNS updated, it only runs on Windows.</p>
-<p>Instead, after <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/595">enabling DDNS for the domain</a> and reading <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29">Namecheap's article
-on using the browser to update DDNS</a> I came up with the following <code>dns-update</code>
-script.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
-
-<span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
-<span class="nb">set</span> -e
-
-<span class="c1"># Uses drill instead of dig</span>
-resolve<span class="o">()</span> <span class="o">{</span>
-    <span class="c1">#dig &quot;$1&quot; @resolver1.opendns.com +short 2&gt; /dev/null</span>
-    <span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> @resolver1.opendns.com <span class="m">2</span>&gt; /dev/null <span class="p">|</span> sed <span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span> <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
-    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> <span class="p">|</span> head -1 <span class="p">|</span> cut -f5
-<span class="o">}</span>
-
-<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve &lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
-<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve myip.opendns.com<span class="k">)</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="k">if</span> curl -s <span class="s2">&quot;https://dynamicdns.park-your-domain.com/update?host=&lt;subdomain&gt;&amp;domain=cmetcalfe.ca&amp;password=&lt;my passkey&gt;&quot;</span> <span class="p">|</span> grep -q <span class="s2">&quot;&lt;ErrCount&gt;0&lt;/ErrCount&gt;&quot;</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">else</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">fi</span>
-<span class="k">fi</span>
-</pre></div>
-</td></tr></table>
-
-<p>It basically checks if the IP returned by a DNS query for the subdomain matches
-the current IP of the server (as reported by an <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> resolver) and if it
-doesn't, sends a request to update the DNS. The <code>echo</code> commands are there just
-to output some record of the IP changing. Maybe I'll do some analysis of it at
-some point.</p>
-<p>To run the script every 30 minutes and redirect any output from it to the
-syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
-</pre></div>
-</td></tr></table>
-
-<p>With the script automatically running every 30 minutes I can now be confident
-that my subdomain will always be pointing at my home server whenever I need
-access to it.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>A previous version of this article used <code>curl -sf http://curlmyip.com</code> to
-find the server's current IP address. However, after curlmyip went down for
-a few days, I decided to take the advice in <a href="http://unix.stackexchange.com/a/81699">this StackExchange answer</a>
-and use <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> instead.</p>
-</div>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -705,6 +716,7 @@ and use <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> instead.</p>
       <a href="../../blog/tags/shell-script.html">[1]</a>
       <a href="../../blog/tags/shell-script2.html"> 2 </a>
       <a href="../../blog/tags/shell-script3.html"> 3 </a>
+      <a href="../../blog/tags/shell-script4.html"> 4 </a>
   </div>
 </div>
 </footer>

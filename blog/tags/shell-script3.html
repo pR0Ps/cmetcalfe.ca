@@ -61,6 +61,89 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/limit-download-speed-by-ip-or-mac-address.html">Limit download speed by IP or MAC address</a></h1>
+  </div>
+  <div class="article_text">
+    <h2>Preamble</h2>
+<p>This article will focus on setting strict speed limits on misbehaving devices on your network. This can be a housemate incessantly torrenting, your kid downloading movies on iTunes, or anyone else clogging up your network with their overzealous bandwidth gobbling.</p>
+<p>If you're looking for help with the QOS (quality of service) settings that come baked into most router firmwares, this article is not for you.</p>
+<p>This article assumes you have a router running OpenWRT, DD-WRT, Tomato, or any other firmware that uses <a href="http://linux.die.net/man/8/tc"><code>tc</code></a> to manipulate traffic control settings.</p>
+<h2>Procedure</h2>
+<p>First, you'll need to get shell access to the router. With most custom router firmwares, this is as easy as selecting a radio button. Other firmwares might give you the ability to enter commands via a web interface. Whatever works.</p>
+<p>Once you have shell access, follow the steps below. Note that bits of the commands you might want to change are included in brackets.</p>
+<ol>
+<li>
+<p>Using <code>ifconfig</code>, find the interface to apply the limits to. You'll want to use either the internal or external default gateway (the interfaces all the packets go though). Keep in mind which interface you use as the filtering rules will be reversed. </p>
+<ul>
+<li>Internal gateway: to src = uploading, to dst = downloading</li>
+<li>External gateway: to src = downloading, to dst = uploading</li>
+</ul>
+</li>
+<li>
+<p>Remove all existing rules on the interface (interface = <code>br0</code>)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc qdisc del dev br0 root
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>Set up the connection (Ex: connection speed = 20mbit)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc qdisc add dev br0 root handle 1: cbq avpkt 1000 bandwidth 20mbit
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>Add the limiting rule (Ex: speed limit = 10mbit)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc class add dev br0 parent 1: classid 1:1 cbq rate 10mbit allot 1500 prio 5 bounded isolated
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>Filtering - Add the users to apply to rule to</p>
+<ul>
+<li>
+<p>By src IP (Ex: IP = <code>192.168.1.100</code>)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip src 192.168.1.100 flowid 1:1
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>By dst IP (Ex: IP = <code>192.168.1.100</code>)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip dst 192.168.1.100 flowid 1:1
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>By src MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u16 0xM4M5 0xFFFF at -4 match u32 0xM0M1M2M3 0xFFFFFFFF at -8 flowid 1:1
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>By dst MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u32 0xM2M3M4M5 0xFFFFFFFF at -12 match u16 0xM0M1 0xFFFF at -14 flowid 1:1
+</pre></div>
+</td></tr></table>
+
+</li>
+</ul>
+</li>
+</ol>
+<h2>Sources</h2>
+<ul>
+<li>http://lartc.org/lartc.html</li>
+<li>http://www.docum.org/faq/cache/62.html</li>
+</ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/github-convert-issue-to-pull-request.html">GitHub: Convert an issue to a pull request</a></h1>
   </div>
   <div class="article_text">
@@ -127,32 +210,6 @@ aren't linked from anywhere on the site won't be downloaded.</p>
 <p>This technique will also work for websites other than the ones hosted on Google Sites.</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/backing-up-data-to-an-external-server-via-ssh.html">Backing up data to an external server via SSH</a></h1>
-  </div>
-  <div class="article_text">
-    <p>I recently needed to back up the contents of a website, but found that a
-disk quota was preventing me from doing so. What I really needed to do
-was find a way to compress all the files and, instead of storing the
-archive locally, pipe the output to another server.  </p>
-<p>After much Googling and messing about, I ended up with the following
-command:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">#Uses the tar utility to backup files to an external server</span>
-
-tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span> <span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
-</pre></div>
-</td></tr></table>
-
-<p>Of course, this is only practical for a one-off data dump. If regular
-backups were needed, using <a href="http://rsync.samba.org/">rsync</a> would be the best option, as it
-only transfers incremental changes. An excellent tutorial can be found
-<a href="http://troy.jdmz.net/rsync/index.html">here</a>.</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -160,11 +217,13 @@ only transfers incremental changes. An excellent tutorial can be found
       <a href="../../blog/tags/shell-script2.html"><i class="fa fa-arrow-circle-left"></i> Prev</a>
   </span>
   <span id="right">
+      <a href="../../blog/tags/shell-script4.html">Next <i class="fa fa-arrow-circle-right"></i></a>
   </span>
   <div>
       <a href="../../blog/tags/shell-script.html"> 1 </a>
       <a href="../../blog/tags/shell-script2.html"> 2 </a>
       <a href="../../blog/tags/shell-script3.html">[3]</a>
+      <a href="../../blog/tags/shell-script4.html"> 4 </a>
   </div>
 </div>
 </footer>

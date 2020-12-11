@@ -61,6 +61,52 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/setting-up-tortisehg-on-windows.html">Setting up TortiseHg on Windows</a></h1>
+  </div>
+  <div class="article_text">
+    <p>TortiseHg can be a bit of a pain to set up if you don't want to
+have <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">peagent</a> running in the background all the time for
+authentication. This method uses TortisePlink (comes with the install)
+for authentication, and runs it only when it needs to authenticate.  </p>
+<h2>Generating a public/private key pair</h2>
+<ol>
+<li>Download <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTYgen</a> and run it.</li>
+<li>Generate the key pair by clicking the generate button.</li>
+<li>Optionally, enter a passphrase to protect the private key.</li>
+<li>Save the public and private keys somewhere. I prefer to save them as
+   <code>id_rsa.pub</code> and <code>id_rsa.ppk</code> in <code>C:/Users/[username]/.ssh/</code> but it
+   doesn't really matter.</li>
+</ol>
+<h2>Setting up TortiseHg</h2>
+<ol>
+<li>Download <a href="http://tortoisehg.bitbucket.org/download/index.html">TortiseHg</a> and install it.</li>
+<li>When installing, make sure that SSH Utils are installed.</li>
+<li>When it finishes installing, run the program (it'll be called
+   "TortiseHg Workbench" in the start menu).</li>
+<li>Configure the settings as you see fit. This will generate a
+   configuration file at <code>C:/Users/[username]/mercurial.ini</code>.</li>
+<li>Close the program and open up <code>mercurial.ini</code> in a text editor.</li>
+<li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
+   entries (adjusting for your own custom settings):</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>username = [name] &lt;[email]@[domain]&gt;
+ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
+</pre></div>
+</td></tr></table>
+
+<p>Now all that's needed is to upload the generated public key to the
+server(s) you wish to pull from or push to.</p>
+<p>When asked, just open the
+key up in a text editor (make sure it's the public key, NEVER share your
+private key) and copy-paste the text.</p>
+<p>After configuring this, you'll be able to push to repositories on the
+servers you give your public key to, without having to enter your password every time.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/changing-media-key-behaviours.html">How keyboard media keys work</a></h1>
   </div>
   <div class="article_text">

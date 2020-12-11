@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,39 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/gotcha-with-basic-http-authentication-with-python.html">Gotcha with basic HTTP authentication in Python</a></h1>
+  </div>
+  <div class="article_text">
+    <p>When doing basic HTTP authentication in Python, make sure your
+authentication realm is surrounded by double, <em>NOT</em> single quotes.</p>
+<p>Bad:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=&#39;/&#39;&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+<p>Good:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=</span><span class="se">\&quot;</span><span class="s2">/</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+<p>The single quotes work with most browsers, curl, wget, and tons of other
+tools. However, when using Python to access the page (using
+<a href="http://docs.python.org/2/library/urllib2.html#urllib2.HTTPPasswordMgrWithDefaultRealm">urllib2.HTTPPasswordMgrWithDefaultRealm</a> to manage authentication)
+single quotes don't trigger the "automatic retry with authentication"
+response, and instead just raise a 401 <code>HTTPError</code>.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/queens-university-resnet-without-ida-windows.html">Queen's University Resnet without IDA (Windows)</a></h1>
@@ -222,42 +255,6 @@ PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
 </pre></div>
 </td></tr></table>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/vim-search-and-replace-in-multiple-files.html">Vim: Search and replace in multiple files</a></h1>
-  </div>
-  <div class="article_text">
-    <p>As is the way with <a href="http://www.vim.org/">Vim</a>, there are a ton of features, but stumbling
-on the combination of commands that does what you want can be a bit
-difficult sometimes. In this case, the objective is to perform a search
-and replace over some files.</p>
-<p>This is done in two steps: loading up the files to process, then issuing
-a command to run on each of the files.</p>
-<p>Load up the files to search using the <code>args</code> command. This command
-supports multiple arguments and can use bash-style path completion.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>:args src/*.cpp src/*.hpp README.txt
-</pre></div>
-</td></tr></table>
-
-<p>Perform a replace using sed-style syntax using the <code>argdo</code> command. This
-command iterates over all the files loaded by the <code>args</code> command and
-performs a command on them. In this case, it's performing the replace
-operation.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>:argdo %s/FindMe/ReplaceWithMe/gec | update
-</pre></div>
-</td></tr></table>
-
-<p>The flags used in this case are:</p>
-<ul>
-<li>g: global search (find more than a single occurance per line)</li>
-<li>e: suppress "string not found" error messages</li>
-<li>c: confirm each replace</li>
-</ul>
-<p>Running <code>update</code> after the replace operation saves any changes to the
-file before moving to the next one.</p>
   </div>
 </article>
 

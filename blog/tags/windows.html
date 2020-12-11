@@ -61,6 +61,100 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/prevent-auto-lock-by-simulating-activity.html">Preventing auto-locking and sleeping by simulating user activity</a></h1>
+  </div>
+  <div class="article_text">
+    <p>This post will detail how to simulate activity on your computer in order to prevent it from
+auto-locking or going into sleep mode. Note that this will usually also prevent the "auto-away"
+functionality of various chat programs from ever marking you as "away".</p>
+<p>Generally you should change your operating system's settings to disable sleeping and auto-locking if
+possible instead. These methods are for when you don't have the access or permission to change those
+settings (ie. locked-down devices).</p>
+<h2>Windows</h2>
+<p>This method runs a <a href="https://en.wikipedia.org/wiki/Powershell">Powershell</a> script on login that toggles <a href="https://en.wikipedia.org/wiki/Scroll_lock">scroll lock</a> on/off every minute.
+Since scroll lock mostly doesn't do anything on modern systems and the script will press it twice to
+immediately unlock/relock it, this is basically unnoticeable to the user. However, if you have
+issues simply swap the two <code>{SCROLLLOCK}</code>s in the below command to something else. A full list of
+special keys can be found <a href="https://social.technet.microsoft.com/wiki/contents/articles/5169.vbscript-sendkeys-method.aspx">here</a>.</p>
+<ol>
+<li>Open Explorer (shortcut: <code>Win+E</code>)</li>
+<li>Paste <code>%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup</code> into the location bar and hit
+   enter to navigate there.</li>
+<li>Right click in the folder and click <code>New &gt; Shortcut</code> to open the shortcut creation wizard.</li>
+<li>
+<p>Paste the following as the shortcut's location:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>powershell.exe -windowstyle hidden -command &quot;$myshell=New-Object -com \&quot;Wscript.Shell\&quot;;while(1){$myshell.SendKeys(\&quot;{SCROLLLOCK}{SCROLLLOCK}\&quot;);Start-Sleep -Seconds 60}&quot;
+</pre></div>
+</td></tr></table>
+
+</li>
+<li>
+<p>Give it any name you like and hit <code>Finish</code></p>
+</li>
+</ol>
+<h2>macOS</h2>
+<p>This method runs a shell script on login that uses a tool called <a href="https://www.bluem.net/en/projects/cliclick/"><code>cliclick</code></a> to move the
+mouse one pixel left and right every minute. This is such a small and fast movement that it's
+usually not noticeable unless you're really looking for it.</p>
+<ol>
+<li>Install <code>cliclick</code> from <a href="https://www.bluem.net/en/projects/cliclick/">the project website</a> or via <a href="https://brew.sh/">brew</a> (<code>brew install cliclick</code>)</li>
+<li>Create a script called <code>jiggle</code> with the following contents:</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+    cliclick <span class="s1">&#39;m:-1,+0&#39;</span> <span class="s1">&#39;m:+1,+0&#39;</span>
+    sleep <span class="m">60</span>
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+
+<ol>
+<li>Make the script executable (<code>chmod +x jiggle</code>)</li>
+<li>Open System Preferences, search for "login items" and hit enter.</li>
+<li>Click the <code>+</code> button, select the <code>jiggle</code> script and hit "Add". You should see it appear in the
+   list of programs as a "Unix executable". Check the "Hide" checkbox beside it and exit.</li>
+</ol>
+<h2>Xorg-based Linux</h2>
+<p>Much like the macOS version above, this moves the mouse one pixel left and right every minute. If
+you would prefer to instead use a keyboard-based method like the above Windows version, use <code>xdotool
+key Scroll_Lock</code> twice instead of the <code>xdotool mousemove_relative *</code> commands in the following
+script. More special key names for <code>xdotool</code> can be found <a href="https://gitlab.com/cunidev/gestures/-/wikis/xdotool-list-of-key-codes">here</a>.</p>
+<ol>
+<li>Install <a href="https://www.semicomplete.com/projects/xdotool/"><code>xdotool</code></a> (usually available via your package manager)</li>
+<li>Create a script called <code>jiggle</code> with the following contents:</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+    xdotool mousemove_relative --sync -- -1 <span class="m">0</span>
+    xdotool mousemove_relative <span class="m">1</span> <span class="m">0</span>
+    sleep <span class="m">60</span>
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+
+<ol>
+<li>Make the script executable (<code>chmod +x jiggle</code>)</li>
+<li>Configure your OS to run the script at login. Usually this would be done through the desktop
+   environment's settings or via something like <a href="https://www.freedesktop.org/wiki/Software/systemd/"><code>systemd</code></a>.</li>
+</ol>
+<h2>Wayland-based Linux</h2>
+<p>Some preliminary research suggests that this is possible on Wayland using <a href="https://github.com/ReimuNotMoe/ydotool"><code>ydotool</code></a> as a
+replacement for <code>xdotool</code>. I don't currently run a Wayland-based setup so I can't test it. If you
+manage to find a solution for Wayland feel free to send it to me and I'll update the post.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/queens-university-resnet-without-ida-windows.html">Queen's University Resnet without IDA (Windows)</a></h1>
   </div>
   <div class="article_text">
@@ -219,52 +313,6 @@ PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
 </pre></div>
 </td></tr></table>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/setting-up-tortisehg-on-windows.html">Setting up TortiseHg on Windows</a></h1>
-  </div>
-  <div class="article_text">
-    <p>TortiseHg can be a bit of a pain to set up if you don't want to
-have <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">peagent</a> running in the background all the time for
-authentication. This method uses TortisePlink (comes with the install)
-for authentication, and runs it only when it needs to authenticate.  </p>
-<h2>Generating a public/private key pair</h2>
-<ol>
-<li>Download <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTYgen</a> and run it.</li>
-<li>Generate the key pair by clicking the generate button.</li>
-<li>Optionally, enter a passphrase to protect the private key.</li>
-<li>Save the public and private keys somewhere. I prefer to save them as
-   <code>id_rsa.pub</code> and <code>id_rsa.ppk</code> in <code>C:/Users/[username]/.ssh/</code> but it
-   doesn't really matter.</li>
-</ol>
-<h2>Setting up TortiseHg</h2>
-<ol>
-<li>Download <a href="http://tortoisehg.bitbucket.org/download/index.html">TortiseHg</a> and install it.</li>
-<li>When installing, make sure that SSH Utils are installed.</li>
-<li>When it finishes installing, run the program (it'll be called
-   "TortiseHg Workbench" in the start menu).</li>
-<li>Configure the settings as you see fit. This will generate a
-   configuration file at <code>C:/Users/[username]/mercurial.ini</code>.</li>
-<li>Close the program and open up <code>mercurial.ini</code> in a text editor.</li>
-<li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
-   entries (adjusting for your own custom settings):</li>
-</ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>username = [name] &lt;[email]@[domain]&gt;
-ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
-</pre></div>
-</td></tr></table>
-
-<p>Now all that's needed is to upload the generated public key to the
-server(s) you wish to pull from or push to.</p>
-<p>When asked, just open the
-key up in a text editor (make sure it's the public key, NEVER share your
-private key) and copy-paste the text.</p>
-<p>After configuring this, you'll be able to push to repositories on the
-servers you give your public key to, without having to enter your password every time.</p>
   </div>
 </article>
 

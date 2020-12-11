@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,42 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/vim-search-and-replace-in-multiple-files.html">Vim: Search and replace in multiple files</a></h1>
+  </div>
+  <div class="article_text">
+    <p>As is the way with <a href="http://www.vim.org/">Vim</a>, there are a ton of features, but stumbling
+on the combination of commands that does what you want can be a bit
+difficult sometimes. In this case, the objective is to perform a search
+and replace over some files.</p>
+<p>This is done in two steps: loading up the files to process, then issuing
+a command to run on each of the files.</p>
+<p>Load up the files to search using the <code>args</code> command. This command
+supports multiple arguments and can use bash-style path completion.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>:args src/*.cpp src/*.hpp README.txt
+</pre></div>
+</td></tr></table>
+
+<p>Perform a replace using sed-style syntax using the <code>argdo</code> command. This
+command iterates over all the files loaded by the <code>args</code> command and
+performs a command on them. In this case, it's performing the replace
+operation.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>:argdo %s/FindMe/ReplaceWithMe/gec | update
+</pre></div>
+</td></tr></table>
+
+<p>The flags used in this case are:</p>
+<ul>
+<li>g: global search (find more than a single occurance per line)</li>
+<li>e: suppress "string not found" error messages</li>
+<li>c: confirm each replace</li>
+</ul>
+<p>Running <code>update</code> after the replace operation saves any changes to the
+file before moving to the next one.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/how-to-download-an-entire-google-site.html">How to download an entire Google Site</a></h1>
@@ -113,40 +149,6 @@ tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <spa
 backups were needed, using <a href="http://rsync.samba.org/">rsync</a> would be the best option, as it
 only transfers incremental changes. An excellent tutorial can be found
 <a href="http://troy.jdmz.net/rsync/index.html">here</a>.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/how-to-set-up-queens-university-webmail-on-an-iphone.html">How to set up Queen's University Webmail on an iPhone</a></h1>
-  </div>
-  <div class="article_text">
-    <p>Before you start, make sure the iPhone is connected to the internet via 3G or WiFi.</p>
-<ol>
-<li>Navigate to the main settings screen</li>
-<li>Tap "Mail, Contacts, Calendars"</li>
-<li>Tap "Add Account..."</li>
-<li>Tap "Other"</li>
-<li>Tap "Add Mail Account"</li>
-<li>Enter your name, the address of the account you want to access
-    ([your NetID]@queensu.ca), your password, and an optional description</li>
-<li>Tap "Save"</li>
-<li>Tap "IMAP"</li>
-<li>Scroll down to "Incoming Mail Server" and enter the following info:<ul>
-<li>Host Name: mail.queensu.ca</li>
-<li>User Name: [your NetID]</li>
-<li>Password: [your password]</li>
-</ul>
-</li>
-<li>Scroll down to "Outgoing Mail Server" and enter the following info:  <ul>
-<li>Host Name: mail.queensu.ca:465</li>
-<li>User Name: [your NetID]</li>
-<li>Password: [your password]</li>
-</ul>
-</li>
-<li>Save and exit.</li>
-</ol>
-<p>Good Luck!</p>
   </div>
 </article>
 

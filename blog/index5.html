@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,88 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/adding-xbox360-controller-support-to-a-nexus5.html">Adding Xbox 360 controller support to a Nexus 5</a></h1>
+  </div>
+  <div class="article_text">
+    <div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>CyanogenMod has effectively been replaced by <a href="https://lineageos.org/">LineageOS</a>. The links in this article originally
+all pointed to CyanogenMod but since it no longer exists, I've updated them to use the LineageOS
+equivilents where possible. The instructions will also need to be slightly modified for use with
+LineageOS builds.</p>
+</div>
+<h2>Introduction</h2>
+<p>I finally just bought a new phone (a <a href="http://en.wikipedia.org/wiki/Nexus_5">Nexus 5</a>), and after flashing <a href="https://en.wikipedia.org/wiki/CyanogenMod">CyanogenMod</a> onto it, I've
+been messing around with its <a href="http://en.wikipedia.org/wiki/USB_On-The-Go">OTG</a> support. My old phone (a <a href="http://en.wikipedia.org/wiki/Nexus_4">Nexus 4</a>) <a href="http://blog.gsmarena.com/nexus-4-does-not-support-usb-otg-despite-google-saying-otherwise/">didn't have the
+capability</a> so being able to plug in keyboards, mice, external hard drives, and various other
+peripherals was (embarrassingly enough) a thrill.</p>
+<p>Keyboards worked, mice worked, but when an Xbox 360 controller was plugged in, nothing happened.
+Turns out that while the kernel didn't have support for it enabled out of the box, getting it
+enabled and pushing the change upstream into the CyanogenMod project was easier than I thought.</p>
+<p>Beware that this post is going to be more of a record of what I did so that I can do it again and
+less of a coherent tutorial.</p>
+<h2>Building CyanogenMod</h2>
+<p>First step was to download and compile CyanogenMod for my phone. I'm not going to go into this in
+any detail on this because there's already a <a href="https://web.archive.org/web/20161224200646/https://wiki.cyanogenmod.org/w/Development">good overview</a> on the CyanogenMod wiki that covers
+the entire process, as well as a <a href="https://wiki.lineageos.org/devices/hammerhead/build">customized guide for the Nexus 5</a>. If those articles are
+followed correctly, you should be able to build a fresh CyanogenMod image with:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>brunch hammerhead
+</pre></div>
+</td></tr></table>
+
+<h2>Enabling the kernel module</h2>
+<p>Once the image was flashed to the phone and verified to be working, the next step was to enable the
+<a href="https://www.kernel.org/doc/html/v4.16/input/devices/xpad.html">xpad kernel module</a>.</p>
+<p>Copy current kernel config to the kernel directory for editing:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;build dir&gt;/kernel/lge/hammerhead/
+cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
+</pre></div>
+</td></tr></table>
+
+<p>Edit the config:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>make menuconfig <span class="nv">ARCH</span><span class="o">=</span>arm
+</pre></div>
+</td></tr></table>
+
+<p>At this point, a menu will come up. Search for <code>xpad</code> (type <code>/xpad</code>), and take note of the paths.
+<code>ESC</code> out of the search, navigate the tree and enable the modules found with the search. Save and
+exit.</p>
+<p>Copy the config back and clean up any stray <code>*.o</code> files:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>cp .config arch/arm/configs/cyanogenmod_hammerhead_defconfig
+make mrproper
+</pre></div>
+</td></tr></table>
+
+<p>After enabling the module, rebuild CyanogenMod using the normal <code>brunch hammerhead</code> and flash it to
+the phone.</p>
+<h2>Submitting the change upstream</h2>
+<p>Since Xbox controller support had already been requested in <del><a href="https://jira.cyanogenmod.org/browse/CYAN-4469">a JIRA ticket</a></del>(dead link), I went
+through the process to submit <a href="https://review.lineageos.org/#/c/LineageOS/android_kernel_lge_hammerhead/+/87409/">the change</a> on the CyanogenMod Gerrit instance for inclusion in the
+next release. There's a guide for this <a href="https://wiki.lineageos.org/submitting-patch-howto.html">here</a>. As well as the guide, I found the people in
+<a href="https://webchat.freenode.net/?channels=#cyanogenmod-dev">#cyanogenmod-dev on Freenode</a> to be very helpful.</p>
+<p>A short while after submitting <a href="https://review.lineageos.org/#/c/LineageOS/android_kernel_lge_hammerhead/+/87409/">the change</a> to Gerrit, it was merged into the <code>cm-11.0</code> branch as
+commit <a href="https://github.com/LineageOS/android_kernel_lge_hammerhead/commit/7ef4f6a87cc114b5010b623d72840b1d38ea01ed"><code>i7ef4f6a</code></a> and pushed out in the next nightly build (<a href="../images/cyanogenmod-changelog-xbox-support.png">changelog screenshot</a>).</p>
+<h2>Wrap-up</h2>
+<p>It feels great to be able to contribute to an amazing open source project that had <a href="https://twitter.com/CyanogenMod/status/157378138802888704">at least a
+million people</a> using it at one point or another. I recognize that the change by itself was just
+changing a config file to enable functionality that already existed, but it's helped me get through
+some of the non-coding hurdles of contributing to an Android fork like CyanogenMod (adb, fastboot,
+unlocking and rooting phones, compiling AOSP, flashing images, the contribution process, etc). This
+time the actual contribution itself was minor, but it's gotten me more familier with the process,
+hopefully making it easier to contribute something more substantial in the future.</p>
+<p>In the end, I learned a lot about Android development and how all the different pieces that I had
+read about at one point or another actually fit together. During the whole process I also lost a lot
+of the fear I had about messing with phones and other more expensive locked down devices. Going
+forward, I'm going to attempt to compile and flash open source operating systems like CyanogenMod
+onto more devices that I own. I like being able to tweak things and feel like I really own them,
+hardware and software.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/fixing-save-corruption-ridiculous-fishing.html">Fixing save file corruption in Ridiculous Fishing</a></h1>
@@ -137,58 +219,6 @@ give it the <code>-k</code> argument, which tells it to keep the data and cache 
 
 <p>Then just reinstall the app (either from an apk file or the <a href="https://play.google.com/store">Play Store</a>) and
 the app will be back with all of its data intact.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/git-checkout-autocomplete-local-branches-only.html">Git checkout - autocomplete local branches only</a></h1>
-  </div>
-  <div class="article_text">
-    <p>Having Git autocomplete branch names when doing a checkout is super useful.  Having the autocomplete
-hang for 30 seconds because it has to look up all 3000 of the remote branches in a massive repo is
-not so useful. It's actually pretty frustrating.</p>
-<p>My solution: changing the <code>git checkout</code> autocomplete to only look at local branches, while using a
-<code>git checkoutr</code> alias to preserve the original behaviour (because sometimes it's actually needed).</p>
-<p>How it's done:</p>
-<h2>Define an alias for checkout</h2>
-<p>We're going to use the same checkout command for the remote checkout, but need to have a different
-command so the script can differentiate between them.  Making an alias does exactly this.</p>
-<p>Create the alias by running <code>git config --global alias.checkoutr checkout</code></p>
-<h2>Change the autocompletion function</h2>
-<p>The checkout autocomplete behaviour is defined in a function called <code>_git_checkout</code> in the git
-autocompletion file. We're going to override the function with our own version that has different
-autocomplete logic in it.</p>
-<p>The location of the file varies over different operating systems and configurations, but here are a
-few spots to look:</p>
-<ul>
-<li><code>/etc/bash_completion.d/git</code></li>
-<li><code>/usr/share/bash-completion/completions/git</code></li>
-</ul>
-<p>For a brew-installed git autocomplete on macOS, the file will probably be
-<code>$(brew --prefix)/etc/bash_completion.d/git-completion.bash</code></p>
-<p>Once you've found the file, copy the entire <code>_git_checkout</code> function into your <code>.bashrc</code> (or
-equivalent non-login shell startup script). Now look for the line</p>
-<p><code>__git_complete_refs $track_opt</code></p>
-<p>We're going to replace that line with:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    __git_complete_refs <span class="nv">$track_opt</span>
-<span class="k">else</span>
-    __gitcomp_direct <span class="s2">&quot;</span><span class="k">$(</span>__git_heads <span class="s2">&quot;&quot;</span> <span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span> <span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
-<span class="k">fi</span>
-</pre></div>
-</td></tr></table>
-
-<p>After saving and re-sourcing your <code>.bashrc</code> file, git will autocomplete local branches and tags when
-using <code>git checkout</code>, but will go back to the default behaviour of autocompleting all references
-when using <code>git checkoutr</code>.</p>
-<p>Credits to a combination of answers on <a href="disable-auto-completion-of-remote-branches-in-git-bash">this</a> StackOverflow post.</p>
-<p>EDIT 2017-10-02: Updated to work with <a href="https://github.com/git/git/commit/15b4a163950c2e8660a7797ce3975ccea8705f80#diff-f37c4f4a898819f0ca4b5ff69e81d4d9">git v2.13.0</a> thanks to <a href="https://gist.github.com/mmrko/b3ec6da9bea172cdb6bd83bdf95ee817#gistcomment-2218059">Alexander Ko's comment</a>.<br>
-EDIT 2018-03-24: Updated to <a href="https://github.com/git/git/commit/227307a639c96b3579b7fe60840fdae123d1ee88">speed up branch and tag completion</a>.</p>
   </div>
 </article>
 

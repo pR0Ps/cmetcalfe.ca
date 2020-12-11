@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="cmetcalfe, carey, metcalfe, pr0ps, pr0pscm, blog, macOS, networking, code, shell script, website, automation, let's encrypt, chromecast, png, android, data recovery, electronics, hardware, security, email, sites, linux, application, games, git, router, wine, steam, python, queen's university, windows, vim, backup, iphone, mercurial">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,47 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/github-convert-issue-to-pull-request.html">GitHub: Convert an issue to a pull request</a></h1>
+  </div>
+  <div class="article_text">
+    <p><a href="http://github.com">GitHub</a> currently doesn't provide a way to convert an issue to a pull request in their interface.
+However, the capability exists in their <a href="http://developer.github.com/v3/pulls/#alternative-input">Pull Request API</a>.</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>I've built a self-hostable webapp called <a href="https://github.com/pR0Ps/gh-i2p">gh-i2p</a> that makes this process easier.</p>
+</div>
+<p>To call the API using a simple <code>curl</code> command, run the command:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
+     --request POST <span class="se">\</span>
+     --data <span class="s1">&#39;{&quot;issue&quot;: &quot;[issue num]&quot;, &quot;head&quot;: &quot;[branch to merge from]&quot;, &quot;base&quot;: &quot;[branch to merge into]&quot;}&#39;</span> <span class="se">\</span>
+     https://api.github.com/repos/<span class="o">[</span>user<span class="o">]</span>/<span class="o">[</span>repo<span class="o">]</span>/pulls
+</pre></div>
+</td></tr></table>
+
+<p>For example, to make <code>user1</code> change issue 13 into a pull request to merge branch <code>test_branch</code> into
+<code>master</code> in the <code>testing_repo</code> repository belonging to <code>user2</code>, the command would be:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
+     --request POST <span class="se">\</span>
+     --data <span class="s1">&#39;{&quot;issue&quot;: &quot;13&quot;, &quot;head&quot;: &quot;test_branch&quot;, &quot;base&quot;: &quot;master&quot;}&#39;</span> <span class="se">\</span>
+     https://api.github.com/repos/user2/testing_repo/pulls
+</pre></div>
+</td></tr></table>
+
+<p>To specify a fork of a repository to merge from, put the username followed by a semicolon in front
+of the branch name like so: <code>"username:branch_name"</code></p>
+<p>After running the command, you will be prompted for your GitHub password. Enter it and curl should
+output the JSON response from the API. Make sure to check this response for errors!</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/forcing-a-media-refresh-on-android-with-adb.html">Forcing a media refresh on Android with adb</a></h1>
@@ -119,39 +160,6 @@ source.</p>
 <li>Type to search through the installed applications, then press
    <code>&lt;Enter&gt;</code> to launch.</li>
 </ol>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/gotcha-with-basic-http-authentication-with-python.html">Gotcha with basic HTTP authentication in Python</a></h1>
-  </div>
-  <div class="article_text">
-    <p>When doing basic HTTP authentication in Python, make sure your
-authentication realm is surrounded by double, <em>NOT</em> single quotes.</p>
-<p>Bad:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=&#39;/&#39;&quot;</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
-</pre></div>
-</td></tr></table>
-
-<p>Good:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=</span><span class="se">\&quot;</span><span class="s2">/</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
-</pre></div>
-</td></tr></table>
-
-<p>The single quotes work with most browsers, curl, wget, and tons of other
-tools. However, when using Python to access the page (using
-<a href="http://docs.python.org/2/library/urllib2.html#urllib2.HTTPPasswordMgrWithDefaultRealm">urllib2.HTTPPasswordMgrWithDefaultRealm</a> to manage authentication)
-single quotes don't trigger the "automatic retry with authentication"
-response, and instead just raise a 401 <code>HTTPError</code>.</p>
   </div>
 </article>
 
