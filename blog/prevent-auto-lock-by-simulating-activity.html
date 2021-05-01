@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Preventing auto-locking and sleeping by simulating user activity | This post will detail how to simulate activity on your computer in order to prevent it...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -86,10 +86,9 @@ special keys can be found <a href="https://social.technet.microsoft.com/wiki/con
 <li>Right click in the folder and click <code>New &gt; Shortcut</code> to open the shortcut creation wizard.</li>
 <li>
 <p>Paste the following as the shortcut's location:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>powershell.exe -windowstyle hidden -command &quot;$myshell=New-Object -com \&quot;Wscript.Shell\&quot;;while(1){$myshell.SendKeys(\&quot;{SCROLLLOCK}{SCROLLLOCK}\&quot;);Start-Sleep -Seconds 60}&quot;
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>powershell.exe -windowstyle hidden -command &quot;$myshell=New-Object -com \&quot;Wscript.Shell\&quot;;while(1){$myshell.SendKeys(\&quot;{SCROLLLOCK}{SCROLLLOCK}\&quot;);Start-Sleep -Seconds 60}&quot;
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>Give it any name you like and hit <code>Finish</code></p>
@@ -103,18 +102,17 @@ usually not noticeable unless you're really looking for it.</p>
 <li>Install <code>cliclick</code> from <a href="https://www.bluem.net/en/projects/cliclick/">the project website</a> or via <a href="https://brew.sh/">brew</a> (<code>brew install cliclick</code>)</li>
 <li>Create a script called <code>jiggle</code> with the following contents:</li>
 </ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
     cliclick <span class="s1">&#39;m:-1,+0&#39;</span> <span class="s1">&#39;m:+1,+0&#39;</span>
     sleep <span class="m">60</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <ol>
 <li>Make the script executable (<code>chmod +x jiggle</code>)</li>
 <li>Open System Preferences, search for "login items" and hit enter.</li>
@@ -130,20 +128,19 @@ script. More special key names for <code>xdotool</code> can be found <a href="ht
 <li>Install <a href="https://www.semicomplete.com/projects/xdotool/"><code>xdotool</code></a> (usually available via your package manager)</li>
 <li>Create a script called <code>jiggle</code> with the following contents:</li>
 </ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
     xdotool mousemove_relative --sync -- -1 <span class="m">0</span>
     xdotool mousemove_relative <span class="m">1</span> <span class="m">0</span>
     sleep <span class="m">60</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <ol>
 <li>Make the script executable (<code>chmod +x jiggle</code>)</li>
 <li>Configure your OS to run the script at login. Usually this would be done through the desktop

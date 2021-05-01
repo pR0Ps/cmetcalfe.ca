@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,31 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/backing-up-data-to-an-external-server-via-ssh.html">Backing up data to an external server via SSH</a></h1>
+  </div>
+  <div class="article_text">
+    <p>I recently needed to back up the contents of a website, but found that a
+disk quota was preventing me from doing so. What I really needed to do
+was find a way to compress all the files and, instead of storing the
+archive locally, pipe the output to another server.  </p>
+<p>After much Googling and messing about, I ended up with the following
+command:  </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Uses the tar utility to backup files to an external server</span>
+
+tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span> <span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
+</code></pre></div>
+</td></tr></table>
+<p>Of course, this is only practical for a one-off data dump. If regular
+backups were needed, using <a href="http://rsync.samba.org/">rsync</a> would be the best option, as it
+only transfers incremental changes. An excellent tutorial can be found
+<a href="http://troy.jdmz.net/rsync/index.html">here</a>.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/how-to-set-up-queens-university-webmail-on-an-iphone.html">How to set up Queen's University Webmail on an iPhone</a></h1>
@@ -126,12 +151,11 @@ for authentication, and runs it only when it needs to authenticate.  </p>
 <li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
    entries (adjusting for your own custom settings):</li>
 </ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>username = [name] &lt;[email]@[domain]&gt;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>username = [name] &lt;[email]@[domain]&gt;
 ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>Now all that's needed is to upload the generated public key to the
 server(s) you wish to pull from or push to.</p>
 <p>When asked, just open the
@@ -139,22 +163,6 @@ key up in a text editor (make sure it's the public key, NEVER share your
 private key) and copy-paste the text.</p>
 <p>After configuring this, you'll be able to push to repositories on the
 servers you give your public key to, without having to enter your password every time.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/sending-a-file-via-a-p2p-connection-in-a-web-browser.html">Sending a file via a P2P connection in a web browser</a></h1>
-  </div>
-  <div class="article_text">
-    <p><a href="https://www.sharefest.me/">Sharefest</a> is a site that allows users to send files of arbitrary size
-via a P2P connection. To use it, go to the site, select a file to share,
-then give the link to friend. All they have to do is visit the URL and
-they'll be able to download the file you shared.</p>
-<p>This transfer is directly from your computer to theirs, without the file
-being uploaded anywhere between. This also makes it easy to stop sharing the
-file. Just close the browser window and the file becomes inaccessable.</p>
-<p>Sharefest is open-source! Check out the code on <a href="https://github.com/Peer5/ShareFest/">GitHub</a>.</p>
   </div>
 </article>
 

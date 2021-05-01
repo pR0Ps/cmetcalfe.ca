@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'shell script' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
   <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -61,6 +61,261 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/bank-of-canada-conversion-rates-terminal.html">Bank of Canada currency conversion rates in the terminal</a></h1>
+  </div>
+  <div class="article_text">
+    <h1>Preface</h1>
+<p>In this entry I'll use two command line tools (<a href="https://curl.haxx.se/"><code>curl</code></a> and <a href="https://stedolan.github.io/jq/"><code>jq</code></a>) to request currency
+conversion rates from the <a href="https://www.bankofcanada.ca">Bank of Canada</a>. Now obviously getting the same data through the <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/">normal
+web interface</a> is possible as well. However, doing it this way returns the data in a
+machine-readable form, allowing it to be customized or used as input into other programs.</p>
+<p>The basic flow will be request the data using <code>curl</code>, then pipe it to <code>jq</code> for processing.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This article will request the USD/CAD exchange rate from 2017-01-01 to 2017-01-10. It should be
+fairly obvious how to switch this for any other currencies or date ranges. See the
+<a href="#appendix">Appendix</a> for more information and caveats with the dates and the conversion codes.</p>
+</div>
+<p>We'll go from seeing the raw data the server returns to something that we can more easily use. <strong>To
+skip to the final result, click <a href="#tldr">here</a></strong>.</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>The URLs for the data were originally reverse-engineered from the website. They have since been
+turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs">the API documentation</a> for more details.</p>
+</div>
+<h1>Lets go!</h1>
+<p>Hitting the server without any processing will give the following result:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="nt">&quot;terms&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;seriesDetail&quot;</span><span class="p">:{</span>
+<span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;USD/CAD&quot;</span><span class="p">,</span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;US dollar to Canadian dollar daily exchange rate&quot;</span><span class="p">}</span>
+<span class="p">},</span>
+<span class="nt">&quot;observations&quot;</span><span class="p">:[</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-02&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;e&quot;</span><span class="p">:</span><span class="mi">-64</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-03&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3435</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-04&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3315</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-05&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3244</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-06&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3214</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-09&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3240</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>To get the information we want, we need to iterate over the elements in the <code>observations</code> list and
+map the date (<code>d</code>) to the conversion rate (<code>FXUSDCAD.v</code>). Since this will create a list of
+single-element dictionaries, we'll also need to "add" (merge) them together.</p>
+<p>To do this with <code>jq</code>, it looks like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>That first <code>null</code> entry where there was no data is going to cause problems later, so let's just
+delete it using the <code>del</code> function:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls)</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
+  <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>Now this may be good enough for most purposes, but it would be useful to compute some other
+statistics from this data. For example, we want to know the average exchange rate for the date
+range. Now that we have the data in an easy to use format, computing an average with <code>jq</code> is just a
+matter of passing the values to an <code>add / length</code> filter. For example:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) | add / length</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="mf">1.327683333333333</span>
+</code></pre></div>
+</td></tr></table>
+<p><a name="tldr"></a>We can now construct an object that has both the average, as well as all the
+data. Putting it all together we get:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+jq <span class="s1">&#39;</span>
+<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) |</span>
+<span class="s1">    {</span>
+<span class="s1">        &quot;average&quot;: (add / length),</span>
+<span class="s1">        &quot;values&quot;: .</span>
+<span class="s1">    }</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;average&quot;</span><span class="p">:</span> <span class="mf">1.327683333333333</span><span class="p">,</span>
+  <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
+    <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>And that's it! Hopefully you found this useful, if not for it's stated purpose of retrieving
+exchange rates, then at least for getting more familiar with <code>jq</code>. It's pretty much the best tool
+out there when it comes to manipulating JSON on the command line.</p>
+<h1>Appendix<a name="appendix"></a></h1>
+<h3>Date ranges</h3>
+<ul>
+<li>The server will only ever return data from <code>2017-01-03</code> and onwards. If the start range is before
+  that, it doesn't return an error, it just doesn't return any data for those dates.</li>
+<li>If the end date isn't specified, the server assumes the current date.</li>
+<li>There doesn't seem to be any limit on the amount of data retrieved</li>
+</ul>
+<h3>Currency codes</h3>
+<p>A list of codes can be easily scraped from the lookup page. The command and its result are below for
+reference.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
+&quot;FXBRLCAD&quot;&gt;Brazilian real&lt;
+&quot;FXCNYCAD&quot;&gt;Chinese renminbi&lt;
+&quot;FXEURCAD&quot;&gt;European euro&lt;
+&quot;FXHKDCAD&quot;&gt;Hong Kong dollar&lt;
+&quot;FXINRCAD&quot;&gt;Indian rupee&lt;
+&quot;FXIDRCAD&quot;&gt;Indonesian rupiah&lt;
+&quot;FXJPYCAD&quot;&gt;Japanese yen&lt;
+&quot;FXMYRCAD&quot;&gt;Malaysian ringgit&lt;
+&quot;FXMXNCAD&quot;&gt;Mexican peso&lt;
+&quot;FXNZDCAD&quot;&gt;New Zealand dollar&lt;
+&quot;FXNOKCAD&quot;&gt;Norwegian krone&lt;
+&quot;FXPENCAD&quot;&gt;Peruvian new sol&lt;
+&quot;FXRUBCAD&quot;&gt;Russian ruble&lt;
+&quot;FXSARCAD&quot;&gt;Saudi riyal&lt;
+&quot;FXSGDCAD&quot;&gt;Singapore dollar&lt;
+&quot;FXZARCAD&quot;&gt;South African rand&lt;
+&quot;FXKRWCAD&quot;&gt;South Korean won&lt;
+&quot;FXSEKCAD&quot;&gt;Swedish krona&lt;
+&quot;FXCHFCAD&quot;&gt;Swiss franc&lt;
+&quot;FXTWDCAD&quot;&gt;Taiwanese dollar&lt;
+&quot;FXTHBCAD&quot;&gt;Thai baht&lt;
+&quot;FXTRYCAD&quot;&gt;Turkish lira&lt;
+&quot;FXGBPCAD&quot;&gt;UK pound sterling&lt;
+&quot;FXUSDCAD&quot;&gt;US dollar&lt;
+&quot;FXVNDCAD&quot;&gt;Vietnamese dong&lt;
+</code></pre></div>
+</td></tr></table>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/dynamic-dns-client-for-namecheap.html">Dynamic DNS client for Namecheap using bash & cron</a></h1>
   </div>
   <div class="article_text">
@@ -74,27 +329,27 @@ keeping a domain's DNS updated, it only runs on Windows.</p>
 <p>Instead, after <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/595">enabling DDNS for the domain</a> and reading <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29">Namecheap's article
 on using the browser to update DDNS</a> I came up with the following <code>dns-update</code>
 script.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
 <span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
 <span class="nb">set</span> -e
@@ -115,9 +370,8 @@ resolve<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
     <span class="k">fi</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>It basically checks if the IP returned by a DNS query for the subdomain matches
 the current IP of the server (as reported by an <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> resolver) and if it
 doesn't, sends a request to update the DNS. The <code>echo</code> commands are there just
@@ -125,10 +379,9 @@ to output some record of the IP changing. Maybe I'll do some analysis of it at
 some point.</p>
 <p>To run the script every 30 minutes and redirect any output from it to the
 syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
+</code></pre></div>
 </td></tr></table>
-
 <p>With the script automatically running every 30 minutes I can now be confident
 that my subdomain will always be pointing at my home server whenever I need
 access to it.</p>
@@ -173,78 +426,23 @@ few spots to look:</p>
 equivalent non-login shell startup script). Now look for the line</p>
 <p><code>__git_complete_refs $track_opt</code></p>
 <p>We're going to replace that line with:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     __git_complete_refs <span class="nv">$track_opt</span>
 <span class="k">else</span>
     __gitcomp_direct <span class="s2">&quot;</span><span class="k">$(</span>__git_heads <span class="s2">&quot;&quot;</span> <span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span> <span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>After saving and re-sourcing your <code>.bashrc</code> file, git will autocomplete local branches and tags when
 using <code>git checkout</code>, but will go back to the default behaviour of autocompleting all references
 when using <code>git checkoutr</code>.</p>
 <p>Credits to a combination of answers on <a href="disable-auto-completion-of-remote-branches-in-git-bash">this</a> StackOverflow post.</p>
 <p>EDIT 2017-10-02: Updated to work with <a href="https://github.com/git/git/commit/15b4a163950c2e8660a7797ce3975ccea8705f80#diff-f37c4f4a898819f0ca4b5ff69e81d4d9">git v2.13.0</a> thanks to <a href="https://gist.github.com/mmrko/b3ec6da9bea172cdb6bd83bdf95ee817#gistcomment-2218059">Alexander Ko's comment</a>.<br>
 EDIT 2018-03-24: Updated to <a href="https://github.com/git/git/commit/227307a639c96b3579b7fe60840fdae123d1ee88">speed up branch and tag completion</a>.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/preserving-xposed-framework-through-a-flash.html">Preserving the Xposed Framework through a ROM flash</a></h1>
-  </div>
-  <div class="article_text">
-    <p>The <a href="https://repo.xposed.info/">Xposed Framework</a> is a neat Android program that enables <a href="https://repo.xposed.info/module-overview">user-made
-modules</a> to change the behaviour of the lower-level Android OS. It does this
-by modifying <code>/system/bin/app_process</code> to add some hooks into it.</p>
-<p>The issue is that when flashing a new ROM, the modified <code>app_process</code> is
-reverted back to the original version, disabling the Xposed Framework until it's
-restored.</p>
-<div class="admonition update">
-<p class="admonition-title">Update</p>
-<p>The Xposed Framework installer now includes the option to flash a zip file
-to install the framework instead of patching <code>app_process</code> directly. The
-method detailed in this post will still work, but the new way to make sure
-the framework is installed after flashing a new ROM is to simply flash the
-Xposed installer zip right after flashing the ROM.</p>
-</div>
-<p>The solution to this is a script that will automatically back up the existing
-<code>app_process</code> before a flash, then restore it after the flash completes.</p>
-<p>The <a href="../../files/90-xposed.sh">90-xposed.sh</a> script does exactly that. To enable it, download it to the
-Android device, move it to <code>/system/addon.d/90-xposed.sh</code>, and give it
-executable permissions.</p>
-<p>This can be done on the device with a few different programs, but it's much
-easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
-<p>Download the script and push it to the SD card of the Android device with</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>adb push <span class="m">90</span>-xposed.sh /sdcard/
-</pre></div>
-</td></tr></table>
-
-<p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
-following commands:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>su  <span class="c1"># Get root permissions</span>
-cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
-chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
-</pre></div>
-</td></tr></table>
-
-<p>After logging out of the device, the Xposed framework will stay installed and
-active even after flashing a new ROM. Note that this should only really be
-used in situations where the ROM isn't changing too much (like flashing a new
-nightly ROM).</p>
-<p>In situations where <code>app_process</code> would actually be changed by the flash, this
-script could cause issues as it would restore an incorrect version of the file.
-If this happens, delete <code>app_process</code> and <code>app_process.orig</code> in the
-<code>/system/bin/</code> directory, then reflash. The script won't interfere, allowing
-the flash to update <code>app_process</code> to the correct version. After rebooting,
-install the Xposed Framework again.</p>
   </div>
 </article>
 

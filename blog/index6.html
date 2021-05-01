@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -64,6 +64,25 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../blog/reinstall-android-app-without-losing-data.html">Reinstalling an Android app without losing data</a></h1>
+  </div>
+  <div class="article_text">
+    <p>When an application isn't opening (and clearing the cache doesn't help) it
+sometimes helps to reinstall it. However, uninstalling then reinstalling the
+app normally will delete all the data associated with it.</p>
+<p>The way around this is to directly call the package manager from the shell and
+give it the <code>-k</code> argument, which tells it to keep the data and cache directories.</p>
+<p>Simply connect the device to a computer with <a href="http://developer.android.com/tools/help/adb.html">ADB</a> installed and run:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb -d shell <span class="s2">&quot;pm uninstall -k com.package.name&quot;</span>
+</code></pre></div>
+</td></tr></table>
+<p>Then just reinstall the app (either from an apk file or the <a href="https://play.google.com/store">Play Store</a>) and
+the app will be back with all of its data intact.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../blog/git-checkout-autocomplete-local-branches-only.html">Git checkout - autocomplete local branches only</a></h1>
   </div>
   <div class="article_text">
@@ -93,18 +112,17 @@ few spots to look:</p>
 equivalent non-login shell startup script). Now look for the line</p>
 <p><code>__git_complete_refs $track_opt</code></p>
 <p>We're going to replace that line with:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     __git_complete_refs <span class="nv">$track_opt</span>
 <span class="k">else</span>
     __gitcomp_direct <span class="s2">&quot;</span><span class="k">$(</span>__git_heads <span class="s2">&quot;&quot;</span> <span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span> <span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>After saving and re-sourcing your <code>.bashrc</code> file, git will autocomplete local branches and tags when
 using <code>git checkout</code>, but will go back to the default behaviour of autocompleting all references
 when using <code>git checkoutr</code>.</p>
@@ -141,20 +159,18 @@ executable permissions.</p>
 <p>This can be done on the device with a few different programs, but it's much
 easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
 <p>Download the script and push it to the SD card of the Android device with</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>adb push <span class="m">90</span>-xposed.sh /sdcard/
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
+</code></pre></div>
 </td></tr></table>
-
 <p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
 following commands:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>su  <span class="c1"># Get root permissions</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
 cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
 chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>After logging out of the device, the Xposed framework will stay installed and
 active even after flashing a new ROM. Note that this should only really be
 used in situations where the ROM isn't changing too much (like flashing a new
@@ -165,89 +181,6 @@ If this happens, delete <code>app_process</code> and <code>app_process.orig</cod
 <code>/system/bin/</code> directory, then reflash. The script won't interfere, allowing
 the flash to update <code>app_process</code> to the correct version. After rebooting,
 install the Xposed Framework again.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/limit-download-speed-by-ip-or-mac-address.html">Limit download speed by IP or MAC address</a></h1>
-  </div>
-  <div class="article_text">
-    <h2>Preamble</h2>
-<p>This article will focus on setting strict speed limits on misbehaving devices on your network. This can be a housemate incessantly torrenting, your kid downloading movies on iTunes, or anyone else clogging up your network with their overzealous bandwidth gobbling.</p>
-<p>If you're looking for help with the QOS (quality of service) settings that come baked into most router firmwares, this article is not for you.</p>
-<p>This article assumes you have a router running OpenWRT, DD-WRT, Tomato, or any other firmware that uses <a href="http://linux.die.net/man/8/tc"><code>tc</code></a> to manipulate traffic control settings.</p>
-<h2>Procedure</h2>
-<p>First, you'll need to get shell access to the router. With most custom router firmwares, this is as easy as selecting a radio button. Other firmwares might give you the ability to enter commands via a web interface. Whatever works.</p>
-<p>Once you have shell access, follow the steps below. Note that bits of the commands you might want to change are included in brackets.</p>
-<ol>
-<li>
-<p>Using <code>ifconfig</code>, find the interface to apply the limits to. You'll want to use either the internal or external default gateway (the interfaces all the packets go though). Keep in mind which interface you use as the filtering rules will be reversed. </p>
-<ul>
-<li>Internal gateway: to src = uploading, to dst = downloading</li>
-<li>External gateway: to src = downloading, to dst = uploading</li>
-</ul>
-</li>
-<li>
-<p>Remove all existing rules on the interface (interface = <code>br0</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc qdisc del dev br0 root
-</pre></div>
-</td></tr></table>
-
-</li>
-<li>
-<p>Set up the connection (Ex: connection speed = 20mbit)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc qdisc add dev br0 root handle 1: cbq avpkt 1000 bandwidth 20mbit
-</pre></div>
-</td></tr></table>
-
-</li>
-<li>
-<p>Add the limiting rule (Ex: speed limit = 10mbit)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc class add dev br0 parent 1: classid 1:1 cbq rate 10mbit allot 1500 prio 5 bounded isolated
-</pre></div>
-</td></tr></table>
-
-</li>
-<li>
-<p>Filtering - Add the users to apply to rule to</p>
-<ul>
-<li>
-<p>By src IP (Ex: IP = <code>192.168.1.100</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip src 192.168.1.100 flowid 1:1
-</pre></div>
-</td></tr></table>
-
-</li>
-<li>
-<p>By dst IP (Ex: IP = <code>192.168.1.100</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip dst 192.168.1.100 flowid 1:1
-</pre></div>
-</td></tr></table>
-
-</li>
-<li>
-<p>By src MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u16 0xM4M5 0xFFFF at -4 match u32 0xM0M1M2M3 0xFFFFFFFF at -8 flowid 1:1
-</pre></div>
-</td></tr></table>
-
-</li>
-<li>
-<p>By dst MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u32 0xM2M3M4M5 0xFFFFFFFF at -12 match u16 0xM0M1 0xFFFF at -14 flowid 1:1
-</pre></div>
-</td></tr></table>
-
-</li>
-</ul>
-</li>
-</ol>
-<h2>Sources</h2>
-<ul>
-<li>http://lartc.org/lartc.html</li>
-<li>http://www.docum.org/faq/cache/62.html</li>
-</ul>
   </div>
 </article>
 

@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'website' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
   <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -74,27 +74,27 @@ keeping a domain's DNS updated, it only runs on Windows.</p>
 <p>Instead, after <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/595">enabling DDNS for the domain</a> and reading <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29">Namecheap's article
 on using the browser to update DDNS</a> I came up with the following <code>dns-update</code>
 script.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
 <span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
 <span class="nb">set</span> -e
@@ -115,9 +115,8 @@ resolve<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
     <span class="k">fi</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>It basically checks if the IP returned by a DNS query for the subdomain matches
 the current IP of the server (as reported by an <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> resolver) and if it
 doesn't, sends a request to update the DNS. The <code>echo</code> commands are there just
@@ -125,10 +124,9 @@ to output some record of the IP changing. Maybe I'll do some analysis of it at
 some point.</p>
 <p>To run the script every 30 minutes and redirect any output from it to the
 syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
+</code></pre></div>
 </td></tr></table>
-
 <p>With the script automatically running every 30 minutes I can now be confident
 that my subdomain will always be pointing at my home server whenever I need
 access to it.</p>
@@ -190,14 +188,13 @@ most likely have the wget tool already installed (if not, you can
 install it via your preferred package manager), while Windows users can
 get it from <a href="http://gnuwin32.sourceforge.net/packages/wget.htm">here</a>.  </p>
 <p>Once wget is installed, run it with the following parameters:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">#Downloads all public pages on a Google Site</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Downloads all public pages on a Google Site</span>
 
 wget -e <span class="nv">robots</span><span class="o">=</span>off -m -k -K -E -rH -Dsites.google.com http://sites.google.com/a/domain/site/
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>This tells wget to spider through all the links on your site and download
 the html files and linked content (such as images). Note that pages that
 aren't linked from anywhere on the site won't be downloaded.</p>

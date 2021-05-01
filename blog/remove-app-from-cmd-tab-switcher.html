@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Remove an application from the cmd-tab switcher on macOS | At work, I use iTerm2 as my main terminal emulator. For quick access, I have it configured to...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -81,14 +81,14 @@ appear in the Dock or Force Quit window."</p>
 <code>/Applications/[application name].app/Contents/Info.plist</code> and add
 <code>&lt;key&gt;LSUIElement&lt;/key&gt;&lt;true/&gt;</code> after the first <code>&lt;dict&gt;</code> tag. The result should
 look something like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
 <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;dict&gt;</span>
@@ -96,9 +96,8 @@ look something like this:</p>
 </span>    <span class="c">&lt;!-- The rest of the plist data --&gt;</span>
 <span class="nt">&lt;/dict&gt;</span>
 <span class="nt">&lt;/plist&gt;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>Once the <code>LSUIElement</code> key is set to <code>true</code>, relaunch the application to see the
 changes.</p>
 <p>Be warned that not only does this remove the application from the

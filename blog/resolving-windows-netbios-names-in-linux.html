@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Resolving Windows NetBIOS names in Linux | When accessing computers on a LAN, it&#39;s often useful to access them by name instead of IP. This is especially...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -78,31 +78,29 @@ full member of an NT domain, giving the ability to resolve names from
 it.</p>
 <p>Install winbind via your preferred package manager. For Debian and
 derivatives, the following should work.   </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>apt-get install winbind
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>apt-get install winbind
+</code></pre></div>
 </td></tr></table>
-
 <p>Now that winbind is installed, the OS must be configured to use it when
 looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
 to the end of the line starting with "hosts:".</p>
 <p>For example, the line in my file now looks like</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>hosts: files dns wins
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>hosts: files dns wins
+</code></pre></div>
 </td></tr></table>
-
 <p>Save the file and reboot to start the winbindd deamon.</p>
 <p>To test if if worked, try pinging a computer on your LAN by name. For
 example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ping windows-server
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping windows-server
 PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
-</pre></div>
+</code></pre></div>
 </td></tr></table>
   </div>
 <div class="article_meta">

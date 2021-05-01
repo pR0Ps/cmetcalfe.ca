@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Proxied access to the Namecheap DNS API | Background Both this site and my home server use HTTPS certificates provided by Let&#39;s Encrypt. Previously I was...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -92,26 +92,26 @@ that support those environment variables will transparently forward all their re
 proxy.</p>
 <p>After a bunch of research and testing, I came up with the following script to easily set up the
 temporary proxy:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Source this file to automatically setup and teardown an HTTP* proxy through cmetcalfe.ca</span>
 <span class="c1"># Use the PROXY_PORT and PROXY_DEST environment variables to customize the proxy</span>
 
@@ -131,9 +131,8 @@ temporary proxy:</p>
 <span class="c1"># Set environment variables to redirect HTTP* traffic through the proxy</span>
 <span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
 <span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>This script is saved as <code>~/.config/tempproxy.rc</code> and can be sourced to automatically set up a proxy
 session and have it be torn down when the script exits.</p>
 <p>You'll want to use key-based authentication with an unencrypted private key so that you don't need
@@ -152,20 +151,19 @@ variables</a> when making requests.</p>
 <p>The only tricky bit is that the base install of <code>lexicon</code> won't automatically pull in the packages
 required for accessing the Namecheap API. Likewise, <code>requests</code> won't install packages to support
 SOCKS proxies. To install all the required packages you'll need to run a command like:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
+</code></pre></div>
 </td></tr></table>
-
 <p>Since lexicon can use environment variables as configuration, I created another small source-able
 file at <code>~/.config/lexicon.rc</code>:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Sets environment variables for accessing the Namecheap API</span>
 
 <span class="c1"># Turn on API access and get an API token here:</span>
@@ -173,9 +171,8 @@ file at <code>~/.config/lexicon.rc</code>:</p>
 <span class="nb">export</span> <span class="nv">PROVIDER</span><span class="o">=</span>namecheap
 <span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
 <span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api token&gt;
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>With that in place, the existing automation script that I had previously set up when I switched to
 using the <code>dns-01</code> challenge just needed some minor tweaks to source the two new files. I've
 provided the script below, along with some other useful ones that use the DNS API.</p>
@@ -186,36 +183,36 @@ of every month.</p>
 <p>Fun fact: The previous <code>http-01</code> version of this script was a mess - it involved juggling <code>nginx</code>
 configurations with symlinks, manually opening up the <code>.well-known/acme-challenge</code> endpoint, and
 some other terrible hacks. This version is <em>much</em> nicer.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Generate/renew Let&#39;s Encrypt certificates using dehydrated and lexicon</span>
 
 <span class="nb">set</span> -e
@@ -245,40 +242,37 @@ some other terrible hacks. This version is <em>much</em> nicer.</p>
     <span class="nb">echo</span> <span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
     <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <h3><code>dns.sh</code></h3>
 <p>This one is really simple - it just augments the normal lexicon CLI interface with the proxy and
 configuration variables.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># A simple wrapper around lexicon.</span>
 <span class="c1"># Sets up the proxy and configuration, then passes all the arguments to the configured provider</span>
 
 <span class="nb">source</span> ~/.config/lexicon.rc
 <span class="nb">source</span> ~/.config/tempproxy.rc
 lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ./dns.sh list cmetcalfe.ca A
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ./dns.sh list cmetcalfe.ca A
 ID       TYPE NAME             CONTENT         TTL
 -------- ---- ---------------- --------------- ----
 xxxxxxxx A    @.cmetcalfe.ca   xxx.xxx.xxx.xxx <span class="m">1800</span>
 xxxxxxxx A    www.cmetcalfe.ca xxx.xxx.xxx.xxx <span class="m">1800</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <h3><code>dns-update.sh</code></h3>
 <p>An updated version of my <a href="../blog/dynamic-dns-client-for-namecheap.html">previous script</a> that uses the API instead of the
 <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29/11/how-do-i-use-a-browser-to-dynamically-update-the-hosts-ip">DynamicDNS service Namecheap provides</a>. Called via <code>cron</code> every 30 minutes.</p>
@@ -292,32 +286,32 @@ content as the old one. This means that if you update a record with a new IP, it
 the old record to delete first, leaving you with all of your old IPs set as individual A
 records.</p>
 </div>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Check the server&#39;s current IP against the IP listed in its DNS entry.</span>
 <span class="c1"># Set the current IP if they differ.</span>
 
@@ -343,7 +337,7 @@ resolve<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
     <span class="k">fi</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
   </div>
 <div class="article_meta">

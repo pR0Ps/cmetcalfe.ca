@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="GitHub: Convert an issue to a pull request | GitHub currently doesn&#39;t provide a way to convert an issue to a pull request in their interface. However,...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -74,28 +74,26 @@ However, the capability exists in their <a href="http://developer.github.com/v3/
 <p>I've built a self-hostable webapp called <a href="https://github.com/pR0Ps/gh-i2p">gh-i2p</a> that makes this process easier.</p>
 </div>
 <p>To call the API using a simple <code>curl</code> command, run the command:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
      --request POST <span class="se">\</span>
      --data <span class="s1">&#39;{&quot;issue&quot;: &quot;[issue num]&quot;, &quot;head&quot;: &quot;[branch to merge from]&quot;, &quot;base&quot;: &quot;[branch to merge into]&quot;}&#39;</span> <span class="se">\</span>
      https://api.github.com/repos/<span class="o">[</span>user<span class="o">]</span>/<span class="o">[</span>repo<span class="o">]</span>/pulls
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>For example, to make <code>user1</code> change issue 13 into a pull request to merge branch <code>test_branch</code> into
 <code>master</code> in the <code>testing_repo</code> repository belonging to <code>user2</code>, the command would be:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
      --request POST <span class="se">\</span>
      --data <span class="s1">&#39;{&quot;issue&quot;: &quot;13&quot;, &quot;head&quot;: &quot;test_branch&quot;, &quot;base&quot;: &quot;master&quot;}&#39;</span> <span class="se">\</span>
      https://api.github.com/repos/user2/testing_repo/pulls
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>To specify a fork of a repository to merge from, put the username followed by a semicolon in front
 of the branch name like so: <code>"username:branch_name"</code></p>
 <p>After running the command, you will be prompted for your GitHub password. Enter it and curl should

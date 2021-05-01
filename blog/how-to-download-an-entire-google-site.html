@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="How to download an entire Google Site | When using Google Sites, there is currently no way to make a backup of your site, or download the site so you can...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -75,14 +75,13 @@ most likely have the wget tool already installed (if not, you can
 install it via your preferred package manager), while Windows users can
 get it from <a href="http://gnuwin32.sourceforge.net/packages/wget.htm">here</a>.  </p>
 <p>Once wget is installed, run it with the following parameters:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">#Downloads all public pages on a Google Site</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Downloads all public pages on a Google Site</span>
 
 wget -e <span class="nv">robots</span><span class="o">=</span>off -m -k -K -E -rH -Dsites.google.com http://sites.google.com/a/domain/site/
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>This tells wget to spider through all the links on your site and download
 the html files and linked content (such as images). Note that pages that
 aren't linked from anywhere on the site won't be downloaded.</p>

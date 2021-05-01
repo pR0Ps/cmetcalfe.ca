@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'networking' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
   <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -85,45 +85,45 @@ behind the inputs. Even turn-based games would have issues with the amount of la
 <p>To make sure it wasn't an issue with the streaming software, the gaming PC, or the network, I used
 <code>ping</code> to test the latency to the gateway from a few hosts. All the computers <em>except</em> my laptop had
 normal ping times. Running it on my laptop looked like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ping pfsense.lan <span class="p">|</span> tee &gt;<span class="o">(</span>grep -oP <span class="s1">&#39;time=\K\S*&#39;</span> <span class="p">|</span> spark<span class="o">)</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping pfsense.lan <span class="p">|</span> tee &gt;<span class="o">(</span>grep -oP <span class="s1">&#39;time=\K\S*&#39;</span> <span class="p">|</span> spark<span class="o">)</span>
 PING pfsense.lan <span class="o">(</span><span class="m">192</span>.168.1.1<span class="o">)</span>: <span class="m">56</span> data bytes
 <span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">0</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.574 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.996 ms
@@ -162,9 +162,8 @@ PING pfsense.lan <span class="o">(</span><span class="m">192</span>.168.1.1<span
 <span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">34</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.017 ms
 ^C
  ▁▁▁▆▃▁▁▁▁▁▁▁▁▁▃▃▂▁▁▁▁▁▁▁▁▂█▆▅▁▁▁▁▁▁
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>(sweet graph at the end courtesy of <a href="https://github.com/holman/spark/wiki/Wicked-Cool-Usage#visualize-ping-times-jnovinger">spark</a>)</p>
 <p>Notice the periodic spikes. Clearly there's something going on with the network connection on my
 laptop. Connecting via a wired connection and running it again confirmed that it was only happening
@@ -172,37 +171,36 @@ on WiFi.</p>
 <h2>WiFi debugging</h2>
 <p>Now that I had narrowed the issue down to an issue with the WiFi, I could start trying to debug it.</p>
 <p>After coming across <a href="https://superuser.com/questions/585473/debugging-osx-airport-wifi-connection/735572#735572">this very helpful post</a> explaining how, I enabled WiFi debug logging by running:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 debug +AllUserland
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 debug +AllUserland
+</code></pre></div>
 </td></tr></table>
-
 <p>(remember to turn this off after, <code>airport</code> is pretty chatty with debug logs enabled)</p>
 <p>I then watched the wifi log (<code>sudo tail -f /var/log/wifi.log</code>) as I ran the same <code>ping</code> command.
 Whenever I saw ping times spike, I also saw the following entries in the WiFi log:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span></span>Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.764 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.764 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.765 Info: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; SCAN request received from pid <span class="m">14397</span> <span class="o">(</span>QSyncthingTray<span class="o">)</span> with priority <span class="m">0</span>
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">1</span> does not require a live scan
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">2</span> does not require a live scan
@@ -219,16 +217,15 @@ Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CW
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f907354ddb0&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">5</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>,
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f907354c6c0&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">6</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 <span class="o">)}</span> took <span class="m">0</span>.0007 seconds, returned <span class="m">5</span> results
-&lt; insert logs like above <span class="k">for</span> all channels all the way up to <span class="m">144</span> in batches of <span class="m">6</span> &gt;
+&lt; insert logs like above <span class="k">for</span> all channels all the way up to <span class="m">144</span> <span class="k">in</span> batches of <span class="m">6</span> &gt;
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.779 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; INVALIDATED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
 &lt; <span class="m">10</span> seconds pass&gt;
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:43.847 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
 &lt; same scanning logs as above &gt;
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:46.741 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; INVALIDATED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
 &lt; ... and repeat &gt;
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>This pretty clearly indicates that the <a href="https://github.com/sieren/QSyncthingTray">QSyncthingTray</a> application (a tray icon to monitor
 <a href="https://syncthing.net/">Syncthing</a>) was periodically requesting WiFi scans which, in turn, caused the bursts of latency.
 After quitting the application and running <code>ping</code> again, the times were all &lt;2ms, even after running

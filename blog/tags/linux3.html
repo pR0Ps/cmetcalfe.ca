@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Carey Metcalfe">
-  <meta name="description" content="Posts tagged with 'wine' on this site">
+  <meta name="description" content="Posts tagged with 'linux' on this site">
 
   <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
@@ -16,7 +16,7 @@
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
 
-  <title>Tag: wine | Carey Metcalfe</title>
+  <title>Tag: linux | Carey Metcalfe</title>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -55,36 +55,46 @@
       &#124; <a href="../../blog/index.html">Blog</a>
       &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
       </p>
-<p>Tag: wine
+<p>Tag: linux
 </p>
     </header>
 
 <article>
   <div class="article_title">
-    <h1><a href="../../blog/preventing-wine-from-registering-mimetypes.html">Preventing Wine from registering mimetypes</a></h1>
+    <h1><a href="../../blog/backing-up-data-to-an-external-server-via-ssh.html">Backing up data to an external server via SSH</a></h1>
   </div>
   <div class="article_text">
-    <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
-<p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
-<p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
+    <p>I recently needed to back up the contents of a website, but found that a
+disk quota was preventing me from doing so. What I really needed to do
+was find a way to compress all the files and, instead of storing the
+archive locally, pipe the output to another server.  </p>
+<p>After much Googling and messing about, I ended up with the following
+command:  </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Uses the tar utility to backup files to an external server</span>
+
+tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span> <span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
 </code></pre></div>
 </td></tr></table>
-<p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
-preventing the associations from being made when Wine installs.</p>
-<p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,
-the library can be properly disabled via the libraries tab of wineconf.</p>
+<p>Of course, this is only practical for a one-off data dump. If regular
+backups were needed, using <a href="http://rsync.samba.org/">rsync</a> would be the best option, as it
+only transfers incremental changes. An excellent tutorial can be found
+<a href="http://troy.jdmz.net/rsync/index.html">here</a>.</p>
   </div>
 </article>
 
 <footer>
 <div id="paginator">
   <span id="left">
+      <a href="../../blog/tags/linux2.html"><i class="fa fa-arrow-circle-left"></i> Prev</a>
   </span>
   <span id="right">
   </span>
   <div>
-      <a href="../../blog/tags/wine.html">[1]</a>
+      <a href="../../blog/tags/linux.html"> 1 </a>
+      <a href="../../blog/tags/linux2.html"> 2 </a>
+      <a href="../../blog/tags/linux3.html">[3]</a>
   </div>
 </div>
 </footer>

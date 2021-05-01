@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'mercurial' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
   <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -89,12 +89,11 @@ for authentication, and runs it only when it needs to authenticate.  </p>
 <li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
    entries (adjusting for your own custom settings):</li>
 </ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>username = [name] &lt;[email]@[domain]&gt;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>username = [name] &lt;[email]@[domain]&gt;
 ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>Now all that's needed is to upload the generated public key to the
 server(s) you wish to pull from or push to.</p>
 <p>When asked, just open the

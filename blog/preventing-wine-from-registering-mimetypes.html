@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Preventing Wine from registering mimetypes | When installing Wine for Linux, the install script insists on associating all text files with its built-in...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -70,10 +70,9 @@
     <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
 <p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
 <p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
+</code></pre></div>
 </td></tr></table>
-
 <p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
 preventing the associations from being made when Wine installs.</p>
 <p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,

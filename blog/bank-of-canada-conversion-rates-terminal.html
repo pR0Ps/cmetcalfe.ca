@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Bank of Canada currency conversion rates in the terminal | Preface In this entry I&#39;ll use two command line tools (curl and jq) to request currency...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -88,27 +88,26 @@ turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs
 </div>
 <h1>Lets go!</h1>
 <p>Hitting the server without any processing will give the following result:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="nt">&quot;terms&quot;</span><span class="p">:{</span>
     <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span>
 <span class="p">},</span>
@@ -125,32 +124,30 @@ turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs
 <span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span>
 <span class="p">]</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>To get the information we want, we need to iterate over the elements in the <code>observations</code> list and
 map the date (<code>d</code>) to the conversion rate (<code>FXUSDCAD.v</code>). Since this will create a list of
 single-element dictionaries, we'll also need to "add" (merge) them together.</p>
 <p>To do this with <code>jq</code>, it looks like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
@@ -159,29 +156,27 @@ jq <span class="s1">&#39;</span>
   <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>That first <code>null</code> entry where there was no data is going to cause problems later, so let's just
 delete it using the <code>del</code> function:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls)</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
@@ -189,37 +184,34 @@ jq <span class="s1">&#39;</span>
   <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>Now this may be good enough for most purposes, but it would be useful to compute some other
 statistics from this data. For example, we want to know the average exchange rate for the date
 range. Now that we have the data in an easy to use format, computing an average with <code>jq</code> is just a
 matter of passing the values to an <code>add / length</code> filter. For example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) | add / length</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="mf">1.327683333333333</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="mf">1.327683333333333</span>
+</code></pre></div>
 </td></tr></table>
-
 <p><a name="tldr"></a>We can now construct an object that has both the average, as well as all the
 data. Putting it all together we get:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) |</span>
 <span class="s1">    {</span>
@@ -227,20 +219,19 @@ jq <span class="s1">&#39;</span>
 <span class="s1">        &quot;values&quot;: .</span>
 <span class="s1">    }</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;average&quot;</span><span class="p">:</span> <span class="mf">1.327683333333333</span><span class="p">,</span>
   <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
@@ -251,9 +242,8 @@ jq <span class="s1">&#39;</span>
     <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>And that's it! Hopefully you found this useful, if not for it's stated purpose of retrieving
 exchange rates, then at least for getting more familiar with <code>jq</code>. It's pretty much the best tool
 out there when it comes to manipulating JSON on the command line.</p>
@@ -268,36 +258,35 @@ out there when it comes to manipulating JSON on the command line.</p>
 <h3>Currency codes</h3>
 <p>A list of codes can be easily scraped from the lookup page. The command and its result are below for
 reference.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
 &quot;FXBRLCAD&quot;&gt;Brazilian real&lt;
 &quot;FXCNYCAD&quot;&gt;Chinese renminbi&lt;
 &quot;FXEURCAD&quot;&gt;European euro&lt;
@@ -323,7 +312,7 @@ reference.</p>
 &quot;FXGBPCAD&quot;&gt;UK pound sterling&lt;
 &quot;FXUSDCAD&quot;&gt;US dollar&lt;
 &quot;FXVNDCAD&quot;&gt;Vietnamese dong&lt;
-</pre></div>
+</code></pre></div>
 </td></tr></table>
   </div>
 <div class="article_meta">

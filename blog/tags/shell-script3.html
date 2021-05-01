@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'shell script' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
   <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -61,6 +61,58 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/preserving-xposed-framework-through-a-flash.html">Preserving the Xposed Framework through a ROM flash</a></h1>
+  </div>
+  <div class="article_text">
+    <p>The <a href="https://repo.xposed.info/">Xposed Framework</a> is a neat Android program that enables <a href="https://repo.xposed.info/module-overview">user-made
+modules</a> to change the behaviour of the lower-level Android OS. It does this
+by modifying <code>/system/bin/app_process</code> to add some hooks into it.</p>
+<p>The issue is that when flashing a new ROM, the modified <code>app_process</code> is
+reverted back to the original version, disabling the Xposed Framework until it's
+restored.</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>The Xposed Framework installer now includes the option to flash a zip file
+to install the framework instead of patching <code>app_process</code> directly. The
+method detailed in this post will still work, but the new way to make sure
+the framework is installed after flashing a new ROM is to simply flash the
+Xposed installer zip right after flashing the ROM.</p>
+</div>
+<p>The solution to this is a script that will automatically back up the existing
+<code>app_process</code> before a flash, then restore it after the flash completes.</p>
+<p>The <a href="../../files/90-xposed.sh">90-xposed.sh</a> script does exactly that. To enable it, download it to the
+Android device, move it to <code>/system/addon.d/90-xposed.sh</code>, and give it
+executable permissions.</p>
+<p>This can be done on the device with a few different programs, but it's much
+easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
+<p>Download the script and push it to the SD card of the Android device with</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
+</code></pre></div>
+</td></tr></table>
+<p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
+following commands:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
+cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
+chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
+</code></pre></div>
+</td></tr></table>
+<p>After logging out of the device, the Xposed framework will stay installed and
+active even after flashing a new ROM. Note that this should only really be
+used in situations where the ROM isn't changing too much (like flashing a new
+nightly ROM).</p>
+<p>In situations where <code>app_process</code> would actually be changed by the flash, this
+script could cause issues as it would restore an incorrect version of the file.
+If this happens, delete <code>app_process</code> and <code>app_process.orig</code> in the
+<code>/system/bin/</code> directory, then reflash. The script won't interfere, allowing
+the flash to update <code>app_process</code> to the correct version. After rebooting,
+install the Xposed Framework again.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/limit-download-speed-by-ip-or-mac-address.html">Limit download speed by IP or MAC address</a></h1>
   </div>
   <div class="article_text">
@@ -81,55 +133,48 @@
 </li>
 <li>
 <p>Remove all existing rules on the interface (interface = <code>br0</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc qdisc del dev br0 root
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc qdisc del dev br0 root
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>Set up the connection (Ex: connection speed = 20mbit)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc qdisc add dev br0 root handle 1: cbq avpkt 1000 bandwidth 20mbit
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc qdisc add dev br0 root handle 1: cbq avpkt 1000 bandwidth 20mbit
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>Add the limiting rule (Ex: speed limit = 10mbit)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc class add dev br0 parent 1: classid 1:1 cbq rate 10mbit allot 1500 prio 5 bounded isolated
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc class add dev br0 parent 1: classid 1:1 cbq rate 10mbit allot 1500 prio 5 bounded isolated
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>Filtering - Add the users to apply to rule to</p>
 <ul>
 <li>
 <p>By src IP (Ex: IP = <code>192.168.1.100</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip src 192.168.1.100 flowid 1:1
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip src 192.168.1.100 flowid 1:1
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>By dst IP (Ex: IP = <code>192.168.1.100</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip dst 192.168.1.100 flowid 1:1
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip dst 192.168.1.100 flowid 1:1
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>By src MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u16 0xM4M5 0xFFFF at -4 match u32 0xM0M1M2M3 0xFFFFFFFF at -8 flowid 1:1
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u16 0xM4M5 0xFFFF at -4 match u32 0xM0M1M2M3 0xFFFFFFFF at -8 flowid 1:1
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>By dst MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u32 0xM2M3M4M5 0xFFFFFFFF at -12 match u16 0xM0M1 0xFFFF at -14 flowid 1:1
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u32 0xM2M3M4M5 0xFFFFFFFF at -12 match u16 0xM0M1 0xFFFF at -14 flowid 1:1
+</code></pre></div>
 </td></tr></table>
-
 </li>
 </ul>
 </li>
@@ -154,60 +199,30 @@ However, the capability exists in their <a href="http://developer.github.com/v3/
 <p>I've built a self-hostable webapp called <a href="https://github.com/pR0Ps/gh-i2p">gh-i2p</a> that makes this process easier.</p>
 </div>
 <p>To call the API using a simple <code>curl</code> command, run the command:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
      --request POST <span class="se">\</span>
      --data <span class="s1">&#39;{&quot;issue&quot;: &quot;[issue num]&quot;, &quot;head&quot;: &quot;[branch to merge from]&quot;, &quot;base&quot;: &quot;[branch to merge into]&quot;}&#39;</span> <span class="se">\</span>
      https://api.github.com/repos/<span class="o">[</span>user<span class="o">]</span>/<span class="o">[</span>repo<span class="o">]</span>/pulls
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>For example, to make <code>user1</code> change issue 13 into a pull request to merge branch <code>test_branch</code> into
 <code>master</code> in the <code>testing_repo</code> repository belonging to <code>user2</code>, the command would be:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
      --request POST <span class="se">\</span>
      --data <span class="s1">&#39;{&quot;issue&quot;: &quot;13&quot;, &quot;head&quot;: &quot;test_branch&quot;, &quot;base&quot;: &quot;master&quot;}&#39;</span> <span class="se">\</span>
      https://api.github.com/repos/user2/testing_repo/pulls
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>To specify a fork of a repository to merge from, put the username followed by a semicolon in front
 of the branch name like so: <code>"username:branch_name"</code></p>
 <p>After running the command, you will be prompted for your GitHub password. Enter it and curl should
 output the JSON response from the API. Make sure to check this response for errors!</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/how-to-download-an-entire-google-site.html">How to download an entire Google Site</a></h1>
-  </div>
-  <div class="article_text">
-    <p>When using Google Sites, there is currently no way to make a backup of your
-site, or download the site so you can host it on another server.  </p>
-<p>This command uses a tool called <code>wget</code> to spider through a website
-and download all the public files to the local computer. Unix users will
-most likely have the wget tool already installed (if not, you can
-install it via your preferred package manager), while Windows users can
-get it from <a href="http://gnuwin32.sourceforge.net/packages/wget.htm">here</a>.  </p>
-<p>Once wget is installed, run it with the following parameters:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">#Downloads all public pages on a Google Site</span>
-
-wget -e <span class="nv">robots</span><span class="o">=</span>off -m -k -K -E -rH -Dsites.google.com http://sites.google.com/a/domain/site/
-</pre></div>
-</td></tr></table>
-
-<p>This tells wget to spider through all the links on your site and download
-the html files and linked content (such as images). Note that pages that
-aren't linked from anywhere on the site won't be downloaded.</p>
-<p>This technique will also work for websites other than the ones hosted on Google Sites.</p>
   </div>
 </article>
 

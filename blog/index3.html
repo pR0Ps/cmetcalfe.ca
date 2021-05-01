@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,127 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/password-recorvery-from-cellpipe-7130.html">Password recovery from an Alcatel-Lucent Cellpipe 7130</a></h1>
+  </div>
+  <div class="article_text">
+    <h2>Background</h2>
+<p>In my current rental situation, the landlord provides internet included with the rental. Since it's
+fast enough and has enough bandwidth this isn't an issue at all. The only problem is that the modem
+provided by the telco is an ancient <code>Alcatel-Lucent Cellpipe 7130 5VzA2001</code> modem/router combo. It's
+running firmware version <code>1.0.4.4R8-wh</code>, released on 2012-05-08 16:30 (there are no updates, I
+checked).</p>
+<p>Since the Cellpipe only has 4 x 10/100 LAN ports and terrible WiFi performance, I would much prefer
+to use my own equipment to perform the routing and just use the Cellpipe 7130 as a WAN gateway.
+Unfortunately, for some reason, there is no way to turn off the routing aspect of the Cellpipe and
+just use it as a modem (aka bridge mode). There is also no way to turn off <a href="https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol">DHCP</a> functionality on
+it.</p>
+<p>My current hacky solution to these problems is to let my router get an IP from the modem/router via
+DHCP, then set that IP as the DMZ host on the Cellpipe. This effectively forwards all TCP and UDP
+ports to the router, making it seem like it's the boundary device for the network. Luckily, my
+router always seems to request the same IP no matter what so this continues to work even if both
+devices are power cycled.</p>
+<p>Since this is not an ideal situation, I'd like to replace the Cellpipe with a more performant modem
+without any of the routing overhead. To do this, I just need to port the configuration details from
+the Cellpipe (like the username and password for the upstream <a href="https://en.wikipedia.org/wiki/Point-to-Point_Protocol_over_Ethernet">PPPoE</a> connection) over to a new
+modem. Unfortunately, there's nothing in the web interface that will allow me to see the password
+and there's no option to do a configuration backup. I also can't just call up the telco since it's
+the landlord's account.</p>
+<p>This means we're stuck, right?</p>
+<h2>Digging into the Cellpipe</h2>
+<p>Doing a quick <a href="https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures">CVE</a> search for the Cellpipe only turns up <a href="https://www.cvedetails.com/cve/CVE-2015-4586">CVE-2015-4586</a> (a <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>
+vulnerability) and <a href="https://www.cvedetails.com/cve/CVE-2015-4587">CVE-2015-4587</a> (an <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS</a> vulnerability), both of which aren't useful in this
+case. Oh well.</p>
+<p>Seeing as the <a href="https://infoproducts.alcatel-lucent.com/cgi-bin/dbaccessfilename.cgi/401389004_V1_CellPipe">Cellpipe 7130 manual</a>(PDF) mentions various functionality that my device
+doesn't seem have, my hypothesis is that there might be a configuration backup/restore function
+somewhere, just not exposed in the UI. With that in mind, I went trawling through the HTML and
+JavaScript files the web UI served up. I found:</p>
+<p>The color 'red' is commented out and redefined as white. This suggests that they could be hiding
+error messages by just making them the same color as the background:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">//var red    =&#39;#FF0000&#39;;</span>
+<span class="kd">var</span> <span class="nx">red</span>    <span class="o">=</span><span class="s1">&#39;#FFFFFF&#39;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>Debugging in production builds with commented out <code>alert</code> statements:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">//alert(isRouter);</span>
+<span class="c1">//alert(isAPmode);</span>
+</code></pre></div>
+</td></tr></table>
+<p>Various comments indicating lack of source control:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">//Jamie hide 20111109</span>
+<span class="cm">/*if(menuItem==&#39;HPNA&#39;)</span>
+<span class="cm">{</span>
+<span class="cm">    printMenuItem(&#39;hpna.html&#39;, &#39;HPNA&#39;, white, darkBlue);</span>
+<span class="cm">}else{</span>
+<span class="cm">    printMenuItem(&#39;hpna.html&#39;, &#39;HPNA&#39;, black, blue);</span>
+<span class="cm">}</span>
+<span class="cm">*/</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">//fanny add 2011/02/22</span>
+<span class="nx">printMenuItem</span><span class="p">(</span><span class="s1">&#39;wifi_statistics.html&#39;</span><span class="p">,</span> <span class="s1">&#39;WLAN Statistics &#39;</span><span class="p">,</span> <span class="nx">black</span><span class="p">,</span> <span class="nx">white</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c">&lt;!-- jonathan 2004.04.07    Begin  --&gt;</span>
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;logoutForm&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;logoutMsg&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="c">&lt;!-- jonathan 2004.04.07    End  --&gt;</span>
+</code></pre></div>
+</td></tr></table>
+<p>These all seem to allude to shoddy release processes, meaning that it's highly likely that
+per-model customizations were rushed UI-level hack jobs on top of the current release and not
+maintained branches where actual functionality was changed.</p>
+<p>Since a configuration backup will include the PPPoE username and password, let's do a search for
+"config". Sure enough:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nx">printMenuSection</span><span class="p">(</span><span class="s1">&#39;util_main.html&#39;</span><span class="p">,</span> <span class="s1">&#39;Utilities&#39;</span><span class="p">,</span> <span class="nx">white</span><span class="p">);</span>
+<span class="nx">printMenuItem</span><span class="p">(</span><span class="s1">&#39;lang_set.html&#39;</span><span class="p">,</span> <span class="s1">&#39;Language Setting&#39;</span><span class="p">,</span> <span class="nx">black</span><span class="p">,</span><span class="nx">white</span><span class="p">);</span>
+<span class="nx">printMenuItem</span><span class="p">(</span><span class="s1">&#39;util_reboot.html&#39;</span><span class="p">,</span> <span class="s1">&#39;Reboot Gateway&#39;</span><span class="p">,</span> <span class="nx">black</span><span class="p">,</span><span class="nx">white</span><span class="p">);</span>
+<span class="c1">//printMenuItem(&#39;util_reservice.html&#39;, &#39;Restart Service&#39;, black,white);</span>
+<span class="nx">printMenuItem</span><span class="p">(</span><span class="s1">&#39;util_factory.html&#39;</span><span class="p">,</span> <span class="s1">&#39;Restore Factory Defaults&#39;</span><span class="p">,</span><span class="nx">black</span><span class="p">,</span> <span class="nx">white</span><span class="p">);</span>
+<span class="hll"><span class="c1">//printMenuItem(&#39;util_cfgstore.html&#39;, &#39;Configuration Store&#39;, black,white);</span>
+</span><span class="hll"><span class="c1">//printMenuItem(&#39;util_cfgrestore.html&#39;, &#39;Configuration Restore&#39;, black,white);</span>
+</span><span class="nx">printMenuItem</span><span class="p">(</span><span class="s1">&#39;util_webfirmware.html&#39;</span><span class="p">,</span> <span class="s1">&#39;Web Firmware Upload&#39;</span><span class="p">,</span> <span class="nx">black</span><span class="p">,</span><span class="nx">white</span><span class="p">);</span><span class="c1">//Jamie add back 20111109</span>
+</code></pre></div>
+</td></tr></table>
+<p>Visiting <code>http://&lt;router_ip&gt;/util_cfgstore.html</code> shows a nice "Store" button that downloads a text
+file containing 771(!) key/value pairs, including the username and password for the PPPoE connection.
+Success!</p>
+<h2>Future plans</h2>
+<p>There are a ton of other options in the downloaded config file, some of which look like they enable
+bridge mode. However, flipping those settings on and applying the new config using
+<code>http://&lt;router_ip&gt;/util_cfgrestore.html</code> didn't seem to change anything. I'm going to keep messing
+with it while I look into sourcing a better modem to use my newfound credentials with.</p>
+<p>Longer-term, the plan is to transition to a dedicated modem that provides WAN access to a low-power
+computer running <a href="https://www.pfsense.org/">pfSense</a> that handles firewall and routing duties. From there, an unmanaged
+switch (possibly injecting <a href="https://en.wikipedia.org/wiki/Power_over_Ethernet">PoE</a>) can provide access for enough dumb wireless APs to bathe the
+house in WiFi, as well as wired hookups for the devices that don't move around too much or need the
+throughput. For now though, I'll settle for replacing the modem.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/forwarding-spam-with-gmail.html">Forwarding spam with Gmail</a></h1>
@@ -124,27 +245,26 @@ turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs
 </div>
 <h1>Lets go!</h1>
 <p>Hitting the server without any processing will give the following result:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="nt">&quot;terms&quot;</span><span class="p">:{</span>
     <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span>
 <span class="p">},</span>
@@ -161,32 +281,30 @@ turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs
 <span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span>
 <span class="p">]</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>To get the information we want, we need to iterate over the elements in the <code>observations</code> list and
 map the date (<code>d</code>) to the conversion rate (<code>FXUSDCAD.v</code>). Since this will create a list of
 single-element dictionaries, we'll also need to "add" (merge) them together.</p>
 <p>To do this with <code>jq</code>, it looks like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
@@ -195,29 +313,27 @@ jq <span class="s1">&#39;</span>
   <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>That first <code>null</code> entry where there was no data is going to cause problems later, so let's just
 delete it using the <code>del</code> function:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls)</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
@@ -225,37 +341,34 @@ jq <span class="s1">&#39;</span>
   <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
   <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>Now this may be good enough for most purposes, but it would be useful to compute some other
 statistics from this data. For example, we want to know the average exchange rate for the date
 range. Now that we have the data in an easy to use format, computing an average with <code>jq</code> is just a
 matter of passing the values to an <code>add / length</code> filter. For example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) | add / length</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="mf">1.327683333333333</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="mf">1.327683333333333</span>
+</code></pre></div>
 </td></tr></table>
-
 <p><a name="tldr"></a>We can now construct an object that has both the average, as well as all the
 data. Putting it all together we get:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
 jq <span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) |</span>
 <span class="s1">    {</span>
@@ -263,20 +376,19 @@ jq <span class="s1">&#39;</span>
 <span class="s1">        &quot;values&quot;: .</span>
 <span class="s1">    }</span>
 <span class="s1">&#39;</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;average&quot;</span><span class="p">:</span> <span class="mf">1.327683333333333</span><span class="p">,</span>
   <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
@@ -287,9 +399,8 @@ jq <span class="s1">&#39;</span>
     <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>And that's it! Hopefully you found this useful, if not for it's stated purpose of retrieving
 exchange rates, then at least for getting more familiar with <code>jq</code>. It's pretty much the best tool
 out there when it comes to manipulating JSON on the command line.</p>
@@ -304,36 +415,35 @@ out there when it comes to manipulating JSON on the command line.</p>
 <h3>Currency codes</h3>
 <p>A list of codes can be easily scraped from the lookup page. The command and its result are below for
 reference.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
+</code></pre></div>
 </td></tr></table>
-
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
 &quot;FXBRLCAD&quot;&gt;Brazilian real&lt;
 &quot;FXCNYCAD&quot;&gt;Chinese renminbi&lt;
 &quot;FXEURCAD&quot;&gt;European euro&lt;
@@ -359,41 +469,8 @@ reference.</p>
 &quot;FXGBPCAD&quot;&gt;UK pound sterling&lt;
 &quot;FXUSDCAD&quot;&gt;US dollar&lt;
 &quot;FXVNDCAD&quot;&gt;Vietnamese dong&lt;
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/adding-https-support.html">Adding HTTPS support to this site</a></h1>
-  </div>
-  <div class="article_text">
-    <p>Yesterday I finally ticked something off my todo list that'd been on there for a while - I added
-proper HTTPS support to this site, powered by <a href="https://letsencrypt.org/">Let's Encrypt</a>.</p>
-<p>The Qualys SSL Labs <a href="https://www.ssllabs.com/ssltest/index.html">SSL Server Test</a> now gives this site <a href="https://www.ssllabs.com/ssltest/analyze.html?d=cmetcalfe.ca">an A+ rating</a>. You can see all the
-certs (past and present) for it on <a href="https://crt.sh/?q=cmetcalfe.ca">crt.sh</a>, an online certificate search tool.</p>
-<h3>For those interested in how things work:</h3>
-<p><a href="https://letsencrypt.org/">Let's Encrypt</a> is a "free, automated, and open" certificate authority. They provide certificates
-via an <a href="https://letsencrypt.org/howitworks/technology/">automatable process</a> that are valid for <a href="https://letsencrypt.org/2015/11/09/why-90-days.html">90 days</a>.</p>
-<p>Exactly how I got it all working can be seen in my <a href="https://github.com/pR0Ps/website">website repo</a>, where this entire site and it's
-deployment scripts are kept, but here's the gist of it:</p>
-<p>I decided to use <a href="https://github.com/lukas2511/dehydrated"><code>dehydrated</code></a> instead of the <a href="https://github.com/letsencrypt/letsencrypt">official Let's Encrypt client</a> to
-generate the certificates. <code>dehydrated</code> is ~1000 lines of <code>bash</code> and only requires things like
-<code>openssl</code>, <code>curl</code>, and a few other programs that any UNIX system should already have. It takes a
-config file and a list of domains. Once those are in place running it from <code>cron</code> is easy.</p>
-<p>The <a href="https://github.com/letsencrypt/acme-spec">ACME protocol</a> that Let's Encrypt uses to verify domain ownership requires the web server to
-respond to certain requests. This check makes sure that only someone with control over the domain
-can generate a cert for it. To allow those requests to return the files generated by <code>dehydrated</code>,
-a <a href="https://github.com/pR0Ps/website/blob/8b3f9509e5f97522ac01789ca562409a7475cc60/web_config/https/letsencrypt.conf">location rule in the Nginx config</a> was added.</p>
-<p>Initially there were problems with the first time generating certs. Since the certs didn't exist
-yet, Nginx was failing to start (and therefore causing the domain validation to fail). The solution
-was to make two sets of configs. An HTTP set, and an HTTPS set. During the renewal process, the HTTPS
-configs are tried, and if running Nginx fails, it falls back to the HTTP set. Switching between HTTP
-and HTTPS configs is done by modifying a symlink.</p>
-<p>When all set up, this makes both generating a cert for the first time and renewing a cert as easy as
-deploying the site. For continual, automated renewals, a monthly <code>cron</code> job was added. With the
-expiry of certs being 90 days, this should be frequent enough that the certs should never expire.</p>
   </div>
 </article>
 

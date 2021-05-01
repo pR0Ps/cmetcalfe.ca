@@ -5,14 +5,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://cmetcalfe.ca/</loc>
-<lastmod>2020-12-11T17:24:56-00:00</lastmod>
+<lastmod>2021-05-01T21:12:46-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://cmetcalfe.ca/</loc>
-<lastmod>2020-12-11T17:24:56-00:00</lastmod>
+<lastmod>2021-05-01T21:12:46-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://cmetcalfe.ca/blog/remove-proxmox-subscription-notice.html</loc>
+<lastmod>2021-04-28T10:03:00-04:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -263,6 +270,27 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://cmetcalfe.ca/blog/tags/proxmox.html</loc>
+<lastmod>2021-04-28T10:03:00-05:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://cmetcalfe.ca/blog/tags/linux.html</loc>
+<lastmod>2021-04-28T10:03:00-05:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://cmetcalfe.ca/blog/tags/shell-script.html</loc>
+<lastmod>2021-04-28T10:03:00-05:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://cmetcalfe.ca/blog/tags/windows.html</loc>
 <lastmod>2020-12-10T23:12:00-05:18</lastmod>
 <changefreq>daily</changefreq>
@@ -271,20 +299,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://cmetcalfe.ca/blog/tags/macos.html</loc>
-<lastmod>2020-12-10T23:12:00-05:18</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://cmetcalfe.ca/blog/tags/linux.html</loc>
-<lastmod>2020-12-10T23:12:00-05:18</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://cmetcalfe.ca/blog/tags/shell-script.html</loc>
 <lastmod>2020-12-10T23:12:00-05:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>

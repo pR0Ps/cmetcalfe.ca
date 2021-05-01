@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
 
   <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -64,29 +64,65 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../blog/installing-fehlstart-a-simple-quick-application-launcher.html">Installing Fehlstart - A simple, quick application launcher</a></h1>
+  </div>
+  <div class="article_text">
+    <p><a href="https://gitlab.com/fehlstart/fehlstart">Fehlstart</a> is an application launcher, much like <a href="http://www.launchy.net/">Launchy</a>,
+<a href="http://qsapp.com/">Quicksilver</a>, or <a href="http://do.cooperteam.net/">GNOME Do</a>. However, where other launchers focus
+on adding features, Fehlstart is as basic as they come. If you want to
+search for files or control your media player, look elsewhere. Felhstart
+launches applications. Period.</p>
+<p>Fehlstart isn't in any major repositories so it has to be compiled from
+source.</p>
+<ol>
+<li>Install dependencies<ul>
+<li><code>git</code>, <code>gcc</code>, <code>make</code>, <code>libgtk2.0-dev</code>, <code>libkeybinder-dev</code></li>
+<li>On most systems these packages will be available through your package manager</li>
+</ul>
+</li>
+<li>Get the code<ul>
+<li><code>git clone https://gitlab.com/fehlstart/fehlstart.git</code></li>
+</ul>
+</li>
+<li>Compile and install<ul>
+<li>Navigate into the folder containing the code</li>
+<li>Run <code>make</code></li>
+<li>Run <code>make install</code> (with the needed permissions)</li>
+</ul>
+</li>
+<li>Add <code>fehlstart</code> to your window manager's autostart list</li>
+<li>Log out and back in to launch Fehlstart.</li>
+<li>Press the key combination <code>&lt;Super&gt;</code> + <code>&lt;Space&gt;</code> to bring up the
+   launcher</li>
+<li>Type to search through the installed applications, then press
+   <code>&lt;Enter&gt;</code> to launch.</li>
+</ol>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../blog/gotcha-with-basic-http-authentication-with-python.html">Gotcha with basic HTTP authentication in Python</a></h1>
   </div>
   <div class="article_text">
     <p>When doing basic HTTP authentication in Python, make sure your
 authentication realm is surrounded by double, <em>NOT</em> single quotes.</p>
 <p>Bad:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=&#39;/&#39;&quot;</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>Good:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=</span><span class="se">\&quot;</span><span class="s2">/</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-
 <p>The single quotes work with most browsers, curl, wget, and tons of other
 tools. However, when using Python to access the page (using
 <a href="http://docs.python.org/2/library/urllib2.html#urllib2.HTTPPasswordMgrWithDefaultRealm">urllib2.HTTPPasswordMgrWithDefaultRealm</a> to manage authentication)
@@ -178,16 +214,14 @@ and register it from your computer.</p>
 <li>Open a command prompt window in the Macshift folder.</li>
 <li>
 <p>In the command prompt window type</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>macshift.exe -i &quot;[connection name]&quot; [device MAC address, no dashes]
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; [device MAC address, no dashes]
+</code></pre></div>
 </td></tr></table>
-
 <p>For example, if my device's MAC address was "00-11-22-33-44-55" and my
 connection name was "Local Area Connection", I would run</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>macshift.exe -i &quot;Local Area Connection&quot; 001122334455
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;Local Area Connection&quot; 001122334455
+</code></pre></div>
 </td></tr></table>
-
 </li>
 <li>
 <p>Wait until you have network access again and try to load a page. If
@@ -197,10 +231,9 @@ connection name was "Local Area Connection", I would run</p>
 <li>Use the steps in the section above to register your computer again.</li>
 <li>
 <p>Once you have ResNet access, go back to the command prompt and run</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>macshift.exe -i &quot;[connection name]&quot; -d
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; -d
+</code></pre></div>
 </td></tr></table>
-
 <p>This restores your MAC address back to it's original value.</p>
 </li>
 </ol>
@@ -210,51 +243,6 @@ connection name was "Local Area Connection", I would run</p>
 take no responsibility for the outcome of your actions. Furthermore, all
 information on IDA is based on experiences in 2009, It may have
 improved over time (ha).</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/resolving-windows-netbios-names-in-linux.html">Resolving Windows NetBIOS names in Linux</a></h1>
-  </div>
-  <div class="article_text">
-    <p>When accessing computers on a LAN, it's often useful to access them by
-name instead of IP. This is especially true when dealing with dynamic IP
-addresses.</p>
-<p>In Windows, other Windows computer names are automatically resolved to
-an IP address. In most Linux distros however, this is not the case (by default).</p>
-<p>To resolve Windows NetBIOS names in Linux, you'll need the <a href="http://www.samba.org/samba/docs/man/manpages-3/winbindd.8.html">winbind</a>
-component of the <a href="http://www.samba.org/">Samba suite</a>. Winbind allows a UNIX box to become a
-full member of an NT domain, giving the ability to resolve names from
-it.</p>
-<p>Install winbind via your preferred package manager. For Debian and
-derivatives, the following should work.   </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>apt-get install winbind
-</pre></div>
-</td></tr></table>
-
-<p>Now that winbind is installed, the OS must be configured to use it when
-looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
-to the end of the line starting with "hosts:".</p>
-<p>For example, the line in my file now looks like</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>hosts: files dns wins
-</pre></div>
-</td></tr></table>
-
-<p>Save the file and reboot to start the winbindd deamon.</p>
-<p>To test if if worked, try pinging a computer on your LAN by name. For
-example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ping windows-server
-PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
-<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
-</pre></div>
-</td></tr></table>
   </div>
 </article>
 

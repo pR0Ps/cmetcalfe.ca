@@ -7,7 +7,7 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'linux' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.518a5e28.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
 
   <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
 
@@ -61,6 +61,24 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/preventing-wine-from-registering-mimetypes.html">Preventing Wine from registering mimetypes</a></h1>
+  </div>
+  <div class="article_text">
+    <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
+<p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
+<p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
+</code></pre></div>
+</td></tr></table>
+<p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
+preventing the associations from being made when Wine installs.</p>
+<p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,
+the library can be properly disabled via the libraries tab of wineconf.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/making-steam-for-linux-close-to-the-system-tray.html">Making Steam for Linux close to the system tray</a></h1>
   </div>
   <div class="article_text">
@@ -88,58 +106,30 @@ full member of an NT domain, giving the ability to resolve names from
 it.</p>
 <p>Install winbind via your preferred package manager. For Debian and
 derivatives, the following should work.   </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>apt-get install winbind
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>apt-get install winbind
+</code></pre></div>
 </td></tr></table>
-
 <p>Now that winbind is installed, the OS must be configured to use it when
 looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
 to the end of the line starting with "hosts:".</p>
 <p>For example, the line in my file now looks like</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>hosts: files dns wins
-</pre></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>hosts: files dns wins
+</code></pre></div>
 </td></tr></table>
-
 <p>Save the file and reboot to start the winbindd deamon.</p>
 <p>To test if if worked, try pinging a computer on your LAN by name. For
 example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>$ ping windows-server
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping windows-server
 PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
-</pre></div>
+</code></pre></div>
 </td></tr></table>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/backing-up-data-to-an-external-server-via-ssh.html">Backing up data to an external server via SSH</a></h1>
-  </div>
-  <div class="article_text">
-    <p>I recently needed to back up the contents of a website, but found that a
-disk quota was preventing me from doing so. What I really needed to do
-was find a way to compress all the files and, instead of storing the
-archive locally, pipe the output to another server.  </p>
-<p>After much Googling and messing about, I ended up with the following
-command:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">#Uses the tar utility to backup files to an external server</span>
-
-tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span> <span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
-</pre></div>
-</td></tr></table>
-
-<p>Of course, this is only practical for a one-off data dump. If regular
-backups were needed, using <a href="http://rsync.samba.org/">rsync</a> would be the best option, as it
-only transfers incremental changes. An excellent tutorial can be found
-<a href="http://troy.jdmz.net/rsync/index.html">here</a>.</p>
   </div>
 </article>
 
@@ -149,10 +139,12 @@ only transfers incremental changes. An excellent tutorial can be found
       <a href="../../blog/tags/linux.html"><i class="fa fa-arrow-circle-left"></i> Prev</a>
   </span>
   <span id="right">
+      <a href="../../blog/tags/linux3.html">Next <i class="fa fa-arrow-circle-right"></i></a>
   </span>
   <div>
       <a href="../../blog/tags/linux.html"> 1 </a>
       <a href="../../blog/tags/linux2.html">[2]</a>
+      <a href="../../blog/tags/linux3.html"> 3 </a>
   </div>
 </div>
 </footer>
