@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Carey Metcalfe</title><link>https://cmetcalfe.ca/</link><description></description><lastBuildDate>Wed, 28 Apr 2021 10:03:00 -0400</lastBuildDate><item><title>Removing the Proxmox VE subscription notice</title><link>https://cmetcalfe.ca/blog/remove-proxmox-subscription-notice.html</link><description>&lt;p&gt;&lt;a href="https://www.proxmox.com/proxmox-ve"&gt;Proxmox VE&lt;/a&gt; is an open-source (&lt;a href="https://www.gnu.org/licenses/agpl-3.0.en.html"&gt;AGPL v3&lt;/a&gt;) virtualization platform for running containers and
+<rss version="2.0"><channel><title>Carey Metcalfe</title><link>https://cmetcalfe.ca/</link><description></description><lastBuildDate>Sun, 23 May 2021 00:00:00 -0400</lastBuildDate><item><title>Only record audio from specific applications with NVIDIA ShadowPlay</title><link>https://cmetcalfe.ca/blog/record-audio-from-specific-applications-with-shadowplay.html</link><description>&lt;p&gt;&lt;a href="https://www.nvidia.com/en-us/geforce/geforce-experience/shadowplay/"&gt;ShadowPlay&lt;/a&gt; is a feature of modern NVIDIA graphics cards that allows for recording games and
+other applications at native resolution with only a minimal performance hit. It also includes some
+genuinely useful features like instant replay.&lt;/p&gt;
+&lt;p&gt;Unfortunately, the audio options for recording are pretty limited. By default, all audio is recorded
+to a single mixed track. This includes the game audio, but also your mic, notification sounds, any
+music you're playing in the background, people talking on Steam, Discord, etc.&lt;/p&gt;
+&lt;p&gt;After some experimentation I eventually found a way to pick which applications to record the audio
+from, but it's not intuitive at all so I'm documenting it here.&lt;/p&gt;
+&lt;h1&gt;General idea&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a virtual audio device&lt;/li&gt;
+&lt;li&gt;Play the audio from this device to the default audio device so you can hear it&lt;/li&gt;
+&lt;li&gt;Force the applications you want to record to only play audio to this device&lt;/li&gt;
+&lt;li&gt;Tell ShadowPlay to only record audio from this device&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Step by step guide&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Install &lt;a href="https://www.nvidia.com/en-us/geforce/geforce-experience/"&gt;GeForce Experience&lt;/a&gt; and enable the in-game overlay and hotkey in the settings. Press
+   the hotkey to bring up the overlay. In the overlay on the right you will see a microphone icon.
+   Click it to bring up a dropdown menu then click on "Settings". In the menu that appears,
+   configure your microphone input and select the "Separate both tracks" option. This will cause
+   your microphone audio to be recorded, but in a separate track from the game audio, making it easy
+   to strip out or mix in later. You can also just use the single track mode and mute the mic
+   instead if you never want to record yourself.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Install &lt;a href="https://vb-audio.com/Cable/"&gt;Virtual Audio Cable&lt;/a&gt;. This will install two virtual sound devices on your system:
+   "CABLE Input" (an output device) and "CABLE Output" (an input device). When sounds are played out
+   the "CABLE Input" device, they can be recorded by listening to the "CABLE Output" device.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Open the "Sounds" control panel (Open the Control Panel, click "Hardware and Sound", then
+   "Sound"), go to the "Recording" tab and find the "CABLE Output" device. Double click it to open
+   its properties. Go to the "Listen" tab, check the "Listen to this device" option, and select the
+   "Default Playback Device" as the target. This will allow you to hear any audio that is played by
+   this device.
+   &lt;img alt="Configuring the &amp;quot;CABLE Output&amp;quot; device in the sounds control panel" src="https://cmetcalfe.ca/images/listen_to_this_device.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Launch all applications and games you want to record.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Open the Sound mixer (Start menu, type "Sound mixer options"). You should see your open programs
+   mapped to audio inputs and outputs. If you don't see a "NVIDIA Container" program listed then
+   activate the GeForce overlay and toggle the "Instant Replay" setting on and off to make it
+   appear. Change the "Output" of the "NVIDIA Container" application to the "CABLE Input" device.
+   This tells ShadowPlay to only record the audio sent to this output.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Change the "Output" of each of the applications you want to record to "CABLE Input". I'm
+   recording the audio from a game called &lt;a href="https://store.steampowered.com/app/563560/Alien_Swarm_Reactive_Drop/"&gt;&lt;em&gt;Alien Swarm: Reactive Drop&lt;/em&gt;&lt;/a&gt; in the example below.
+   &lt;img alt="Recording the audio from Alien Swarm: Reactive Drop" src="https://cmetcalfe.ca/images/mixer_recording_asrd.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Start recording (or enable the instant replay recording mode)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The resulting video files will only include audio from the applications you selected in step 6. If
+you opted to record your microphone in step 1, it will be in a separate audio track that you can
+either remove or manually mix into the main audio later.&lt;/p&gt;
+&lt;h1&gt;Notes&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Tested on Windows 10 21H1 running GeForce Experience v3.22.0.32&lt;/li&gt;
+&lt;li&gt;Once this is all set up, the only thing you'll have to mess with on an ongoing basis is the mixer
+   settings (steps 5 and 6)&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Sun, 23 May 2021 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2021-05-23:/blog/record-audio-from-specific-applications-with-shadowplay.html</guid><category>blog</category><category>windows</category><category>audio</category><category>nvidia</category><category>games</category></item><item><title>Removing the Proxmox VE subscription notice</title><link>https://cmetcalfe.ca/blog/remove-proxmox-subscription-notice.html</link><description>&lt;p&gt;&lt;a href="https://www.proxmox.com/proxmox-ve"&gt;Proxmox VE&lt;/a&gt; is an open-source (&lt;a href="https://www.gnu.org/licenses/agpl-3.0.en.html"&gt;AGPL v3&lt;/a&gt;) virtualization platform for running containers and
 VMs. It's comparable to a proprietary solution like &lt;a href="https://www.vmware.com/products/esxi-and-esx.html"&gt;VMware ESXi&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;It can be downloaded and installed completely free of charge, lacking only access to support and
 other things that more enterprise-focused users care about. For a homelab install, the free version

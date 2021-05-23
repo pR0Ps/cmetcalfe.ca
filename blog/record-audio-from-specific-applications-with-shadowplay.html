@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Carey Metcalfe">
+  <meta name="description" content="Only record audio from specific applications with NVIDIA ShadowPlay | ShadowPlay is a feature of modern NVIDIA graphics cards that allows for recording...">
+
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+
+  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
+
+<meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, audio, games, nvidia, windows">
+
+  <title>Only record audio from specific applications with NVIDIA ShadowPlay | Carey Metcalfe</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-28306875-1', 'cmetcalfe.ca');
+  ga('send', 'pageview');
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="..">
+        <img src="/images/avatar.jpg" id="logo">
+      </a>
+      <h2><a href=".." class="nohover">Carey Metcalfe</a></h2>
+      <p>Software Developer</p>
+      <div class="social">
+          <a data-email="ac.eflactemc@yerac:otliam" data-title="Email" title="You need javascript enabled to view this email" class="email" target="_blank" rel="noopener noreferrer"><i class="fa fa-envelope fa-lg"></i></a>
+          <a href="https://github.com/pR0Ps" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa fa-github fa-lg"></i></a>
+          <a href="https://twitter.com/CareyMetcalfe" title="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter fa-lg"></i></a>
+      </div>
+      <ul>
+      </ul>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header>
+      <p id="header">
+      <a href="..">Home</a>
+
+      &#124; <a href="../blog/index.html">Blog</a>
+      &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
+      </p>
+<p>
+<a href="../blog/index.html">Posts</a>
+&#124; <a href="../blog/tags/">Tags</a>
+&#124; <a href="../blog/archives.html">Archive</a>
+</p>    </header>
+
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/record-audio-from-specific-applications-with-shadowplay.html" class="nohover">Only record audio from specific applications with NVIDIA ShadowPlay</a></h1>
+  </div>
+  <div class="article_text">
+    <p><a href="https://www.nvidia.com/en-us/geforce/geforce-experience/shadowplay/">ShadowPlay</a> is a feature of modern NVIDIA graphics cards that allows for recording games and
+other applications at native resolution with only a minimal performance hit. It also includes some
+genuinely useful features like instant replay.</p>
+<p>Unfortunately, the audio options for recording are pretty limited. By default, all audio is recorded
+to a single mixed track. This includes the game audio, but also your mic, notification sounds, any
+music you're playing in the background, people talking on Steam, Discord, etc.</p>
+<p>After some experimentation I eventually found a way to pick which applications to record the audio
+from, but it's not intuitive at all so I'm documenting it here.</p>
+<h1>General idea</h1>
+<ul>
+<li>Create a virtual audio device</li>
+<li>Play the audio from this device to the default audio device so you can hear it</li>
+<li>Force the applications you want to record to only play audio to this device</li>
+<li>Tell ShadowPlay to only record audio from this device</li>
+</ul>
+<h1>Step by step guide</h1>
+<ol>
+<li>
+<p>Install <a href="https://www.nvidia.com/en-us/geforce/geforce-experience/">GeForce Experience</a> and enable the in-game overlay and hotkey in the settings. Press
+   the hotkey to bring up the overlay. In the overlay on the right you will see a microphone icon.
+   Click it to bring up a dropdown menu then click on "Settings". In the menu that appears,
+   configure your microphone input and select the "Separate both tracks" option. This will cause
+   your microphone audio to be recorded, but in a separate track from the game audio, making it easy
+   to strip out or mix in later. You can also just use the single track mode and mute the mic
+   instead if you never want to record yourself.</p>
+</li>
+<li>
+<p>Install <a href="https://vb-audio.com/Cable/">Virtual Audio Cable</a>. This will install two virtual sound devices on your system:
+   "CABLE Input" (an output device) and "CABLE Output" (an input device). When sounds are played out
+   the "CABLE Input" device, they can be recorded by listening to the "CABLE Output" device.</p>
+</li>
+<li>
+<p>Open the "Sounds" control panel (Open the Control Panel, click "Hardware and Sound", then
+   "Sound"), go to the "Recording" tab and find the "CABLE Output" device. Double click it to open
+   its properties. Go to the "Listen" tab, check the "Listen to this device" option, and select the
+   "Default Playback Device" as the target. This will allow you to hear any audio that is played by
+   this device.
+   <img alt="Configuring the &quot;CABLE Output&quot; device in the sounds control panel" src="../images/listen_to_this_device.png"></p>
+</li>
+<li>
+<p>Launch all applications and games you want to record.</p>
+</li>
+<li>
+<p>Open the Sound mixer (Start menu, type "Sound mixer options"). You should see your open programs
+   mapped to audio inputs and outputs. If you don't see a "NVIDIA Container" program listed then
+   activate the GeForce overlay and toggle the "Instant Replay" setting on and off to make it
+   appear. Change the "Output" of the "NVIDIA Container" application to the "CABLE Input" device.
+   This tells ShadowPlay to only record the audio sent to this output.</p>
+</li>
+<li>
+<p>Change the "Output" of each of the applications you want to record to "CABLE Input". I'm
+   recording the audio from a game called <a href="https://store.steampowered.com/app/563560/Alien_Swarm_Reactive_Drop/"><em>Alien Swarm: Reactive Drop</em></a> in the example below.
+   <img alt="Recording the audio from Alien Swarm: Reactive Drop" src="../images/mixer_recording_asrd.png"></p>
+</li>
+<li>
+<p>Start recording (or enable the instant replay recording mode)</p>
+</li>
+</ol>
+<p>The resulting video files will only include audio from the applications you selected in step 6. If
+you opted to record your microphone in step 1, it will be in a separate audio track that you can
+either remove or manually mix into the main audio later.</p>
+<h1>Notes</h1>
+<ul>
+<li>Tested on Windows 10 21H1 running GeForce Experience v3.22.0.32</li>
+<li>Once this is all set up, the only thing you'll have to mess with on an ongoing basis is the mixer
+   settings (steps 5 and 6)</li>
+</ul>
+  </div>
+<div class="article_meta">
+  <p>Posted <time data-timeago datetime="2021-05-23T00:00:00-04:00">May 23, 2021</time>
+   by Carey Metcalfe  </p>
+  <p>
+  Tags:
+    <a href="../blog/tags/windows.html">windows</a>,    <a href="../blog/tags/audio.html">audio</a>,    <a href="../blog/tags/nvidia.html">nvidia</a>,    <a href="../blog/tags/games.html">games</a>  </p>
+</div>
+  <div id="article_comments">
+    <div id="disqus_thread">
+      <a href="javascript:loadDisqus()"><i class="fa fa-comments fa-lg"></i>Click to load <span class="disqus-comment-count" data-disqus-identifier="blog/record-audio-from-specific-applications-with-shadowplay.html">comments</span></a>
+    </div>
+  </div>
+
+  <script id="dsq-count-scr" src="https://cmetcalfe.disqus.com/count.js" async></script>
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.identifier = "blog/record-audio-from-specific-applications-with-shadowplay.html";
+        this.page.title = "Only record audio from specific applications with NVIDIA ShadowPlay";
+    };
+    loadDisqus = function(sitename) {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://cmetcalfe.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    };
+  </script>
+</article>
+
+
+    <div id="ending_message">
+        <p>&copy; Carey Metcalfe. Built using <a href="http://getpelican.com">Pelican</a>. Theme is <a href="https://github.com/pR0Ps/pelican-subtle">subtle</a> by <a href="http://cmetcalfe.ca">Carey Metcalfe</a>. Based on <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a> by Giulio Fidente.</p>
+    </div>
+  </main>
+
+  <script type="text/javascript">
+    window.addEventListener('load', skipHeader)
+  </script>
+
+  <script type="text/javascript">
+  window.addEventListener('load', unmangleEmail)
+  </script>
+
+<script type="text/javascript">window.addEventListener("load", lw_timeago);</script>
+</body>
+</html>

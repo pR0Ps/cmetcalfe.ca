@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,27 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/forcing-a-media-refresh-on-android-with-adb.html">Forcing a media refresh on Android with adb</a></h1>
+  </div>
+  <div class="article_text">
+    <p>Android will automatically perform a media refresh when an SD card is
+mounted.</p>
+<p>Using <a href="http://developer.android.com/tools/help/adb.html">adb</a>, we can fake that event by manually sending a <code>MEDIA_MOUNTED</code>
+intent.</p>
+<p>For example, if you wanted to run a media refresh of the entire SD
+card:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb -d shell <span class="s2">&quot;am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard&quot;</span>
+</code></pre></div>
+</td></tr></table>
+<p>To refresh different directory, just change "/sdcard" to the absolute
+path of the directory you want to refresh.</p>
+<p>For more fine-grained control, use the <code>MEDIA_SCANNER_SCAN_FILE</code>
+intent, which triggers a rescan of a single file.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/installing-fehlstart-a-simple-quick-application-launcher.html">Installing Fehlstart - A simple, quick application launcher</a></h1>
@@ -130,121 +151,6 @@ single quotes don't trigger the "automatic retry with authentication"
 response, and instead just raise a 401 <code>HTTPError</code>.</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/queens-university-resnet-without-ida-windows.html">Queen's University Resnet without IDA (Windows)</a></h1>
-  </div>
-  <div class="article_text">
-    <h2>Storytime</h2>
-<p>So you're in your first year at Queen's University residence and you
-want to access the internet. Sounds reasonable. You plug in your Windows
-laptop, open your browser, and...nothing. Well, mostly nothing. A page
-that tells you that you've been quarantined and to please click here,
-download IDA, install it, and let it work it's magic.</p>
-<p>Sounds easy right? What they don't tell you is that IDA holds ResNet
-access hostage until you've installed some garbage antivirus, downloaded
-all the new windows updates (IDA actually does this itself, it doesn't
-step back and let Windows Update do it's job), and a few other things.
-After all that, you enter your NetID and password, and it registers you.
-In theory.</p>
-<p>What I ran into every single time I ran it with my laptop (running Windows
-XP at the time) was it failing to download something, throwing an error
-message and refusing to register me. I gave up after a few times and
-plugged in my other computer (Running the relatively obscure Windows XP
-x64). What I noticed is that I didn't get the typical quarantine page, I
-got a simple page that asked for a NetID and password. I entered my
-information and got a message stating I was good to go. I checked a few
-pages and they all seemed to work.</p>
-<p>I plugged my laptop back in and tried to load a page. The same
-quarantine screen. Since the main way a webpage tells the difference
-between two operating systems is the user agent, I fired up <a href="https://addons.mozilla.org/en-us/firefox/addon/tamper-data/">Tamper
-Data</a> and submitted a request with a blank one. I got the same page
-that asked for my NetID and password.</p>
-<p>I assume this works because if the registration server decides (based on
-your user agent) that IDA won't run on your computer, instead of leaving
-you screwed, it'll give you an alternate way out. Since when you take
-away the user agent the server can't tell what kind of operating system
-you're running, they assume that IDA won't work on it and give you the
-simple "Enter your account details" prompt.  </p>
-<h2>Register a computer without IDA</h2>
-<ol>
-<li>Acquire unblocked internet (the queensu wireless is a good bet).</li>
-<li>Download and install <a href="http://www.mozilla.org/firefox/">Firefox</a> and the <a href="https://addons.mozilla.org/en-us/firefox/addon/tamper-data/">Tamper Data</a> addon.</li>
-<li>Disconnect from the internet and plug in to ResNet.</li>
-<li>In Firefox, click Tools,  Tamper Data.</li>
-<li>In the window that pops up, click "Start Tamper".</li>
-<li>Try to load a website.</li>
-<li>A window will pop up asking you if you want to tamper with the
-    request. Click the "Tamper" option.</li>
-<li>In the windows that pops up, delete everything in the "User-Agent"
-    field and hit OK.</li>
-<li>Repeat steps 8 and 9 until the popups stop and the page loads.</li>
-<li>Click "Stop Tamper" and close the Tamper Data window.</li>
-<li>You should be on a page that tells you to enter your NetID and
-    password, do so and hit OK.</li>
-</ol>
-<p>Your computer should now be able to use ResNet normally.</p>
-<h2>Registering other devices</h2>
-<p>Your computer is registered via it's MAC address. This means that if you
-want to use ResNet with a device that can't run IDA, doesn't have a web
-browser, and is against IT policy *cough* wireless router *cough*,
-you can't. In theory.</p>
-<p>The easy way of course, it to call up ITS and tell them your Xbox can't
-connect. They'll ask you for your Xbox's MAC address, you'll give them
-the router's MAC address, and they'll register it. Aside from lying to
-ITS being morally wrong, this works. However, I've heard complaints that
-devices registered via calling ITS have had their speed throttled.
-Throttling non-school-related devices on a school network makes sense,
-but I haven't seen any actual proof of this.</p>
-<p>The better way of registering your other devices though, is to trick the
-registration server into thinking that your device is just a normal
-computer. Since computers are registered by their MAC addresses, you
-just need to register the MAC address of your device with the system.</p>
-<p>The following steps will show you how to spoof your device's MAC address
-and register it from your computer.</p>
-<ol>
-<li>Find the MAC address of your device. It will probably be somewhere
-    in the Advanced Options.</li>
-<li>Unplug your device from ResNet and plug in your computer.</li>
-<li>Open Control Panel, Network and Internet, Network Connections
-    and note the name of your connection. Usually it's "Local Area
-    Connection"</li>
-<li>Download and extract <a href="http://devices.natetrue.com/macshift/">Macshift</a> into a folder somewhere.</li>
-<li>Open a command prompt window in the Macshift folder.</li>
-<li>
-<p>In the command prompt window type</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; [device MAC address, no dashes]
-</code></pre></div>
-</td></tr></table>
-<p>For example, if my device's MAC address was "00-11-22-33-44-55" and my
-connection name was "Local Area Connection", I would run</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;Local Area Connection&quot; 001122334455
-</code></pre></div>
-</td></tr></table>
-</li>
-<li>
-<p>Wait until you have network access again and try to load a page. If
-    everything went as planned, you should be seeing the ResNet
-    quarantine page.</p>
-</li>
-<li>Use the steps in the section above to register your computer again.</li>
-<li>
-<p>Once you have ResNet access, go back to the command prompt and run</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; -d
-</code></pre></div>
-</td></tr></table>
-<p>This restores your MAC address back to it's original value.</p>
-</li>
-</ol>
-<p>Your device should now be able to use ResNet normally.</p>
-<h2>Disclaimer</h2>
-<p>All information above is provided for informational purposes only. I
-take no responsibility for the outcome of your actions. Furthermore, all
-information on IDA is based on experiences in 2009, It may have
-improved over time (ha).</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -267,6 +173,7 @@ improved over time (ha).</p>
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html"> 11 </a>
       <a href="../blog/index12.html"> 12 </a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>

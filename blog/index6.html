@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,61 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/fixing-save-corruption-ridiculous-fishing.html">Fixing save file corruption in Ridiculous Fishing</a></h1>
+  </div>
+  <div class="article_text">
+    <p><a href="https://play.google.com/store/apps/details?id=com.vlambeer.RidiculousFishing">Ridiculous Fishing</a> is a game by <a href="http://www.vlambeer.com/">Vlambeer</a> about fishing. That's if you
+can call chainsawing fish and blowing them out of the sky with a bazooka "fishing".</p>
+<p>I've been playing this game on and off for a while now, but just recently I had
+a problem where my save file somehow got corrupted, making the app refuse to open.</p>
+<p>The problem first manifested as the game freezing for up to 5 seconds when
+navigating around the UI or buying items in the in-game store. Since I was
+running the game on a <a href="http://en.wikipedia.org/wiki/Nexus_5">Nexus 5</a> (not the latest and greatest, but pretty
+close), it seemed weird. The delay got longer and longer until the game
+eventually crashed and refused to reopen.</p>
+<p>Since I was pretty far into the game (I only needed to catch one more species
+of fish!), I opted to try to fix it instead of just wiping the app's data and
+starting again. I initially tried clearing the app's cache and
+<a href="../blog/reinstall-android-app-without-losing-data.html">reinstalling the app</a>, but the problem persisted.</p>
+<p>The next step was to dump the games's data to my computer so I could do some
+analysis on it. Some exploration on the device revealed that the settings and
+data were stored in the folder <code>/data/data/com.vlambeer.RidiculousFishing.humble</code>
+(I have the <a href="https://www.humblebundle.com/">Humble Bundle</a> version of the app).</p>
+<p>To pull that folder to my current directory, I used <a href="http://developer.android.com/tools/help/adb.html">ADB</a>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb root <span class="c1">#Restart adbd on the device with root permissions</span>
+adb pull /data/data/com.vlambeer.RidiculousFishing.humble/
+</code></pre></div>
+</td></tr></table>
+<p>A quick <code>du -h</code> revealed that something was very wrong in the
+<code>files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist</code> file.
+It should've been just a text document, but was well over 200MB.</p>
+<p>After trying out of habit to open the file in <a href="http://www.vim.org/">Vim</a> and having it hang (oops),
+I paged through the document with <a href="http://en.wikipedia.org/wiki/Less_%28Unix%29">less</a>. About halfway through the file,
+there was a line containing <code>&amp;amp;lt;message&amp;amp;gt;@eggbirdTBA Take it to the
+Smartypants Bar</code> (no, that's not a formatting error, in the plist there's XML
+data stored in a <code>&lt;string&gt;</code> element, requiring the <code>&lt;</code> and <code>&gt;</code> characters to be
+escaped) followed by about 200MB of garbage.</p>
+<p>Apparently there are <a href="http://stackoverflow.com/questions/908575/how-to-edit-multi-gigabyte-text-files-vim-doesnt-work">ways to load huge files in Vim</a>, as well as other text
+editors that handle them nicely, but since I already knew what line was causing
+the issue, a simple <a href="http://en.wikipedia.org/wiki/Sed">sed</a> command would do the trick.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>sed <span class="s1">&#39;/Take it to the Smartypants Bar/d&#39;</span> com.vlambeer.RidiculousFishing.humble.plist &gt; temp.plist
+</code></pre></div>
+</td></tr></table>
+<p>Total size of <code>temp.plist</code>: 107.11KB. Much better.</p>
+<p>After going though and deleting some lines around the one that was removed (to
+make the XML valid again), I pushed the file back to the device:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push temp.plist /data/data/com.vlambeer.RidiculousFishing.humble/files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist
+</code></pre></div>
+</td></tr></table>
+<p>Success! The game opened properly, all the freezing issues were gone, and my
+save data was still there.</p>
+<p>Now to find that stupid <a href="http://gaming.stackexchange.com/questions/159564/how-to-catch-the-mimic-fish">Mimic Fish</a>...</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/reinstall-android-app-without-losing-data.html">Reinstalling an Android app without losing data</a></h1>
@@ -131,58 +186,6 @@ when using <code>git checkoutr</code>.</p>
 EDIT 2018-03-24: Updated to <a href="https://github.com/git/git/commit/227307a639c96b3579b7fe60840fdae123d1ee88">speed up branch and tag completion</a>.</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/preserving-xposed-framework-through-a-flash.html">Preserving the Xposed Framework through a ROM flash</a></h1>
-  </div>
-  <div class="article_text">
-    <p>The <a href="https://repo.xposed.info/">Xposed Framework</a> is a neat Android program that enables <a href="https://repo.xposed.info/module-overview">user-made
-modules</a> to change the behaviour of the lower-level Android OS. It does this
-by modifying <code>/system/bin/app_process</code> to add some hooks into it.</p>
-<p>The issue is that when flashing a new ROM, the modified <code>app_process</code> is
-reverted back to the original version, disabling the Xposed Framework until it's
-restored.</p>
-<div class="admonition update">
-<p class="admonition-title">Update</p>
-<p>The Xposed Framework installer now includes the option to flash a zip file
-to install the framework instead of patching <code>app_process</code> directly. The
-method detailed in this post will still work, but the new way to make sure
-the framework is installed after flashing a new ROM is to simply flash the
-Xposed installer zip right after flashing the ROM.</p>
-</div>
-<p>The solution to this is a script that will automatically back up the existing
-<code>app_process</code> before a flash, then restore it after the flash completes.</p>
-<p>The <a href="../files/90-xposed.sh">90-xposed.sh</a> script does exactly that. To enable it, download it to the
-Android device, move it to <code>/system/addon.d/90-xposed.sh</code>, and give it
-executable permissions.</p>
-<p>This can be done on the device with a few different programs, but it's much
-easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
-<p>Download the script and push it to the SD card of the Android device with</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
-</code></pre></div>
-</td></tr></table>
-<p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
-following commands:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
-cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
-chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
-</code></pre></div>
-</td></tr></table>
-<p>After logging out of the device, the Xposed framework will stay installed and
-active even after flashing a new ROM. Note that this should only really be
-used in situations where the ROM isn't changing too much (like flashing a new
-nightly ROM).</p>
-<p>In situations where <code>app_process</code> would actually be changed by the flash, this
-script could cause issues as it would restore an incorrect version of the file.
-If this happens, delete <code>app_process</code> and <code>app_process.orig</code> in the
-<code>/system/bin/</code> directory, then reflash. The script won't interfere, allowing
-the flash to update <code>app_process</code> to the correct version. After rebooting,
-install the Xposed Framework again.</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -205,6 +208,7 @@ install the Xposed Framework again.</p>
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html"> 11 </a>
       <a href="../blog/index12.html"> 12 </a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>

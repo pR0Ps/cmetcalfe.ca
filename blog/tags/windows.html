@@ -61,6 +61,81 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/record-audio-from-specific-applications-with-shadowplay.html">Only record audio from specific applications with NVIDIA ShadowPlay</a></h1>
+  </div>
+  <div class="article_text">
+    <p><a href="https://www.nvidia.com/en-us/geforce/geforce-experience/shadowplay/">ShadowPlay</a> is a feature of modern NVIDIA graphics cards that allows for recording games and
+other applications at native resolution with only a minimal performance hit. It also includes some
+genuinely useful features like instant replay.</p>
+<p>Unfortunately, the audio options for recording are pretty limited. By default, all audio is recorded
+to a single mixed track. This includes the game audio, but also your mic, notification sounds, any
+music you're playing in the background, people talking on Steam, Discord, etc.</p>
+<p>After some experimentation I eventually found a way to pick which applications to record the audio
+from, but it's not intuitive at all so I'm documenting it here.</p>
+<h1>General idea</h1>
+<ul>
+<li>Create a virtual audio device</li>
+<li>Play the audio from this device to the default audio device so you can hear it</li>
+<li>Force the applications you want to record to only play audio to this device</li>
+<li>Tell ShadowPlay to only record audio from this device</li>
+</ul>
+<h1>Step by step guide</h1>
+<ol>
+<li>
+<p>Install <a href="https://www.nvidia.com/en-us/geforce/geforce-experience/">GeForce Experience</a> and enable the in-game overlay and hotkey in the settings. Press
+   the hotkey to bring up the overlay. In the overlay on the right you will see a microphone icon.
+   Click it to bring up a dropdown menu then click on "Settings". In the menu that appears,
+   configure your microphone input and select the "Separate both tracks" option. This will cause
+   your microphone audio to be recorded, but in a separate track from the game audio, making it easy
+   to strip out or mix in later. You can also just use the single track mode and mute the mic
+   instead if you never want to record yourself.</p>
+</li>
+<li>
+<p>Install <a href="https://vb-audio.com/Cable/">Virtual Audio Cable</a>. This will install two virtual sound devices on your system:
+   "CABLE Input" (an output device) and "CABLE Output" (an input device). When sounds are played out
+   the "CABLE Input" device, they can be recorded by listening to the "CABLE Output" device.</p>
+</li>
+<li>
+<p>Open the "Sounds" control panel (Open the Control Panel, click "Hardware and Sound", then
+   "Sound"), go to the "Recording" tab and find the "CABLE Output" device. Double click it to open
+   its properties. Go to the "Listen" tab, check the "Listen to this device" option, and select the
+   "Default Playback Device" as the target. This will allow you to hear any audio that is played by
+   this device.
+   <img alt="Configuring the &quot;CABLE Output&quot; device in the sounds control panel" src="../../images/listen_to_this_device.png"></p>
+</li>
+<li>
+<p>Launch all applications and games you want to record.</p>
+</li>
+<li>
+<p>Open the Sound mixer (Start menu, type "Sound mixer options"). You should see your open programs
+   mapped to audio inputs and outputs. If you don't see a "NVIDIA Container" program listed then
+   activate the GeForce overlay and toggle the "Instant Replay" setting on and off to make it
+   appear. Change the "Output" of the "NVIDIA Container" application to the "CABLE Input" device.
+   This tells ShadowPlay to only record the audio sent to this output.</p>
+</li>
+<li>
+<p>Change the "Output" of each of the applications you want to record to "CABLE Input". I'm
+   recording the audio from a game called <a href="https://store.steampowered.com/app/563560/Alien_Swarm_Reactive_Drop/"><em>Alien Swarm: Reactive Drop</em></a> in the example below.
+   <img alt="Recording the audio from Alien Swarm: Reactive Drop" src="../../images/mixer_recording_asrd.png"></p>
+</li>
+<li>
+<p>Start recording (or enable the instant replay recording mode)</p>
+</li>
+</ol>
+<p>The resulting video files will only include audio from the applications you selected in step 6. If
+you opted to record your microphone in step 1, it will be in a separate audio track that you can
+either remove or manually mix into the main audio later.</p>
+<h1>Notes</h1>
+<ul>
+<li>Tested on Windows 10 21H1 running GeForce Experience v3.22.0.32</li>
+<li>Once this is all set up, the only thing you'll have to mess with on an ongoing basis is the mixer
+   settings (steps 5 and 6)</li>
+</ul>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/prevent-auto-lock-by-simulating-activity.html">Preventing auto-locking and sleeping by simulating user activity</a></h1>
   </div>
   <div class="article_text">
@@ -262,49 +337,6 @@ connection name was "Local Area Connection", I would run</p>
 take no responsibility for the outcome of your actions. Furthermore, all
 information on IDA is based on experiences in 2009, It may have
 improved over time (ha).</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/resolving-windows-netbios-names-in-linux.html">Resolving Windows NetBIOS names in Linux</a></h1>
-  </div>
-  <div class="article_text">
-    <p>When accessing computers on a LAN, it's often useful to access them by
-name instead of IP. This is especially true when dealing with dynamic IP
-addresses.</p>
-<p>In Windows, other Windows computer names are automatically resolved to
-an IP address. In most Linux distros however, this is not the case (by default).</p>
-<p>To resolve Windows NetBIOS names in Linux, you'll need the <a href="http://www.samba.org/samba/docs/man/manpages-3/winbindd.8.html">winbind</a>
-component of the <a href="http://www.samba.org/">Samba suite</a>. Winbind allows a UNIX box to become a
-full member of an NT domain, giving the ability to resolve names from
-it.</p>
-<p>Install winbind via your preferred package manager. For Debian and
-derivatives, the following should work.   </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>apt-get install winbind
-</code></pre></div>
-</td></tr></table>
-<p>Now that winbind is installed, the OS must be configured to use it when
-looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
-to the end of the line starting with "hosts:".</p>
-<p>For example, the line in my file now looks like</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>hosts: files dns wins
-</code></pre></div>
-</td></tr></table>
-<p>Save the file and reboot to start the winbindd deamon.</p>
-<p>To test if if worked, try pinging a computer on your LAN by name. For
-example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping windows-server
-PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
-<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
-</code></pre></div>
-</td></tr></table>
   </div>
 </article>
 

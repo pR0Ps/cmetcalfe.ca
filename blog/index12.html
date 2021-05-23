@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -64,6 +64,51 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../blog/setting-up-tortisehg-on-windows.html">Setting up TortiseHg on Windows</a></h1>
+  </div>
+  <div class="article_text">
+    <p>TortiseHg can be a bit of a pain to set up if you don't want to
+have <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">peagent</a> running in the background all the time for
+authentication. This method uses TortisePlink (comes with the install)
+for authentication, and runs it only when it needs to authenticate.  </p>
+<h2>Generating a public/private key pair</h2>
+<ol>
+<li>Download <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTYgen</a> and run it.</li>
+<li>Generate the key pair by clicking the generate button.</li>
+<li>Optionally, enter a passphrase to protect the private key.</li>
+<li>Save the public and private keys somewhere. I prefer to save them as
+   <code>id_rsa.pub</code> and <code>id_rsa.ppk</code> in <code>C:/Users/[username]/.ssh/</code> but it
+   doesn't really matter.</li>
+</ol>
+<h2>Setting up TortiseHg</h2>
+<ol>
+<li>Download <a href="http://tortoisehg.bitbucket.org/download/index.html">TortiseHg</a> and install it.</li>
+<li>When installing, make sure that SSH Utils are installed.</li>
+<li>When it finishes installing, run the program (it'll be called
+   "TortiseHg Workbench" in the start menu).</li>
+<li>Configure the settings as you see fit. This will generate a
+   configuration file at <code>C:/Users/[username]/mercurial.ini</code>.</li>
+<li>Close the program and open up <code>mercurial.ini</code> in a text editor.</li>
+<li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
+   entries (adjusting for your own custom settings):</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>username = [name] &lt;[email]@[domain]&gt;
+ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
+</code></pre></div>
+</td></tr></table>
+<p>Now all that's needed is to upload the generated public key to the
+server(s) you wish to pull from or push to.</p>
+<p>When asked, just open the
+key up in a text editor (make sure it's the public key, NEVER share your
+private key) and copy-paste the text.</p>
+<p>After configuring this, you'll be able to push to repositories on the
+servers you give your public key to, without having to enter your password every time.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../blog/sending-a-file-via-a-p2p-connection-in-a-web-browser.html">Sending a file via a P2P connection in a web browser</a></h1>
   </div>
   <div class="article_text">
@@ -92,31 +137,6 @@ quickest way. Automatic incremental backups can also be done by running a
 'quick sync' regularly.</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/changing-media-key-behaviours.html">How keyboard media keys work</a></h1>
-  </div>
-  <div class="article_text">
-    <p>A recent project of mine involved tearing apart an old keyboard (a <a href="http://i.imgur.com/dWBnR.jpg">Dell
-Y-UK-DEL1</a>) and using the media keys to make a simple media controller box.  </p>
-<p>Everything went smoothly with the build, but when I plugged it in, the
-music media key launched <a href="http://www.videolan.org/vlc/">VLC</a> instead of my preferred player, <a href="http://www.foobar2000.org/">foobar2000</a>.
-After spending a while in the control panel looking for how to change this behavour
-and finding nothing, I used <a href="http://technet.microsoft.com/en-us/sysinternals/bb896653">Process Explorer</a> to trace the registry key
-it was using to determine which application to launch.  </p>
-<p>Turns out, the registry keys in
-<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AppKey</code>
-store the information regarding what program gets launched when a media key is pressed.</p>
-<p>In this location there are a bunch of keys that map button IDs to file associations.
-This is done by looking up the button ID when the button is pressed, then looking at
-the contents of the string called "Association" in the button ID's key.</p>
-<p>With my keyboard, the music media key maps to button 16. On my system, within the
-key called "16", there is a string value called "Association". This was set to the
-".cda" extension, which is associated with VLC. After changing the ".cda" association
-to open using foobar2000, whenever I press the music key on my media controller, foobar2000 opens.</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -124,6 +144,7 @@ to open using foobar2000, whenever I press the music key on my media controller,
       <a href="../blog/index11.html"><i class="fa fa-arrow-circle-left"></i> Prev</a>
   </span>
   <span id="right">
+      <a href="../blog/index13.html">Next <i class="fa fa-arrow-circle-right"></i></a>
   </span>
   <div>
       <a href="../blog/index.html"> 1 </a>
@@ -138,6 +159,7 @@ to open using foobar2000, whenever I press the music key on my media controller,
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html"> 11 </a>
       <a href="../blog/index12.html">[12]</a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>

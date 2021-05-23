@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,58 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/preserving-xposed-framework-through-a-flash.html">Preserving the Xposed Framework through a ROM flash</a></h1>
+  </div>
+  <div class="article_text">
+    <p>The <a href="https://repo.xposed.info/">Xposed Framework</a> is a neat Android program that enables <a href="https://repo.xposed.info/module-overview">user-made
+modules</a> to change the behaviour of the lower-level Android OS. It does this
+by modifying <code>/system/bin/app_process</code> to add some hooks into it.</p>
+<p>The issue is that when flashing a new ROM, the modified <code>app_process</code> is
+reverted back to the original version, disabling the Xposed Framework until it's
+restored.</p>
+<div class="admonition update">
+<p class="admonition-title">Update</p>
+<p>The Xposed Framework installer now includes the option to flash a zip file
+to install the framework instead of patching <code>app_process</code> directly. The
+method detailed in this post will still work, but the new way to make sure
+the framework is installed after flashing a new ROM is to simply flash the
+Xposed installer zip right after flashing the ROM.</p>
+</div>
+<p>The solution to this is a script that will automatically back up the existing
+<code>app_process</code> before a flash, then restore it after the flash completes.</p>
+<p>The <a href="../files/90-xposed.sh">90-xposed.sh</a> script does exactly that. To enable it, download it to the
+Android device, move it to <code>/system/addon.d/90-xposed.sh</code>, and give it
+executable permissions.</p>
+<p>This can be done on the device with a few different programs, but it's much
+easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
+<p>Download the script and push it to the SD card of the Android device with</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
+</code></pre></div>
+</td></tr></table>
+<p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
+following commands:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
+cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
+chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
+</code></pre></div>
+</td></tr></table>
+<p>After logging out of the device, the Xposed framework will stay installed and
+active even after flashing a new ROM. Note that this should only really be
+used in situations where the ROM isn't changing too much (like flashing a new
+nightly ROM).</p>
+<p>In situations where <code>app_process</code> would actually be changed by the flash, this
+script could cause issues as it would restore an incorrect version of the file.
+If this happens, delete <code>app_process</code> and <code>app_process.orig</code> in the
+<code>/system/bin/</code> directory, then reflash. The script won't interfere, allowing
+the flash to update <code>app_process</code> to the correct version. After rebooting,
+install the Xposed Framework again.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/limit-download-speed-by-ip-or-mac-address.html">Limit download speed by IP or MAC address</a></h1>
@@ -155,41 +207,6 @@ preventing the associations from being made when Wine installs.</p>
 the library can be properly disabled via the libraries tab of wineconf.</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/changes-to-the-blog-and-website.html">Changes to the blog and website</a></h1>
-  </div>
-  <div class="article_text">
-    <p>I used to run this site on two different platforms.
-There was a static landing page hosted on my server, and a blog hosted on <a href="http://blogger.com">Blogger</a>.</p>
-<p>While the landing page was reasonably nice-looking (screenshot <a href="../images/old_website_screenshot.png">here</a>), the blog looked terrible.
-Free Blogger templates are generally not the nicest-looking things to look at and the one I used was no exception.</p>
-<p>More importantly though, the Blogger composer made really hard to generate nice-looking articles.
-For just writing text posts, it wasn't bad (aside from the crazy HTML it generated), but for inserting code
-snippits or doing any kind of advanced formatting it was incredibly frustrating.</p>
-<p>A few weeks ago I finally decided to deal with the situation. My general plan was to find a static site generator
-that allowed for writing posts in <a href="http://daringfireball.net/projects/markdown">Markdown syntax</a> and use it to create a website that would
-host some static content as well as the blog.</p>
-<p>Static sites are exactly what they sound like. Just some static HTML files for a webserver to serve to clients.
-No fancy frameworks, databases, or server-side processing involved. This is advantageous primarily because it
-makes site blazing fast and very light on server resources.</p>
-<p>After looking at a few static site generators, I decided to go with <a href="http://blog.getpelican.com">Pelican</a>.
-Pelican is a Python-based static site generator that uses the awesome <a href="http://jinja.pocoo.org/docs">Jinja2</a> templating library
-and understands content written in a number of formats, including Markdown.
-It's extremely easy to set up and requires only a single command to regenerate the entire site.</p>
-<p>Transferring content from the old blog into the *.md files that Pelican reads was also really simple.
-Pelican includes a tool called <code>pelican-import</code> that allows for reading in data from a variety of sources.
-I used this tool to pull all my previous posts down from the RSS feed of the old blog.</p>
-<p>After fixing up the imported data (the import tool is good, but not perfect), I started looking into templates.</p>
-<p>Like with Blogger themes, I was having a hard time finding anything I liked, until I came across a template called <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a>.
-It had a nice page layout and the general aesthetic was good, but needed a fair bit of tweaking.
-I forked the repository (+1 for open-source) and over the next few weeks used my limited HTML and CSS knowledge to transform it into the one you see today.</p>
-<p>There are still a bunch of things I want to change/fix/add, but at this point I feel that the site is ready to be released.
-The code for the <a href="https://github.com/pR0Ps/pelican-svbhack">template</a> and the <a href="https://github.com/pR0Ps/website">site</a> is all freely availible on GitHub.</p>
-<p>If you have any comments or suggestions I'd love to hear them!</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -212,6 +229,7 @@ The code for the <a href="https://github.com/pR0Ps/pelican-svbhack">template</a>
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html"> 11 </a>
       <a href="../blog/index12.html"> 12 </a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>

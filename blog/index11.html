@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,33 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/how-to-download-an-entire-google-site.html">How to download an entire Google Site</a></h1>
+  </div>
+  <div class="article_text">
+    <p>When using Google Sites, there is currently no way to make a backup of your
+site, or download the site so you can host it on another server.  </p>
+<p>This command uses a tool called <code>wget</code> to spider through a website
+and download all the public files to the local computer. Unix users will
+most likely have the wget tool already installed (if not, you can
+install it via your preferred package manager), while Windows users can
+get it from <a href="http://gnuwin32.sourceforge.net/packages/wget.htm">here</a>.  </p>
+<p>Once wget is installed, run it with the following parameters:  </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Downloads all public pages on a Google Site</span>
+
+wget -e <span class="nv">robots</span><span class="o">=</span>off -m -k -K -E -rH -Dsites.google.com http://sites.google.com/a/domain/site/
+</code></pre></div>
+</td></tr></table>
+<p>This tells wget to spider through all the links on your site and download
+the html files and linked content (such as images). Note that pages that
+aren't linked from anywhere on the site won't be downloaded.</p>
+<p>This technique will also work for websites other than the ones hosted on Google Sites.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/backing-up-data-to-an-external-server-via-ssh.html">Backing up data to an external server via SSH</a></h1>
@@ -120,51 +147,6 @@ only transfers incremental changes. An excellent tutorial can be found
 <p>Good Luck!</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/setting-up-tortisehg-on-windows.html">Setting up TortiseHg on Windows</a></h1>
-  </div>
-  <div class="article_text">
-    <p>TortiseHg can be a bit of a pain to set up if you don't want to
-have <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">peagent</a> running in the background all the time for
-authentication. This method uses TortisePlink (comes with the install)
-for authentication, and runs it only when it needs to authenticate.  </p>
-<h2>Generating a public/private key pair</h2>
-<ol>
-<li>Download <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTYgen</a> and run it.</li>
-<li>Generate the key pair by clicking the generate button.</li>
-<li>Optionally, enter a passphrase to protect the private key.</li>
-<li>Save the public and private keys somewhere. I prefer to save them as
-   <code>id_rsa.pub</code> and <code>id_rsa.ppk</code> in <code>C:/Users/[username]/.ssh/</code> but it
-   doesn't really matter.</li>
-</ol>
-<h2>Setting up TortiseHg</h2>
-<ol>
-<li>Download <a href="http://tortoisehg.bitbucket.org/download/index.html">TortiseHg</a> and install it.</li>
-<li>When installing, make sure that SSH Utils are installed.</li>
-<li>When it finishes installing, run the program (it'll be called
-   "TortiseHg Workbench" in the start menu).</li>
-<li>Configure the settings as you see fit. This will generate a
-   configuration file at <code>C:/Users/[username]/mercurial.ini</code>.</li>
-<li>Close the program and open up <code>mercurial.ini</code> in a text editor.</li>
-<li>Under the "[ui]" section (if it doesn't exist, create it) add/edit two
-   entries (adjusting for your own custom settings):</li>
-</ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>username = [name] &lt;[email]@[domain]&gt;
-ssh = &quot;C:\\Program Files\\TortoiseHg\\TortoisePlink.exe&quot; -i &quot;C:\\Users\\[username]\\.ssh\\id_rsa.ppk&quot;
-</code></pre></div>
-</td></tr></table>
-<p>Now all that's needed is to upload the generated public key to the
-server(s) you wish to pull from or push to.</p>
-<p>When asked, just open the
-key up in a text editor (make sure it's the public key, NEVER share your
-private key) and copy-paste the text.</p>
-<p>After configuring this, you'll be able to push to repositories on the
-servers you give your public key to, without having to enter your password every time.</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -187,6 +169,7 @@ servers you give your public key to, without having to enter your password every
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html">[11]</a>
       <a href="../blog/index12.html"> 12 </a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>

@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,103 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/recovering-data-off-a-bootlooping-nexus5.html">Recovering data off a bootlooping Nexus 5</a></h1>
+  </div>
+  <div class="article_text">
+    <h2>The situation</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Nexus_5">Nexus 5</a> that I've had for almost 5 years started bootlooping repeatedly.</p>
+<p>I've replaced/repaired multiple parts of it over the years but lately it had been more flaky than
+usual. For example:</p>
+<ul>
+<li>Sometimes when booting it would show a "Firmware update in progress, don't disconnect your
+   computer" message, even though there was nothing connected to the USB port.</li>
+<li>It would randomly freeze and soft reboot when using it about once a week.</li>
+<li>When propping it up on a book or something to angle the screen towards me, the screen would
+   sometimes turn off and on (as it turns out, this was a warning sign)</li>
+</ul>
+<p>I've been ready to replace it for a while, but couldn't justify it while this one was perfectly (ok,
+mostly) functional. That changed today when I tried to turn it on and it started bootlooping.</p>
+<p>So buy a new phone and move on, right? Right, except I committed the cardinal sin of living in the
+digital age - not having complete backups. Yeah, yeah, I know.</p>
+<p>I got most of it. I'd been using <a href="https://github.com/pR0Ps/freeotp-export">Syncthing</a> to automatically back up photos, videos, and other
+files to my home server every night so they were all good. The problem was that I had been using
+<a href="https://github.com/pR0Ps/freeotp-export">FreeOTP-export</a> to back up my <a href="https://en.wikipedia.org/wiki/Multi-factor_authentication">2FA</a> secrets manually and the latest backup was missing a bunch
+of logins.</p>
+<p>So I needed to somehow get into my non-booting phone and pull the data off it. At least because I
+was replacing it, all destructive options were on the table.</p>
+<h2>Diagnosis</h2>
+<p>The first step was seeing if other people had this problem. Some searching revealed that it was most
+likely the power button gone bad and being stuck in the pressed position.</p>
+<p>To confirm this, I rapidly hammered the power button on a hard surface while booting, hoping that
+the jarring would un-stick it and let it boot. This sort of worked in that it would boot, but
+stopping at any point would result it it powering off again. It was also extremely difficult to tap
+it consistently enough to keep the phone on for long enough to pull any data off it.</p>
+<p>The issue I mentioned earlier where propping the phone up made the screen turn on and off now made sense.
+I'm guessing this was causing a slight flexing of the power button switch, causing it to close and
+trigger. Over time this must've permanently bent something so it stayed closed, causing the
+bootloop.</p>
+<p>Now that I had pretty much confirmed that it was something physically wrong with the power button
+circuitry, I messaged my friend <a href="https://mremallin.ca/">Mike</a>. When it comes to electronics, he's definitely more
+experienced than me. Plus, he lets me borrow his tools :)</p>
+<h2>The "fix"</h2>
+<p>The next day Mike came over with his soldering iron and we started brainstorming.</p>
+<p>The plan of attack was to just take the power button off the board entirely. It can't always be
+pressed down if it's not on the board right?</p>
+<p>In preparation for this, I wanted the phone to automatically boot when it was plugged into a charger
+so I wouldn't have to manually short the pins on the board. Fortunately this can be done with a
+fastboot command: <code>fastboot oem off-mode-charge 0</code> (basically: don't allow charging while off,
+therefore turn on when charging).</p>
+<p>After desoldering the power button from the main board, it was still bootlooping. Not good. I went
+back and cleaned up the solder to make absolutely sure that the power button signal pins weren't
+connected in any way. Still bootlooping when powered on. It would get to the bootloader and stay
+there, meaning the power button wasn't being pressed anymore, but when launching to either recovery
+or the main OS, it would immediately restart.</p>
+<p>Looked into dumping data from the bootloader - impossible.</p>
+<p>Reflashed the boot and recovery partitions - same thing.</p>
+<p>Tried booting into recovery using <code>fastboot boot &lt;recovery-image&gt;</code> - bootloop.</p>
+<blockquote>
+<p>sounds like it's time to cry</p>
+<p>-- Someone on <a href="https://webchat.freenode.net/?channels=#lineageos-dev">Freenode's #lineageos-dev channel</a> after I explained the situation</p>
+</blockquote>
+<p>Thankfully, it was not. Right after that, someone else asked if I had reconnected the battery. I had
+not.</p>
+<p>Turns out that a working battery is required to boot the phone, even when it's plugged in. I had
+taken the battery out to desolder the power button and never put it back in since the phone seemed
+to boot fine without it. Whoops.</p>
+<p>After plugging the battery into the board and booting the phone, it launched the main OS without any
+issues. Huge relief.</p>
+<h2>Recovering the data</h2>
+<p>With the phone booted up normally I used <code>adb</code> (running as root) to pull the 2FA codes and
+other important things that I knew I needed over to my laptop.</p>
+<p>I really don't trust myself to remember everything so I booted the phone into recovery mode and
+pulled a complete backup of <code>/data/data</code>, <code>/data/app</code>, and <code>/storage/sdcard</code> (<a href="https://developer.android.com/guide/topics/data/data-storage.html#filesExternal">not actually an
+sdcard</a>) to my laptop as well.</p>
+<p>To make <strong>absolutely</strong> sure I didn't miss anything, I also pulled a raw image of the entire flash
+memory (disk-based encryption was not enabled) using <code>adb pull /dev/block/mmcblk0 mmcblk0.img</code>.
+Everything I need should be in the normal backups, but if not, I can always go spelunking through
+that image.</p>
+<h2>Lessons learned</h2>
+<ul>
+<li>If it's important, back it up <em>automatically</em>. If it's not automatic, at some point it will be
+   missed.</li>
+<li>Make sure you have the ability to get root access on every device you own before you need it - in
+   this case I wouldn't've been able to pull the 2FA codes or do full backups without it.</li>
+</ul>
+<h2>Future plans</h2>
+<p>For the Nexus 5, I'm planning on either buying a replacement power button or maybe just soldering
+some wires to the exposed pads and snaking them out of the phone to an external button if I can't
+find one. The phone can then continue to be used as an app development testbed, a <a href="https://store.google.com/product/chromecast">Chromecast</a>
+remote, or as a <a href="../blog/adding-xbox360-controller-support-to-a-nexus5.html">basic emulation console</a> until it dies for real. In theory I could keep using it
+as a phone too, but at this point I just don't trust it enough.</p>
+<p>For my next phone, I've decided on the <a href="https://en.wikipedia.org/wiki/Sony_Xperia_XZ1_Compact">Xperia XZ1 Compact</a>. It's a smaller phone that's mostly
+waterproof (<a href="https://en.wikipedia.org/wiki/IP_Code">IP68</a>), has a fast SoC (<a href="https://en.wikipedia.org/wiki/List_of_Qualcomm_Snapdragon_systems-on-chip#Snapdragon_835_and_845_(2017/18)">Snapdragon 835</a>), a headphone jack, SD card support, and
+great battery life. I have high hopes for it. Also, as evidenced by this post, having root access to
+the OS is pretty critical at times so I'll be flashing <a href="https://lineageos.org/">LineageOS</a> on it ASAP.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/password-recorvery-from-cellpipe-7130.html">Password recovery from an Alcatel-Lucent Cellpipe 7130</a></h1>
@@ -218,261 +315,6 @@ Unfortunately, Gmail's interface makes this task much harder than it needs to be
 </ol>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/bank-of-canada-conversion-rates-terminal.html">Bank of Canada currency conversion rates in the terminal</a></h1>
-  </div>
-  <div class="article_text">
-    <h1>Preface</h1>
-<p>In this entry I'll use two command line tools (<a href="https://curl.haxx.se/"><code>curl</code></a> and <a href="https://stedolan.github.io/jq/"><code>jq</code></a>) to request currency
-conversion rates from the <a href="https://www.bankofcanada.ca">Bank of Canada</a>. Now obviously getting the same data through the <a href="https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/">normal
-web interface</a> is possible as well. However, doing it this way returns the data in a
-machine-readable form, allowing it to be customized or used as input into other programs.</p>
-<p>The basic flow will be request the data using <code>curl</code>, then pipe it to <code>jq</code> for processing.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This article will request the USD/CAD exchange rate from 2017-01-01 to 2017-01-10. It should be
-fairly obvious how to switch this for any other currencies or date ranges. See the
-<a href="#appendix">Appendix</a> for more information and caveats with the dates and the conversion codes.</p>
-</div>
-<p>We'll go from seeing the raw data the server returns to something that we can more easily use. <strong>To
-skip to the final result, click <a href="#tldr">here</a></strong>.</p>
-<div class="admonition update">
-<p class="admonition-title">Update</p>
-<p>The URLs for the data were originally reverse-engineered from the website. They have since been
-turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs">the API documentation</a> for more details.</p>
-</div>
-<h1>Lets go!</h1>
-<p>Hitting the server without any processing will give the following result:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="nt">&quot;terms&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span>
-<span class="p">},</span>
-<span class="nt">&quot;seriesDetail&quot;</span><span class="p">:{</span>
-<span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;USD/CAD&quot;</span><span class="p">,</span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;US dollar to Canadian dollar daily exchange rate&quot;</span><span class="p">}</span>
-<span class="p">},</span>
-<span class="nt">&quot;observations&quot;</span><span class="p">:[</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-02&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;e&quot;</span><span class="p">:</span><span class="mi">-64</span><span class="p">}},</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-03&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3435</span><span class="p">}},</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-04&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3315</span><span class="p">}},</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-05&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3244</span><span class="p">}},</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-06&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3214</span><span class="p">}},</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-09&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3240</span><span class="p">}},</span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span>
-<span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-</td></tr></table>
-<p>To get the information we want, we need to iterate over the elements in the <code>observations</code> list and
-map the date (<code>d</code>) to the conversion rate (<code>FXUSDCAD.v</code>). Since this will create a list of
-single-element dictionaries, we'll also need to "add" (merge) them together.</p>
-<p>To do this with <code>jq</code>, it looks like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
-<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
-<span class="p">}</span>
-</code></pre></div>
-</td></tr></table>
-<p>That first <code>null</code> entry where there was no data is going to cause problems later, so let's just
-delete it using the <code>del</code> function:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
-<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls)</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
-  <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
-<span class="p">}</span>
-</code></pre></div>
-</td></tr></table>
-<p>Now this may be good enough for most purposes, but it would be useful to compute some other
-statistics from this data. For example, we want to know the average exchange rate for the date
-range. Now that we have the data in an easy to use format, computing an average with <code>jq</code> is just a
-matter of passing the values to an <code>add / length</code> filter. For example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
-<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) | add / length</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="mf">1.327683333333333</span>
-</code></pre></div>
-</td></tr></table>
-<p><a name="tldr"></a>We can now construct an object that has both the average, as well as all the
-data. Putting it all together we get:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
-<span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) |</span>
-<span class="s1">    {</span>
-<span class="s1">        &quot;average&quot;: (add / length),</span>
-<span class="s1">        &quot;values&quot;: .</span>
-<span class="s1">    }</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;average&quot;</span><span class="p">:</span> <span class="mf">1.327683333333333</span><span class="p">,</span>
-  <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span> <span class="mf">1.3435</span><span class="p">,</span>
-    <span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span> <span class="mf">1.3315</span><span class="p">,</span>
-    <span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span> <span class="mf">1.3244</span><span class="p">,</span>
-    <span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span> <span class="mf">1.3214</span><span class="p">,</span>
-    <span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span> <span class="mf">1.324</span><span class="p">,</span>
-    <span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span> <span class="mf">1.3213</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</td></tr></table>
-<p>And that's it! Hopefully you found this useful, if not for it's stated purpose of retrieving
-exchange rates, then at least for getting more familiar with <code>jq</code>. It's pretty much the best tool
-out there when it comes to manipulating JSON on the command line.</p>
-<h1>Appendix<a name="appendix"></a></h1>
-<h3>Date ranges</h3>
-<ul>
-<li>The server will only ever return data from <code>2017-01-03</code> and onwards. If the start range is before
-  that, it doesn't return an error, it just doesn't return any data for those dates.</li>
-<li>If the end date isn't specified, the server assumes the current date.</li>
-<li>There doesn't seem to be any limit on the amount of data retrieved</li>
-</ul>
-<h3>Currency codes</h3>
-<p>A list of codes can be easily scraped from the lookup page. The command and its result are below for
-reference.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>&quot;FXAUDCAD&quot;&gt;Australian dollar&lt;
-&quot;FXBRLCAD&quot;&gt;Brazilian real&lt;
-&quot;FXCNYCAD&quot;&gt;Chinese renminbi&lt;
-&quot;FXEURCAD&quot;&gt;European euro&lt;
-&quot;FXHKDCAD&quot;&gt;Hong Kong dollar&lt;
-&quot;FXINRCAD&quot;&gt;Indian rupee&lt;
-&quot;FXIDRCAD&quot;&gt;Indonesian rupiah&lt;
-&quot;FXJPYCAD&quot;&gt;Japanese yen&lt;
-&quot;FXMYRCAD&quot;&gt;Malaysian ringgit&lt;
-&quot;FXMXNCAD&quot;&gt;Mexican peso&lt;
-&quot;FXNZDCAD&quot;&gt;New Zealand dollar&lt;
-&quot;FXNOKCAD&quot;&gt;Norwegian krone&lt;
-&quot;FXPENCAD&quot;&gt;Peruvian new sol&lt;
-&quot;FXRUBCAD&quot;&gt;Russian ruble&lt;
-&quot;FXSARCAD&quot;&gt;Saudi riyal&lt;
-&quot;FXSGDCAD&quot;&gt;Singapore dollar&lt;
-&quot;FXZARCAD&quot;&gt;South African rand&lt;
-&quot;FXKRWCAD&quot;&gt;South Korean won&lt;
-&quot;FXSEKCAD&quot;&gt;Swedish krona&lt;
-&quot;FXCHFCAD&quot;&gt;Swiss franc&lt;
-&quot;FXTWDCAD&quot;&gt;Taiwanese dollar&lt;
-&quot;FXTHBCAD&quot;&gt;Thai baht&lt;
-&quot;FXTRYCAD&quot;&gt;Turkish lira&lt;
-&quot;FXGBPCAD&quot;&gt;UK pound sterling&lt;
-&quot;FXUSDCAD&quot;&gt;US dollar&lt;
-&quot;FXVNDCAD&quot;&gt;Vietnamese dong&lt;
-</code></pre></div>
-</td></tr></table>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -495,6 +337,7 @@ reference.</p>
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html"> 11 </a>
       <a href="../blog/index12.html"> 12 </a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>

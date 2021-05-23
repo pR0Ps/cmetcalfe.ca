@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -62,6 +62,41 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/changes-to-the-blog-and-website.html">Changes to the blog and website</a></h1>
+  </div>
+  <div class="article_text">
+    <p>I used to run this site on two different platforms.
+There was a static landing page hosted on my server, and a blog hosted on <a href="http://blogger.com">Blogger</a>.</p>
+<p>While the landing page was reasonably nice-looking (screenshot <a href="../images/old_website_screenshot.png">here</a>), the blog looked terrible.
+Free Blogger templates are generally not the nicest-looking things to look at and the one I used was no exception.</p>
+<p>More importantly though, the Blogger composer made really hard to generate nice-looking articles.
+For just writing text posts, it wasn't bad (aside from the crazy HTML it generated), but for inserting code
+snippits or doing any kind of advanced formatting it was incredibly frustrating.</p>
+<p>A few weeks ago I finally decided to deal with the situation. My general plan was to find a static site generator
+that allowed for writing posts in <a href="http://daringfireball.net/projects/markdown">Markdown syntax</a> and use it to create a website that would
+host some static content as well as the blog.</p>
+<p>Static sites are exactly what they sound like. Just some static HTML files for a webserver to serve to clients.
+No fancy frameworks, databases, or server-side processing involved. This is advantageous primarily because it
+makes site blazing fast and very light on server resources.</p>
+<p>After looking at a few static site generators, I decided to go with <a href="http://blog.getpelican.com">Pelican</a>.
+Pelican is a Python-based static site generator that uses the awesome <a href="http://jinja.pocoo.org/docs">Jinja2</a> templating library
+and understands content written in a number of formats, including Markdown.
+It's extremely easy to set up and requires only a single command to regenerate the entire site.</p>
+<p>Transferring content from the old blog into the *.md files that Pelican reads was also really simple.
+Pelican includes a tool called <code>pelican-import</code> that allows for reading in data from a variety of sources.
+I used this tool to pull all my previous posts down from the RSS feed of the old blog.</p>
+<p>After fixing up the imported data (the import tool is good, but not perfect), I started looking into templates.</p>
+<p>Like with Blogger themes, I was having a hard time finding anything I liked, until I came across a template called <a href="https://github.com/giulivo/pelican-svbhack">svbhack</a>.
+It had a nice page layout and the general aesthetic was good, but needed a fair bit of tweaking.
+I forked the repository (+1 for open-source) and over the next few weeks used my limited HTML and CSS knowledge to transform it into the one you see today.</p>
+<p>There are still a bunch of things I want to change/fix/add, but at this point I feel that the site is ready to be released.
+The code for the <a href="https://github.com/pR0Ps/pelican-svbhack">template</a> and the <a href="https://github.com/pR0Ps/website">site</a> is all freely availible on GitHub.</p>
+<p>If you have any comments or suggestions I'd love to hear them!</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/making-steam-for-linux-close-to-the-system-tray.html">Making Steam for Linux close to the system tray</a></h1>
@@ -113,27 +148,6 @@ of the branch name like so: <code>"username:branch_name"</code></p>
 output the JSON response from the API. Make sure to check this response for errors!</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/forcing-a-media-refresh-on-android-with-adb.html">Forcing a media refresh on Android with adb</a></h1>
-  </div>
-  <div class="article_text">
-    <p>Android will automatically perform a media refresh when an SD card is
-mounted.</p>
-<p>Using <a href="http://developer.android.com/tools/help/adb.html">adb</a>, we can fake that event by manually sending a <code>MEDIA_MOUNTED</code>
-intent.</p>
-<p>For example, if you wanted to run a media refresh of the entire SD
-card:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb -d shell <span class="s2">&quot;am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard&quot;</span>
-</code></pre></div>
-</td></tr></table>
-<p>To refresh different directory, just change "/sdcard" to the absolute
-path of the directory you want to refresh.</p>
-<p>For more fine-grained control, use the <code>MEDIA_SCANNER_SCAN_FILE</code>
-intent, which triggers a rescan of a single file.</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -156,6 +170,7 @@ intent, which triggers a rescan of a single file.</p>
       <a href="../blog/index10.html"> 10 </a>
       <a href="../blog/index11.html"> 11 </a>
       <a href="../blog/index12.html"> 12 </a>
+      <a href="../blog/index13.html"> 13 </a>
   </div>
 </div>
 </footer>
