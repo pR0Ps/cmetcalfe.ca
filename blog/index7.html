@@ -7,15 +7,15 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -89,18 +89,18 @@ executable permissions.</p>
 <p>This can be done on the device with a few different programs, but it's much
 easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
 <p>Download the script and push it to the SD card of the Android device with</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
+</code></pre></div></td></tr></table></div>
+
 <p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
 following commands:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
 cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
 chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>After logging out of the device, the Xposed framework will stay installed and
 active even after flashing a new ROM. Note that this should only really be
 used in situations where the ROM isn't changing too much (like flashing a new
@@ -136,48 +136,48 @@ install the Xposed Framework again.</p>
 </li>
 <li>
 <p>Remove all existing rules on the interface (interface = <code>br0</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc qdisc del dev br0 root
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc qdisc del dev br0 root
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>Set up the connection (Ex: connection speed = 20mbit)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc qdisc add dev br0 root handle 1: cbq avpkt 1000 bandwidth 20mbit
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc qdisc add dev br0 root handle 1: cbq avpkt 1000 bandwidth 20mbit
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>Add the limiting rule (Ex: speed limit = 10mbit)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc class add dev br0 parent 1: classid 1:1 cbq rate 10mbit allot 1500 prio 5 bounded isolated
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc class add dev br0 parent 1: classid 1:1 cbq rate 10mbit allot 1500 prio 5 bounded isolated
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>Filtering - Add the users to apply to rule to</p>
 <ul>
 <li>
 <p>By src IP (Ex: IP = <code>192.168.1.100</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip src 192.168.1.100 flowid 1:1
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip src 192.168.1.100 flowid 1:1
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>By dst IP (Ex: IP = <code>192.168.1.100</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip dst 192.168.1.100 flowid 1:1
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 16 u32 match ip dst 192.168.1.100 flowid 1:1
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>By src MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u16 0xM4M5 0xFFFF at -4 match u32 0xM0M1M2M3 0xFFFFFFFF at -8 flowid 1:1
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u16 0xM4M5 0xFFFF at -4 match u32 0xM0M1M2M3 0xFFFFFFFF at -8 flowid 1:1
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>By dst MAC (Ex: MAC = <code>M0-M1-M2-M3-M4-M5</code>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u32 0xM2M3M4M5 0xFFFFFFFF at -12 match u16 0xM0M1 0xFFFF at -14 flowid 1:1
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>tc filter add dev br0 parent 1: protocol ip prio 5 u32 match u16 0x0800 0xFFFF at -2 match u32 0xM2M3M4M5 0xFFFFFFFF at -12 match u16 0xM0M1 0xFFFF at -14 flowid 1:1
+</code></pre></div></td></tr></table></div>
+
 </li>
 </ul>
 </li>
@@ -198,9 +198,9 @@ install the Xposed Framework again.</p>
     <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
 <p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
 <p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
+</code></pre></div></td></tr></table></div>
+
 <p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
 preventing the associations from being made when Wine installs.</p>
 <p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,

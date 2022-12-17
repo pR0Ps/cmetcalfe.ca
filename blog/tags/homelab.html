@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Carey Metcalfe">
-  <meta name="description" content="Posts tagged with 'code' on this site">
+  <meta name="description" content="Posts tagged with 'homelab' on this site">
 
   <link rel="stylesheet" type="text/css" href="../../theme/css/styles.ec0bdb0f.min.css">
 
@@ -16,7 +16,7 @@
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
 
-  <title>Tag: code | Carey Metcalfe</title>
+  <title>Tag: homelab | Carey Metcalfe</title>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -55,7 +55,7 @@
       &#124; <a href="../../blog/index.html">Blog</a>
       &#124; <a href="https://cmetcalfe.ca/feeds/all.rss">RSS Feed</a>
       </p>
-<p>Tag: code
+<p>Tag: homelab
 </p>
     </header>
 
@@ -418,57 +418,15 @@ and use <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> instead.</p>
 </div>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/github-convert-issue-to-pull-request.html">GitHub: Convert an issue to a pull request</a></h1>
-  </div>
-  <div class="article_text">
-    <p><a href="http://github.com">GitHub</a> currently doesn't provide a way to convert an issue to a pull request in their interface.
-However, the capability exists in their <a href="http://developer.github.com/v3/pulls/#alternative-input">Pull Request API</a>.</p>
-<div class="admonition update">
-<p class="admonition-title">Update</p>
-<p>I've built a self-hostable webapp called <a href="https://github.com/pR0Ps/gh-i2p">gh-i2p</a> that makes this process easier.</p>
-</div>
-<p>To call the API using a simple <code>curl</code> command, run the command:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl --user <span class="s2">&quot;[github username]&quot;</span> <span class="se">\</span>
-     --request POST <span class="se">\</span>
-     --data <span class="s1">&#39;{&quot;issue&quot;: &quot;[issue num]&quot;, &quot;head&quot;: &quot;[branch to merge from]&quot;, &quot;base&quot;: &quot;[branch to merge into]&quot;}&#39;</span> <span class="se">\</span>
-     https://api.github.com/repos/<span class="o">[</span>user<span class="o">]</span>/<span class="o">[</span>repo<span class="o">]</span>/pulls
-</code></pre></div></td></tr></table></div>
-
-<p>For example, to make <code>user1</code> change issue 13 into a pull request to merge branch <code>test_branch</code> into
-<code>master</code> in the <code>testing_repo</code> repository belonging to <code>user2</code>, the command would be:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl --user <span class="s1">&#39;user1&#39;</span> <span class="se">\</span>
-     --request POST <span class="se">\</span>
-     --data <span class="s1">&#39;{&quot;issue&quot;: &quot;13&quot;, &quot;head&quot;: &quot;test_branch&quot;, &quot;base&quot;: &quot;master&quot;}&#39;</span> <span class="se">\</span>
-     https://api.github.com/repos/user2/testing_repo/pulls
-</code></pre></div></td></tr></table></div>
-
-<p>To specify a fork of a repository to merge from, put the username followed by a semicolon in front
-of the branch name like so: <code>"username:branch_name"</code></p>
-<p>After running the command, you will be prompted for your GitHub password. Enter it and curl should
-output the JSON response from the API. Make sure to check this response for errors!</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
   <span id="left">
   </span>
   <span id="right">
-      <a href="../../blog/tags/code2.html">Next <i class="fa fa-arrow-circle-right"></i></a>
   </span>
   <div>
-      <a href="../../blog/tags/code.html">[1]</a>
-      <a href="../../blog/tags/code2.html"> 2 </a>
-      <a href="../../blog/tags/code3.html"> 3 </a>
+      <a href="../../blog/tags/homelab.html">[1]</a>
   </div>
 </div>
 </footer>

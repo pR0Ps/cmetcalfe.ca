@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'shell script' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -72,13 +72,13 @@ most likely have the wget tool already installed (if not, you can
 install it via your preferred package manager), while Windows users can
 get it from <a href="http://gnuwin32.sourceforge.net/packages/wget.htm">here</a>.  </p>
 <p>Once wget is installed, run it with the following parameters:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Downloads all public pages on a Google Site</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">#Downloads all public pages on a Google Site</span>
 
 wget -e <span class="nv">robots</span><span class="o">=</span>off -m -k -K -E -rH -Dsites.google.com http://sites.google.com/a/domain/site/
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>This tells wget to spider through all the links on your site and download
 the html files and linked content (such as images). Note that pages that
 aren't linked from anywhere on the site won't be downloaded.</p>
@@ -97,13 +97,13 @@ was find a way to compress all the files and, instead of storing the
 archive locally, pipe the output to another server.  </p>
 <p>After much Googling and messing about, I ended up with the following
 command:  </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">#Uses the tar utility to backup files to an external server</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">#Uses the tar utility to backup files to an external server</span>
 
 tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span> <span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Of course, this is only practical for a one-off data dump. If regular
 backups were needed, using <a href="http://rsync.samba.org/">rsync</a> would be the best option, as it
 only transfers incremental changes. An excellent tutorial can be found

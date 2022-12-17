@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Resolving Windows NetBIOS names in Linux | When accessing computers on a LAN, it&#39;s often useful to access them by name instead of IP. This is especially...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -78,56 +78,52 @@ full member of an NT domain, giving the ability to resolve names from
 it.</p>
 <p>Install winbind via your preferred package manager. For Debian and
 derivatives, the following should work.   </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>apt-get install winbind
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>apt-get install winbind
+</code></pre></div></td></tr></table></div>
+
 <p>Now that winbind is installed, the OS must be configured to use it when
 looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
 to the end of the line starting with "hosts:".</p>
 <p>For example, the line in my file now looks like</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>hosts: files dns wins
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>hosts: files dns wins
+</code></pre></div></td></tr></table></div>
+
 <p>Save the file and reboot to start the winbindd deamon.</p>
 <p>To test if if worked, try pinging a computer on your LAN by name. For
 example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping windows-server
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ping windows-server
 PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
   </div>
 <div class="article_meta">
-  <p>Posted <time data-timeago datetime="2013-03-17T01:49:00-04:00">Mar 17, 2013</time>
+  <p>Posted <time data-reltime datetime="2013-03-17T01:49:00-04:00">Mar 17, 2013</time>
    by Carey Metcalfe  </p>
   <p>
   Tags:
     <a href="../blog/tags/linux.html">linux</a>,    <a href="../blog/tags/windows.html">windows</a>  </p>
 </div>
-  <div id="article_comments">
-    <div id="disqus_thread">
-      <a href="javascript:loadDisqus()"><i class="fa fa-comments fa-lg"></i>Click to load <span class="disqus-comment-count" data-disqus-identifier="blog/resolving-windows-netbios-names-in-linux.html">comments</span></a>
-    </div>
-  </div>
-
-  <script id="dsq-count-scr" src="https://cmetcalfe.disqus.com/count.js" async></script>
-  <script type="text/javascript">
-    var disqus_config = function () {
-        this.page.identifier = "blog/resolving-windows-netbios-names-in-linux.html";
-        this.page.title = "Resolving Windows NetBIOS names in Linux";
-    };
-    loadDisqus = function(sitename) {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://cmetcalfe.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    };
+  <script src="https://giscus.app/client.js"
+          data-repo="pR0Ps/cmetcalfe.ca"
+          data-repo-id="MDEwOlJlcG9zaXRvcnkyNDUwNTQ4Njg="
+          data-category="Announcements"
+          data-category-id="DIC_kwDODps9lM4CTHc_"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="light"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async>
   </script>
 </article>
 
@@ -145,6 +141,6 @@ PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107
   window.addEventListener('load', unmangleEmail)
   </script>
 
-<script type="text/javascript">window.addEventListener("load", lw_timeago);</script>
+<script type="text/javascript">window.addEventListener("load", reltime);</script>
 </body>
 </html>

@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'linux' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -67,9 +67,9 @@
     <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
 <p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
 <p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">export</span> <span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
+</code></pre></div></td></tr></table></div>
+
 <p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
 preventing the associations from being made when Wine installs.</p>
 <p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,
@@ -106,30 +106,29 @@ full member of an NT domain, giving the ability to resolve names from
 it.</p>
 <p>Install winbind via your preferred package manager. For Debian and
 derivatives, the following should work.   </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>apt-get install winbind
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>apt-get install winbind
+</code></pre></div></td></tr></table></div>
+
 <p>Now that winbind is installed, the OS must be configured to use it when
 looking up hostnames. Open the file <code>/etc/nsswitch.conf</code> and add "wins"
 to the end of the line starting with "hosts:".</p>
 <p>For example, the line in my file now looks like</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>hosts: files dns wins
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>hosts: files dns wins
+</code></pre></div></td></tr></table></div>
+
 <p>Save the file and reboot to start the winbindd deamon.</p>
 <p>To test if if worked, try pinging a computer on your LAN by name. For
 example:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping windows-server
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ping windows-server
 PING windows-server <span class="o">(</span><span class="m">192</span>.168.0.107<span class="o">)</span> <span class="m">56</span><span class="o">(</span><span class="m">84</span><span class="o">)</span> bytes of data.
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.268 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.604 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.0.107: <span class="nv">icmp_req</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">128</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.607 ms
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
   </div>
 </article>
 

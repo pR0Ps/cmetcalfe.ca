@@ -7,15 +7,15 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -88,7 +88,7 @@ behind the inputs. Even turn-based games would have issues with the amount of la
 <p>To make sure it wasn't an issue with the streaming software, the gaming PC, or the network, I used
 <code>ping</code> to test the latency to the gateway from a few hosts. All the computers <em>except</em> my laptop had
 normal ping times. Running it on my laptop looked like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -126,7 +126,7 @@ normal ping times. Running it on my laptop looked like this:</p>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ping pfsense.lan <span class="p">|</span> tee &gt;<span class="o">(</span>grep -oP <span class="s1">&#39;time=\K\S*&#39;</span> <span class="p">|</span> spark<span class="o">)</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ping pfsense.lan <span class="p">|</span> tee &gt;<span class="o">(</span>grep -oP <span class="s1">&#39;time=\K\S*&#39;</span> <span class="p">|</span> spark<span class="o">)</span>
 PING pfsense.lan <span class="o">(</span><span class="m">192</span>.168.1.1<span class="o">)</span>: <span class="m">56</span> data bytes
 <span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">0</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.574 ms
 <span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.996 ms
@@ -165,8 +165,8 @@ PING pfsense.lan <span class="o">(</span><span class="m">192</span>.168.1.1<span
 <span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">34</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.017 ms
 ^C
  ▁▁▁▆▃▁▁▁▁▁▁▁▁▁▃▃▂▁▁▁▁▁▁▁▁▂█▆▅▁▁▁▁▁▁
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>(sweet graph at the end courtesy of <a href="https://github.com/holman/spark/wiki/Wicked-Cool-Usage#visualize-ping-times-jnovinger">spark</a>)</p>
 <p>Notice the periodic spikes. Clearly there's something going on with the network connection on my
 laptop. Connecting via a wired connection and running it again confirmed that it was only happening
@@ -174,13 +174,13 @@ on WiFi.</p>
 <h2>WiFi debugging</h2>
 <p>Now that I had narrowed the issue down to an issue with the WiFi, I could start trying to debug it.</p>
 <p>After coming across <a href="https://superuser.com/questions/585473/debugging-osx-airport-wifi-connection/735572#735572">this very helpful post</a> explaining how, I enabled WiFi debug logging by running:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 debug +AllUserland
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 debug +AllUserland
+</code></pre></div></td></tr></table></div>
+
 <p>(remember to turn this off after, <code>airport</code> is pretty chatty with debug logs enabled)</p>
 <p>I then watched the wifi log (<code>sudo tail -f /var/log/wifi.log</code>) as I ran the same <code>ping</code> command.
 Whenever I saw ping times spike, I also saw the following entries in the WiFi log:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -203,7 +203,7 @@ Whenever I saw ping times spike, I also saw the following entries in the WiFi lo
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
-<span class="normal">24</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.764 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code>Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.764 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.765 Info: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; SCAN request received from pid <span class="m">14397</span> <span class="o">(</span>QSyncthingTray<span class="o">)</span> with priority <span class="m">0</span>
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">1</span> does not require a live scan
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">2</span> does not require a live scan
@@ -227,8 +227,8 @@ Tue Nov <span class="m">27</span> <span class="m">02</span>:01:43.847 IPC: &lt;a
 &lt; same scanning logs as above &gt;
 Tue Nov <span class="m">27</span> <span class="m">02</span>:01:46.741 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; INVALIDATED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
 &lt; ... and repeat &gt;
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>This pretty clearly indicates that the <a href="https://github.com/sieren/QSyncthingTray">QSyncthingTray</a> application (a tray icon to monitor
 <a href="https://syncthing.net/">Syncthing</a>) was periodically requesting WiFi scans which, in turn, caused the bursts of latency.
 After quitting the application and running <code>ping</code> again, the times were all &lt;2ms, even after running
@@ -302,7 +302,7 @@ that support those environment variables will transparently forward all their re
 proxy.</p>
 <p>After a bunch of research and testing, I came up with the following script to easily set up the
 temporary proxy:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -321,7 +321,7 @@ temporary proxy:</p>
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
-<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Source this file to automatically setup and teardown an HTTP* proxy through cmetcalfe.ca</span>
 <span class="c1"># Use the PROXY_PORT and PROXY_DEST environment variables to customize the proxy</span>
 
@@ -341,8 +341,8 @@ temporary proxy:</p>
 <span class="c1"># Set environment variables to redirect HTTP* traffic through the proxy</span>
 <span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
 <span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>This script is saved as <code>~/.config/tempproxy.rc</code> and can be sourced to automatically set up a proxy
 session and have it be torn down when the script exits.</p>
 <p>You'll want to use key-based authentication with an unencrypted private key so that you don't need
@@ -361,19 +361,19 @@ variables</a> when making requests.</p>
 <p>The only tricky bit is that the base install of <code>lexicon</code> won't automatically pull in the packages
 required for accessing the Namecheap API. Likewise, <code>requests</code> won't install packages to support
 SOCKS proxies. To install all the required packages you'll need to run a command like:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
+</code></pre></div></td></tr></table></div>
+
 <p>Since lexicon can use environment variables as configuration, I created another small source-able
 file at <code>~/.config/lexicon.rc</code>:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Sets environment variables for accessing the Namecheap API</span>
 
 <span class="c1"># Turn on API access and get an API token here:</span>
@@ -381,8 +381,8 @@ file at <code>~/.config/lexicon.rc</code>:</p>
 <span class="nb">export</span> <span class="nv">PROVIDER</span><span class="o">=</span>namecheap
 <span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
 <span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api token&gt;
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>With that in place, the existing automation script that I had previously set up when I switched to
 using the <code>dns-01</code> challenge just needed some minor tweaks to source the two new files. I've
 provided the script below, along with some other useful ones that use the DNS API.</p>
@@ -393,7 +393,7 @@ of every month.</p>
 <p>Fun fact: The previous <code>http-01</code> version of this script was a mess - it involved juggling <code>nginx</code>
 configurations with symlinks, manually opening up the <code>.well-known/acme-challenge</code> endpoint, and
 some other terrible hacks. This version is <em>much</em> nicer.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -422,7 +422,7 @@ some other terrible hacks. This version is <em>much</em> nicer.</p>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Generate/renew Let&#39;s Encrypt certificates using dehydrated and lexicon</span>
 
 <span class="nb">set</span> -e
@@ -452,37 +452,37 @@ some other terrible hacks. This version is <em>much</em> nicer.</p>
     <span class="nb">echo</span> <span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
     <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <h3><code>dns.sh</code></h3>
 <p>This one is really simple - it just augments the normal lexicon CLI interface with the proxy and
 configuration variables.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># A simple wrapper around lexicon.</span>
 <span class="c1"># Sets up the proxy and configuration, then passes all the arguments to the configured provider</span>
 
 <span class="nb">source</span> ~/.config/lexicon.rc
 <span class="nb">source</span> ~/.config/tempproxy.rc
 lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
-</code></pre></div>
-</td></tr></table>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+</code></pre></div></td></tr></table></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ./dns.sh list cmetcalfe.ca A
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./dns.sh list cmetcalfe.ca A
 ID       TYPE NAME             CONTENT         TTL
 -------- ---- ---------------- --------------- ----
 xxxxxxxx A    @.cmetcalfe.ca   xxx.xxx.xxx.xxx <span class="m">1800</span>
 xxxxxxxx A    www.cmetcalfe.ca xxx.xxx.xxx.xxx <span class="m">1800</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <h3><code>dns-update.sh</code></h3>
 <p>An updated version of my <a href="../blog/dynamic-dns-client-for-namecheap.html">previous script</a> that uses the API instead of the
 <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29/11/how-do-i-use-a-browser-to-dynamically-update-the-hosts-ip">DynamicDNS service Namecheap provides</a>. Called via <code>cron</code> every 30 minutes.</p>
@@ -496,7 +496,7 @@ content as the old one. This means that if you update a record with a new IP, it
 the old record to delete first, leaving you with all of your old IPs set as individual A
 records.</p>
 </div>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -521,7 +521,7 @@ records.</p>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Check the server&#39;s current IP against the IP listed in its DNS entry.</span>
 <span class="c1"># Set the current IP if they differ.</span>
 
@@ -547,8 +547,7 @@ resolve<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
     <span class="k">fi</span>
 <span class="k">fi</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
   </div>
 </article>
 <hr />
@@ -587,33 +586,33 @@ that was left.</p>
 <p>As I was working on the PNG file, I used a small script based on the Python <a href="https://construct.readthedocs.io/en/latest/">construct</a> library to
 visualize the chunks and structure of it so I could figure out what to cut.</p>
 <p>To install <code>construct</code> and download the example PNG specification:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>python3 -m venv .venv
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>python3 -m venv .venv
 <span class="nb">source</span> .venv/bin/activate
 pip install construct
 wget <span class="s2">&quot;https://raw.githubusercontent.com/construct/construct/abd48c4892ceddc60c11d25f4a955573e2c61111/deprecated_gallery/png.py&quot;</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Create <code>pngview.py</code>:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">png</span>  <span class="c1"># the png spec downloaded above</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">png</span>  <span class="c1"># the png spec downloaded above</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Size:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="s2">&quot;bytes&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">png</span><span class="o">.</span><span class="n">png_file</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Running it on the PNG exported from GIMP using the default settings gives:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -664,7 +663,7 @@ wget <span class="s2">&quot;https://raw.githubusercontent.com/construct/construc
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ./pngview.py pixel.png
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png
 Size: <span class="m">146</span> bytes
 Container: 
     <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
@@ -716,10 +715,10 @@ Container:
             <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
             <span class="nv">data</span> <span class="o">=</span> None
             <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>After removing the unneeded <code>pHYs</code>, <code>tIME</code>, and <code>tEXt</code> chunks using a hex editor, it looks like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -744,7 +743,7 @@ Container:
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ./pngview.py pixel.png 
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png 
 Size: <span class="m">69</span> bytes
 Container: 
     <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
@@ -770,11 +769,11 @@ Container:
             <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
             <span class="nv">data</span> <span class="o">=</span> None
             <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>At this point, all that's left to optimize is the image data itself. This is where <code>pngcrush</code>
 shines. After running <code>pngcrush -brute -ow pixel.png</code> we see:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -799,7 +798,7 @@ shines. After running <code>pngcrush -brute -ow pixel.png</code> we see:</p>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ ./pngview.py pixel.png
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png
 Size: <span class="m">67</span> bytes
 Container: 
     <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
@@ -825,18 +824,18 @@ Container:
             <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
             <span class="nv">data</span> <span class="o">=</span> None
             <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>The 2 byte savings in the data seem to have come from setting the <code>color_type</code> to <code>greyscale</code>
 instead of <code>truecolor</code>. To view what actually changed in the data, we can un-<code>deflate</code> it using Python:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">zlib</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">zlib</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># before pngcrush (12 bytes)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x08\xd7</span><span class="s1">c```</span><span class="se">\x00\x00\x00\x04\x00\x01</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00\x00\x00</span><span class="s1">&#39;</span>
@@ -844,8 +843,8 @@ instead of <code>truecolor</code>. To view what actually changed in the data, we
 <span class="o">&gt;&gt;&gt;</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x08\x1d</span><span class="s1">c`</span><span class="se">\x00\x00\x00\x02\x00\x01</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">&#39;</span>
 <span class="o">&gt;&gt;&gt;</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>This makes sense since, according to the <a href="https://www.w3.org/TR/PNG/">PNG spec</a>, when using <code>truecolor</code>, each pixel is an RGB
 triple, requiring 3 bytes. For <code>greyscale</code>, only a single byte representing luminance is needed. The
 first byte is the filtering method, which isn't relevant here since we only have a single pixel.</p>
@@ -864,16 +863,16 @@ compressed the same data into the same number of bytes, but differently. Fortuna
 be told to use specific compression strategies (there are currently 177 of them). My hope is that at
 least one of these will achieve the same results, but in a different way. For starters we'll try the
 first 9:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">for</span> x <span class="k">in</span> <span class="k">$(</span>seq <span class="m">9</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span> x <span class="k">in</span> <span class="k">$(</span>seq <span class="m">9</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
     pngcrush -m <span class="s2">&quot;</span><span class="nv">$x</span><span class="s2">&quot;</span> pixel.png pixel_alt<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.png<span class="p">;</span>
 <span class="k">done</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>A quick <code>ls -l</code> reveals that all of the <code>pixel_alt*.png</code> files are still 67 bytes. Now we just need
 to find one that has different data. <code>sha1sum</code> is the perfect utility for this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -883,7 +882,7 @@ to find one that has different data. <code>sha1sum</code> is the perfect utility
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ sha1sum pixel.png pixel_alt*.png
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sha1sum pixel.png pixel_alt*.png
 d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel.png
 7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt1.png
 7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt2.png
@@ -894,39 +893,39 @@ c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt6.png
 c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt7.png
 c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt8.png
 d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel_alt9.png
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p><code>pixel_alt1.png</code> looks like a good candidate, let's see what changed:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>$ diff &lt;<span class="o">(</span>./pngview.py pixel.png<span class="o">)</span> &lt;<span class="o">(</span>./pngview.py pixel_alt1.png<span class="o">)</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>$ diff &lt;<span class="o">(</span>./pngview.py pixel.png<span class="o">)</span> &lt;<span class="o">(</span>./pngview.py pixel_alt1.png<span class="o">)</span>
 <span class="m">20</span>,21c20,21
 &lt;             <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
 &lt;             <span class="nv">crc</span> <span class="o">=</span> <span class="m">3486004709</span>
 ---
 &gt;             <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08[c`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
 &gt;             <span class="nv">crc</span> <span class="o">=</span> <span class="m">1648381800</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>There's the same amount of data, but it's different. Let's check if it decompresses to the same
 image data:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">zlib</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">zlib</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x08\x1d</span><span class="s1">c`</span><span class="se">\x00\x00\x00\x02\x00\x01</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">&#39;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x08</span><span class="s1">[c`</span><span class="se">\x00\x00\x00\x02\x00\x01</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">&#39;</span>
 <span class="o">&gt;&gt;&gt;</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Yep, this means that <a href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==">pixel_alt1.png</a> is the exact same image with the exact same size, but won't
 be deduplicated when uploading it to Google Photos since the compressed data is different.</p>
 <h2>Final touches</h2>

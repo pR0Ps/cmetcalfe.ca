@@ -7,15 +7,15 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -85,11 +85,11 @@ analysis on it. Some exploration on the device revealed that the settings and
 data were stored in the folder <code>/data/data/com.vlambeer.RidiculousFishing.humble</code>
 (I have the <a href="https://www.humblebundle.com/">Humble Bundle</a> version of the app).</p>
 <p>To pull that folder to my current directory, I used <a href="http://developer.android.com/tools/help/adb.html">ADB</a>:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb root <span class="c1">#Restart adbd on the device with root permissions</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>adb root <span class="c1">#Restart adbd on the device with root permissions</span>
 adb pull /data/data/com.vlambeer.RidiculousFishing.humble/
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>A quick <code>du -h</code> revealed that something was very wrong in the
 <code>files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist</code> file.
 It should've been just a text document, but was well over 200MB.</p>
@@ -102,15 +102,15 @@ escaped) followed by about 200MB of garbage.</p>
 <p>Apparently there are <a href="http://stackoverflow.com/questions/908575/how-to-edit-multi-gigabyte-text-files-vim-doesnt-work">ways to load huge files in Vim</a>, as well as other text
 editors that handle them nicely, but since I already knew what line was causing
 the issue, a simple <a href="http://en.wikipedia.org/wiki/Sed">sed</a> command would do the trick.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>sed <span class="s1">&#39;/Take it to the Smartypants Bar/d&#39;</span> com.vlambeer.RidiculousFishing.humble.plist &gt; temp.plist
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed <span class="s1">&#39;/Take it to the Smartypants Bar/d&#39;</span> com.vlambeer.RidiculousFishing.humble.plist &gt; temp.plist
+</code></pre></div></td></tr></table></div>
+
 <p>Total size of <code>temp.plist</code>: 107.11KB. Much better.</p>
 <p>After going though and deleting some lines around the one that was removed (to
 make the XML valid again), I pushed the file back to the device:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb push temp.plist /data/data/com.vlambeer.RidiculousFishing.humble/files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb push temp.plist /data/data/com.vlambeer.RidiculousFishing.humble/files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist
+</code></pre></div></td></tr></table></div>
+
 <p>Success! The game opened properly, all the freezing issues were gone, and my
 save data was still there.</p>
 <p>Now to find that stupid <a href="http://gaming.stackexchange.com/questions/159564/how-to-catch-the-mimic-fish">Mimic Fish</a>...</p>
@@ -128,9 +128,9 @@ app normally will delete all the data associated with it.</p>
 <p>The way around this is to directly call the package manager from the shell and
 give it the <code>-k</code> argument, which tells it to keep the data and cache directories.</p>
 <p>Simply connect the device to a computer with <a href="http://developer.android.com/tools/help/adb.html">ADB</a> installed and run:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>adb -d shell <span class="s2">&quot;pm uninstall -k com.package.name&quot;</span>
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb -d shell <span class="s2">&quot;pm uninstall -k com.package.name&quot;</span>
+</code></pre></div></td></tr></table></div>
+
 <p>Then just reinstall the app (either from an apk file or the <a href="https://play.google.com/store">Play Store</a>) and
 the app will be back with all of its data intact.</p>
   </div>
@@ -167,17 +167,17 @@ few spots to look:</p>
 equivalent non-login shell startup script). Now look for the line</p>
 <p><code>__git_complete_refs $track_opt</code></p>
 <p>We're going to replace that line with:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     __git_complete_refs <span class="nv">$track_opt</span>
 <span class="k">else</span>
     __gitcomp_direct <span class="s2">&quot;</span><span class="k">$(</span>__git_heads <span class="s2">&quot;&quot;</span> <span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span> <span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
 <span class="k">fi</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>After saving and re-sourcing your <code>.bashrc</code> file, git will autocomplete local branches and tags when
 using <code>git checkout</code>, but will go back to the default behaviour of autocompleting all references
 when using <code>git checkoutr</code>.</p>

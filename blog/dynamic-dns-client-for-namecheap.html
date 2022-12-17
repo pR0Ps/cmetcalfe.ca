@@ -7,15 +7,15 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Dynamic DNS client for Namecheap using bash &amp; cron | In addition to running this website, I also run a home server. For convenience, I point a subdomain...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-<meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, code, linux, shell script, website">
+<meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, code, homelab, linux, shell script, website">
 
   <title>Dynamic DNS client for Namecheap using bash &amp; cron | Carey Metcalfe</title>
 
@@ -77,7 +77,7 @@ keeping a domain's DNS updated, it only runs on Windows.</p>
 <p>Instead, after <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/595">enabling DDNS for the domain</a> and reading <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29">Namecheap's article
 on using the browser to update DDNS</a> I came up with the following <code>dns-update</code>
 script.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -97,7 +97,7 @@ script.</p>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
 <span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
 <span class="nb">set</span> -e
@@ -118,8 +118,8 @@ resolve<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
     <span class="k">fi</span>
 <span class="k">fi</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>It basically checks if the IP returned by a DNS query for the subdomain matches
 the current IP of the server (as reported by an <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> resolver) and if it
 doesn't, sends a request to update the DNS. The <code>echo</code> commands are there just
@@ -127,9 +127,9 @@ to output some record of the IP changing. Maybe I'll do some analysis of it at
 some point.</p>
 <p>To run the script every 30 minutes and redirect any output from it to the
 syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
+</code></pre></div></td></tr></table></div>
+
 <p>With the script automatically running every 30 minutes I can now be confident
 that my subdomain will always be pointing at my home server whenever I need
 access to it.</p>
@@ -142,31 +142,28 @@ and use <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> instead.</p>
 </div>
   </div>
 <div class="article_meta">
-  <p>Posted <time data-timeago datetime="2015-02-26T23:21:00-05:00">Feb 26, 2015</time>
+  <p>Posted <time data-reltime datetime="2015-02-26T23:21:00-05:00">Feb 26, 2015</time>
    by Carey Metcalfe  </p>
-  <p>Last updated <time data-timeago datetime="2015-10-06T22:05:00-04:00">Oct 06, 2015</time></p>
+  <p>Last updated <time data-reltime datetime="2015-10-06T22:05:00-04:00">Oct 06, 2015</time></p>
   <p>
   Tags:
-    <a href="../blog/tags/shell-script.html">shell script</a>,    <a href="../blog/tags/code.html">code</a>,    <a href="../blog/tags/linux.html">linux</a>,    <a href="../blog/tags/website.html">website</a>  </p>
+    <a href="../blog/tags/shell-script.html">shell script</a>,    <a href="../blog/tags/code.html">code</a>,    <a href="../blog/tags/linux.html">linux</a>,    <a href="../blog/tags/website.html">website</a>,    <a href="../blog/tags/homelab.html">homelab</a>  </p>
 </div>
-  <div id="article_comments">
-    <div id="disqus_thread">
-      <a href="javascript:loadDisqus()"><i class="fa fa-comments fa-lg"></i>Click to load <span class="disqus-comment-count" data-disqus-identifier="blog/dynamic-dns-client-for-namecheap.html">comments</span></a>
-    </div>
-  </div>
-
-  <script id="dsq-count-scr" src="https://cmetcalfe.disqus.com/count.js" async></script>
-  <script type="text/javascript">
-    var disqus_config = function () {
-        this.page.identifier = "blog/dynamic-dns-client-for-namecheap.html";
-        this.page.title = "Dynamic DNS client for Namecheap using bash & cron";
-    };
-    loadDisqus = function(sitename) {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://cmetcalfe.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    };
+  <script src="https://giscus.app/client.js"
+          data-repo="pR0Ps/cmetcalfe.ca"
+          data-repo-id="MDEwOlJlcG9zaXRvcnkyNDUwNTQ4Njg="
+          data-category="Announcements"
+          data-category-id="DIC_kwDODps9lM4CTHc_"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="light"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async>
   </script>
 </article>
 
@@ -184,6 +181,6 @@ and use <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> instead.</p>
   window.addEventListener('load', unmangleEmail)
   </script>
 
-<script type="text/javascript">window.addEventListener("load", lw_timeago);</script>
+<script type="text/javascript">window.addEventListener("load", reltime);</script>
 </body>
 </html>

@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts tagged with 'windows' on this site">
 
-  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -158,9 +158,9 @@ special keys can be found <a href="https://social.technet.microsoft.com/wiki/con
 <li>Right click in the folder and click <code>New &gt; Shortcut</code> to open the shortcut creation wizard.</li>
 <li>
 <p>Paste the following as the shortcut's location:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>powershell.exe -windowstyle hidden -command &quot;$myshell=New-Object -com \&quot;Wscript.Shell\&quot;;while(1){$myshell.SendKeys(\&quot;{SCROLLLOCK}{SCROLLLOCK}\&quot;);Start-Sleep -Seconds 60}&quot;
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>powershell.exe -windowstyle hidden -command &quot;$myshell=New-Object -com \&quot;Wscript.Shell\&quot;;while(1){$myshell.SendKeys(\&quot;{SCROLLLOCK}{SCROLLLOCK}\&quot;);Start-Sleep -Seconds 60}&quot;
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>Give it any name you like and hit <code>Finish</code></p>
@@ -174,17 +174,17 @@ usually not noticeable unless you're really looking for it.</p>
 <li>Install <code>cliclick</code> from <a href="https://www.bluem.net/en/projects/cliclick/">the project website</a> or via <a href="https://brew.sh/">brew</a> (<code>brew install cliclick</code>)</li>
 <li>Create a script called <code>jiggle</code> with the following contents:</li>
 </ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
-<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-    cliclick <span class="s1">&#39;m:-1,+0&#39;</span> <span class="s1">&#39;m:+1,+0&#39;</span>
-    sleep <span class="m">60</span>
-<span class="k">done</span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>#!/bin/sh
+while true; do
+    cliclick &#39;m:-1,+0&#39; &#39;m:+1,+0&#39;
+    sleep 60
+done
+</code></pre></div></td></tr></table></div>
+
 <ol>
 <li>Make the script executable (<code>chmod +x jiggle</code>)</li>
 <li>Open System Preferences, search for "login items" and hit enter.</li>
@@ -200,19 +200,19 @@ script. More special key names for <code>xdotool</code> can be found <a href="ht
 <li>Install <a href="https://www.semicomplete.com/projects/xdotool/"><code>xdotool</code></a> (usually available via your package manager)</li>
 <li>Create a script called <code>jiggle</code> with the following contents:</li>
 </ol>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
-<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-    xdotool mousemove_relative --sync -- -1 <span class="m">0</span>
-    xdotool mousemove_relative <span class="m">1</span> <span class="m">0</span>
-    sleep <span class="m">60</span>
-<span class="k">done</span>
-</code></pre></div>
-</td></tr></table>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>#!/bin/sh
+while true; do
+    xdotool mousemove_relative --sync -- -1 0
+    xdotool mousemove_relative 1 0
+    sleep 60
+done
+</code></pre></div></td></tr></table></div>
+
 <ol>
 <li>Make the script executable (<code>chmod +x jiggle</code>)</li>
 <li>Configure your OS to run the script at login. Usually this would be done through the desktop
@@ -308,14 +308,14 @@ and register it from your computer.</p>
 <li>Open a command prompt window in the Macshift folder.</li>
 <li>
 <p>In the command prompt window type</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; [device MAC address, no dashes]
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; [device MAC address, no dashes]
+</code></pre></div></td></tr></table></div>
+
 <p>For example, if my device's MAC address was "00-11-22-33-44-55" and my
 connection name was "Local Area Connection", I would run</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;Local Area Connection&quot; 001122334455
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>macshift.exe -i &quot;Local Area Connection&quot; 001122334455
+</code></pre></div></td></tr></table></div>
+
 </li>
 <li>
 <p>Wait until you have network access again and try to load a page. If
@@ -325,9 +325,9 @@ connection name was "Local Area Connection", I would run</p>
 <li>Use the steps in the section above to register your computer again.</li>
 <li>
 <p>Once you have ResNet access, go back to the command prompt and run</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; -d
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>macshift.exe -i &quot;[connection name]&quot; -d
+</code></pre></div></td></tr></table></div>
+
 <p>This restores your MAC address back to it's original value.</p>
 </li>
 </ol>

@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="YouTube subscriptions via RSS | The subscription feature on Youtube allows you to keep up to date with content that people upload to the site. Since I...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -79,9 +79,9 @@ was using</a>) was <a href="http://youtube-eng.blogspot.ca/2014/03/committing-to
 RSS reader section on <a href="https://support.google.com/youtube/answer/6098135">this support page</a>.</p>
 </div>
 <p>The feed for anyone's subscribed videos is at the URL:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>http://gdata.youtube.com/feeds/base/users/&lt;userID&gt;/newsubscriptionvideos
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>http://gdata.youtube.com/feeds/base/users/&lt;userID&gt;/newsubscriptionvideos
+</code></pre></div></td></tr></table></div>
+
 <p>Where <code>&lt;userID&gt;</code> is either your YouTube account name or the long string of
 letters and numbers that can be found on the <a href="https://www.youtube.com/account_advanced">YouTube advanced settings page</a>.</p>
 <p>Try it out, it makes watching episodic content a breeze!</p>
@@ -94,31 +94,28 @@ url above.</p>
 </div>
   </div>
 <div class="article_meta">
-  <p>Posted <time data-timeago datetime="2015-03-04T20:00:00-05:00">Mar 04, 2015</time>
+  <p>Posted <time data-reltime datetime="2015-03-04T20:00:00-05:00">Mar 04, 2015</time>
    by Carey Metcalfe  </p>
-  <p>Last updated <time data-timeago datetime="2015-05-04T19:26:00-04:00">May 04, 2015</time></p>
+  <p>Last updated <time data-reltime datetime="2015-05-04T19:26:00-04:00">May 04, 2015</time></p>
   <p>
   Tags:
     <a href="../blog/tags/sites.html">sites</a>  </p>
 </div>
-  <div id="article_comments">
-    <div id="disqus_thread">
-      <a href="javascript:loadDisqus()"><i class="fa fa-comments fa-lg"></i>Click to load <span class="disqus-comment-count" data-disqus-identifier="blog/youtube-subscriptions-via-rss.html">comments</span></a>
-    </div>
-  </div>
-
-  <script id="dsq-count-scr" src="https://cmetcalfe.disqus.com/count.js" async></script>
-  <script type="text/javascript">
-    var disqus_config = function () {
-        this.page.identifier = "blog/youtube-subscriptions-via-rss.html";
-        this.page.title = "YouTube subscriptions via RSS";
-    };
-    loadDisqus = function(sitename) {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://cmetcalfe.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    };
+  <script src="https://giscus.app/client.js"
+          data-repo="pR0Ps/cmetcalfe.ca"
+          data-repo-id="MDEwOlJlcG9zaXRvcnkyNDUwNTQ4Njg="
+          data-category="Announcements"
+          data-category-id="DIC_kwDODps9lM4CTHc_"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="light"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async>
   </script>
 </article>
 
@@ -136,6 +133,6 @@ url above.</p>
   window.addEventListener('load', unmangleEmail)
   </script>
 
-<script type="text/javascript">window.addEventListener("load", lw_timeago);</script>
+<script type="text/javascript">window.addEventListener("load", reltime);</script>
 </body>
 </html>

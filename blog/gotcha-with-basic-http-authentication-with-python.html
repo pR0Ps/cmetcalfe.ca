@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Gotcha with basic HTTP authentication in Python | When doing basic HTTP authentication in Python, make sure your authentication realm is surrounded by...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -70,21 +70,21 @@
     <p>When doing basic HTTP authentication in Python, make sure your
 authentication realm is surrounded by double, <em>NOT</em> single quotes.</p>
 <p>Bad:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=&#39;/&#39;&quot;</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Good:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">,</span> <span class="s2">&quot;Basic realm=</span><span class="se">\&quot;</span><span class="s2">/</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>The single quotes work with most browsers, curl, wget, and tons of other
 tools. However, when using Python to access the page (using
 <a href="http://docs.python.org/2/library/urllib2.html#urllib2.HTTPPasswordMgrWithDefaultRealm">urllib2.HTTPPasswordMgrWithDefaultRealm</a> to manage authentication)
@@ -92,30 +92,27 @@ single quotes don't trigger the "automatic retry with authentication"
 response, and instead just raise a 401 <code>HTTPError</code>.</p>
   </div>
 <div class="article_meta">
-  <p>Posted <time data-timeago datetime="2013-06-12T19:53:00-04:00">Jun 12, 2013</time>
+  <p>Posted <time data-reltime datetime="2013-06-12T19:53:00-04:00">Jun 12, 2013</time>
    by Carey Metcalfe  </p>
   <p>
   Tags:
     <a href="../blog/tags/code.html">code</a>,    <a href="../blog/tags/python.html">python</a>  </p>
 </div>
-  <div id="article_comments">
-    <div id="disqus_thread">
-      <a href="javascript:loadDisqus()"><i class="fa fa-comments fa-lg"></i>Click to load <span class="disqus-comment-count" data-disqus-identifier="blog/gotcha-with-basic-http-authentication-with-python.html">comments</span></a>
-    </div>
-  </div>
-
-  <script id="dsq-count-scr" src="https://cmetcalfe.disqus.com/count.js" async></script>
-  <script type="text/javascript">
-    var disqus_config = function () {
-        this.page.identifier = "blog/gotcha-with-basic-http-authentication-with-python.html";
-        this.page.title = "Gotcha with basic HTTP authentication in Python";
-    };
-    loadDisqus = function(sitename) {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://cmetcalfe.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    };
+  <script src="https://giscus.app/client.js"
+          data-repo="pR0Ps/cmetcalfe.ca"
+          data-repo-id="MDEwOlJlcG9zaXRvcnkyNDUwNTQ4Njg="
+          data-category="Announcements"
+          data-category-id="DIC_kwDODps9lM4CTHc_"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="light"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async>
   </script>
 </article>
 
@@ -133,6 +130,6 @@ response, and instead just raise a 401 <code>HTTPError</code>.</p>
   window.addEventListener('load', unmangleEmail)
   </script>
 
-<script type="text/javascript">window.addEventListener("load", lw_timeago);</script>
+<script type="text/javascript">window.addEventListener("load", reltime);</script>
 </body>
 </html>

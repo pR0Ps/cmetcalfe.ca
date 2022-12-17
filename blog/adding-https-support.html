@@ -7,9 +7,9 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Adding HTTPS support to this site | Yesterday I finally ticked something off my todo list that&#39;d been on there for a while - I added proper HTTPS support...">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -94,30 +94,27 @@ deploying the site. For continual, automated renewals, a monthly <code>cron</cod
 expiry of certs being 90 days, this should be frequent enough that the certs should never expire.</p>
   </div>
 <div class="article_meta">
-  <p>Posted <time data-timeago datetime="2016-01-23T10:00:00-05:00">Jan 23, 2016</time>
+  <p>Posted <time data-reltime datetime="2016-01-23T10:00:00-05:00">Jan 23, 2016</time>
    by Carey Metcalfe  </p>
   <p>
   Tags:
     <a href="../blog/tags/website.html">website</a>,    <a href="../blog/tags/security.html">security</a>,    <a href="../blog/tags/lets-encrypt.html">let's encrypt</a>  </p>
 </div>
-  <div id="article_comments">
-    <div id="disqus_thread">
-      <a href="javascript:loadDisqus()"><i class="fa fa-comments fa-lg"></i>Click to load <span class="disqus-comment-count" data-disqus-identifier="blog/adding-https-support.html">comments</span></a>
-    </div>
-  </div>
-
-  <script id="dsq-count-scr" src="https://cmetcalfe.disqus.com/count.js" async></script>
-  <script type="text/javascript">
-    var disqus_config = function () {
-        this.page.identifier = "blog/adding-https-support.html";
-        this.page.title = "Adding HTTPS support to this site";
-    };
-    loadDisqus = function(sitename) {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://cmetcalfe.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    };
+  <script src="https://giscus.app/client.js"
+          data-repo="pR0Ps/cmetcalfe.ca"
+          data-repo-id="MDEwOlJlcG9zaXRvcnkyNDUwNTQ4Njg="
+          data-category="Announcements"
+          data-category-id="DIC_kwDODps9lM4CTHc_"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="light"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async>
   </script>
 </article>
 
@@ -135,6 +132,6 @@ expiry of certs being 90 days, this should be frequent enough that the certs sho
   window.addEventListener('load', unmangleEmail)
   </script>
 
-<script type="text/javascript">window.addEventListener("load", lw_timeago);</script>
+<script type="text/javascript">window.addEventListener("load", reltime);</script>
 </body>
 </html>

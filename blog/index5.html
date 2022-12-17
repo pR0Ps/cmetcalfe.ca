@@ -7,15 +7,15 @@
   <meta name="author" content="Carey Metcalfe">
   <meta name="description" content="Posts by Carey Metcalfe">
 
-  <link rel="stylesheet" type="text/css" href="../theme/css/styles.425931e9.min.css">
+  <link rel="stylesheet" type="text/css" href="../theme/css/styles.ec0bdb0f.min.css">
 
-  <script src="../theme/js/scripts.ab06d70e.min.js" type="text/javascript"></script>
+  <script src="../theme/js/scripts.7db5858b.min.js" type="text/javascript"></script>
 
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -77,7 +77,7 @@ keeping a domain's DNS updated, it only runs on Windows.</p>
 <p>Instead, after <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/595">enabling DDNS for the domain</a> and reading <a href="https://www.namecheap.com/support/knowledgebase/article.aspx/29">Namecheap's article
 on using the browser to update DDNS</a> I came up with the following <code>dns-update</code>
 script.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
 <span class="normal"> 4</span>
@@ -97,7 +97,7 @@ script.</p>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
-<span class="normal">21</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
 <span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
 <span class="nb">set</span> -e
@@ -118,8 +118,8 @@ resolve<span class="o">()</span> <span class="o">{</span>
         <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
     <span class="k">fi</span>
 <span class="k">fi</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>It basically checks if the IP returned by a DNS query for the subdomain matches
 the current IP of the server (as reported by an <a href="https://en.wikipedia.org/wiki/OpenDNS">OpenDNS</a> resolver) and if it
 doesn't, sends a request to update the DNS. The <code>echo</code> commands are there just
@@ -127,9 +127,9 @@ to output some record of the IP changing. Maybe I'll do some analysis of it at
 some point.</p>
 <p>To run the script every 30 minutes and redirect any output from it to the
 syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
+</code></pre></div></td></tr></table></div>
+
 <p>With the script automatically running every 30 minutes I can now be confident
 that my subdomain will always be pointing at my home server whenever I need
 access to it.</p>
@@ -162,23 +162,23 @@ appear in the Dock or Force Quit window."</p>
 <code>/Applications/[application name].app/Contents/Info.plist</code> and add
 <code>&lt;key&gt;LSUIElement&lt;/key&gt;&lt;true/&gt;</code> after the first <code>&lt;dict&gt;</code> tag. The result should
 look something like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
 <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;dict&gt;</span>
 <span class="hll">    <span class="nt">&lt;key&gt;</span>LSUIElement<span class="nt">&lt;/key&gt;&lt;true/&gt;</span>
-</span>    <span class="c">&lt;!-- The rest of the plist data --&gt;</span>
+</span>    <span class="cm">&lt;!-- The rest of the plist data --&gt;</span>
 <span class="nt">&lt;/dict&gt;</span>
 <span class="nt">&lt;/plist&gt;</span>
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Once the <code>LSUIElement</code> key is set to <code>true</code>, relaunch the application to see the
 changes.</p>
 <p>Be warned that not only does this remove the application from the
@@ -214,31 +214,31 @@ less of a coherent tutorial.</p>
 any detail on this because there's already a <a href="https://web.archive.org/web/20161224200646/https://wiki.cyanogenmod.org/w/Development">good overview</a> on the CyanogenMod wiki that covers
 the entire process, as well as a <a href="https://wiki.lineageos.org/devices/hammerhead/build">customized guide for the Nexus 5</a>. If those articles are
 followed correctly, you should be able to build a fresh CyanogenMod image with:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>brunch hammerhead
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>brunch hammerhead
+</code></pre></div></td></tr></table></div>
+
 <h2>Enabling the kernel module</h2>
 <p>Once the image was flashed to the phone and verified to be working, the next step was to enable the
 <a href="https://www.kernel.org/doc/html/v4.16/input/devices/xpad.html">xpad kernel module</a>.</p>
 <p>Copy current kernel config to the kernel directory for editing:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">cd</span> &lt;build dir&gt;/kernel/lge/hammerhead/
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span> &lt;build dir&gt;/kernel/lge/hammerhead/
 cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>Edit the config:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>make menuconfig <span class="nv">ARCH</span><span class="o">=</span>arm
-</code></pre></div>
-</td></tr></table>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make menuconfig <span class="nv">ARCH</span><span class="o">=</span>arm
+</code></pre></div></td></tr></table></div>
+
 <p>At this point, a menu will come up. Search for <code>xpad</code> (type <code>/xpad</code>), and take note of the paths.
 <code>ESC</code> out of the search, navigate the tree and enable the modules found with the search. Save and
 exit.</p>
 <p>Copy the config back and clean up any stray <code>*.o</code> files:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>cp .config arch/arm/configs/cyanogenmod_hammerhead_defconfig
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>cp .config arch/arm/configs/cyanogenmod_hammerhead_defconfig
 make mrproper
-</code></pre></div>
-</td></tr></table>
+</code></pre></div></td></tr></table></div>
+
 <p>After enabling the module, rebuild CyanogenMod using the normal <code>brunch hammerhead</code> and flash it to
 the phone.</p>
 <h2>Submitting the change upstream</h2>
