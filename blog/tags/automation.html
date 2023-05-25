@@ -117,17 +117,17 @@ temporary proxy:</p>
 <span class="nv">PID</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$$</span><span class="s2">&quot;</span>
 
 <span class="c1"># Teardown the SSH connection when the script exits</span>
-<span class="nb">trap</span> <span class="s1">&#39;ssh -q -S &quot;.ctrl-socket-$PID&quot; -O exit &quot;$PROXY_DEST&quot;&#39;</span> EXIT
+<span class="nb">trap</span><span class="w"> </span><span class="s1">&#39;ssh -q -S &quot;.ctrl-socket-$PID&quot; -O exit &quot;$PROXY_DEST&quot;&#39;</span><span class="w"> </span>EXIT
 
 <span class="c1"># Set up an SSH tunnel and wait for the port to be forwarded before continuing</span>
-<span class="k">if</span> ! ssh -o <span class="nv">ExitOnForwardFailure</span><span class="o">=</span>yes -M -S <span class="s2">&quot;.ctrl-socket-</span><span class="nv">$PID</span><span class="s2">&quot;</span> -f -N -D <span class="s2">&quot;</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$PROXY_DEST</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;Failed to open SSH tunnel, exiting&quot;</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>ssh<span class="w"> </span>-o<span class="w"> </span><span class="nv">ExitOnForwardFailure</span><span class="o">=</span>yes<span class="w"> </span>-M<span class="w"> </span>-S<span class="w"> </span><span class="s2">&quot;.ctrl-socket-</span><span class="nv">$PID</span><span class="s2">&quot;</span><span class="w"> </span>-f<span class="w"> </span>-N<span class="w"> </span>-D<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROXY_DEST</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to open SSH tunnel, exiting&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 
 <span class="c1"># Set environment variables to redirect HTTP* traffic through the proxy</span>
-<span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
-<span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>This script is saved as <code>~/.config/tempproxy.rc</code> and can be sourced to automatically set up a proxy
@@ -148,7 +148,7 @@ variables</a> when making requests.</p>
 <p>The only tricky bit is that the base install of <code>lexicon</code> won't automatically pull in the packages
 required for accessing the Namecheap API. Likewise, <code>requests</code> won't install packages to support
 SOCKS proxies. To install all the required packages you'll need to run a command like:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;requests[socks]&#39;</span><span class="w"> </span><span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Since lexicon can use environment variables as configuration, I created another small source-able
@@ -165,9 +165,9 @@ file at <code>~/.config/lexicon.rc</code>:</p>
 
 <span class="c1"># Turn on API access and get an API token here:</span>
 <span class="c1"># https://ap.www.namecheap.com/settings/tools/apiaccess/</span>
-<span class="nb">export</span> <span class="nv">PROVIDER</span><span class="o">=</span>namecheap
-<span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
-<span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api token&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">PROVIDER</span><span class="o">=</span>namecheap
+<span class="nb">export</span><span class="w"> </span><span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api<span class="w"> </span>token&gt;
 </code></pre></div></td></tr></table></div>
 
 <p>With that in place, the existing automation script that I had previously set up when I switched to
@@ -212,32 +212,32 @@ some other terrible hacks. This version is <em>much</em> nicer.</p>
 <span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Generate/renew Let&#39;s Encrypt certificates using dehydrated and lexicon</span>
 
-<span class="nb">set</span> -e
+<span class="nb">set</span><span class="w"> </span>-e
 
 <span class="c1"># Set configuration variables and setup the proxy</span>
-<span class="nb">source</span> ~/.config/lexicon.rc
-<span class="nb">source</span> ~/.config/tempproxy.rc
+<span class="nb">source</span><span class="w"> </span>~/.config/lexicon.rc
+<span class="nb">source</span><span class="w"> </span>~/.config/tempproxy.rc
 
-<span class="nb">cd</span> /etc/nginx/ssl
+<span class="nb">cd</span><span class="w"> </span>/etc/nginx/ssl
 
 <span class="c1"># Update the certs.</span>
 <span class="c1"># Hook script copied verbatim from</span>
 <span class="c1"># https://github.com/AnalogJ/lexicon/blob/master/examples/dehydrated.default.sh</span>
-<span class="k">if</span> ! dehydrated --accept-terms --cron --challenge dns-01 --hook dehydrated.default.sh<span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;Failed to renew certificates&quot;</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>dehydrated<span class="w"> </span>--accept-terms<span class="w"> </span>--cron<span class="w"> </span>--challenge<span class="w"> </span>dns-01<span class="w"> </span>--hook<span class="w"> </span>dehydrated.default.sh<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to renew certificates&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 
 <span class="c1"># Reload the nginx config if it&#39;s currently running</span>
-<span class="k">if</span> ! systemctl is-active nginx.service &gt; /dev/null<span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;nginx isn&#39;t running, not reloading it&quot;</span>
-    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>systemctl<span class="w"> </span>is-active<span class="w"> </span>nginx.service<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;nginx isn&#39;t running, not reloading it&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> ! systemctl reload nginx.service<span class="p">;</span> <span class="k">then</span>
-    systemctl status nginx.service
-    <span class="nb">echo</span> <span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>nginx.service<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>systemctl<span class="w"> </span>status<span class="w"> </span>nginx.service
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 </code></pre></div></td></tr></table></div>
 
@@ -254,20 +254,20 @@ configuration variables.</p>
 <span class="c1"># A simple wrapper around lexicon.</span>
 <span class="c1"># Sets up the proxy and configuration, then passes all the arguments to the configured provider</span>
 
-<span class="nb">source</span> ~/.config/lexicon.rc
-<span class="nb">source</span> ~/.config/tempproxy.rc
-lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+<span class="nb">source</span><span class="w"> </span>~/.config/lexicon.rc
+<span class="nb">source</span><span class="w"> </span>~/.config/tempproxy.rc
+lexicon<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./dns.sh list cmetcalfe.ca A
-ID       TYPE NAME             CONTENT         TTL
--------- ---- ---------------- --------------- ----
-xxxxxxxx A    @.cmetcalfe.ca   xxx.xxx.xxx.xxx <span class="m">1800</span>
-xxxxxxxx A    www.cmetcalfe.ca xxx.xxx.xxx.xxx <span class="m">1800</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./dns.sh<span class="w"> </span>list<span class="w"> </span>cmetcalfe.ca<span class="w"> </span>A
+ID<span class="w">       </span>TYPE<span class="w"> </span>NAME<span class="w">             </span>CONTENT<span class="w">         </span>TTL
+--------<span class="w"> </span>----<span class="w"> </span>----------------<span class="w"> </span>---------------<span class="w"> </span>----
+xxxxxxxx<span class="w"> </span>A<span class="w">    </span>@.cmetcalfe.ca<span class="w">   </span>xxx.xxx.xxx.xxx<span class="w"> </span><span class="m">1800</span>
+xxxxxxxx<span class="w"> </span>A<span class="w">    </span>www.cmetcalfe.ca<span class="w"> </span>xxx.xxx.xxx.xxx<span class="w"> </span><span class="m">1800</span>
 </code></pre></div></td></tr></table></div>
 
 <h3><code>dns-update.sh</code></h3>
@@ -312,27 +312,27 @@ records.</p>
 <span class="c1"># Check the server&#39;s current IP against the IP listed in its DNS entry.</span>
 <span class="c1"># Set the current IP if they differ.</span>
 
-<span class="nb">set</span> -e
+<span class="nb">set</span><span class="w"> </span>-e
 
-resolve<span class="o">()</span> <span class="o">{</span>
-    <span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> @resolver1.opendns.com <span class="m">2</span>&gt; /dev/null <span class="p">|</span> sed <span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span> <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
-    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> <span class="p">|</span> head -1 <span class="p">|</span> cut -f5
+resolve<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span>@resolver1.opendns.com<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f5
 <span class="o">}</span>
 
-<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve &lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
-<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve myip.opendns.com<span class="k">)</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">source</span> ~/.config/lexicon.rc
-    <span class="nb">source</span> ~/.config/tempproxy.rc
-    <span class="k">if</span> ! lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> delete cmetcalfe.ca A --name <span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Failed to delete old DNS record, not setting the new one.&quot;</span>
-        <span class="nb">exit</span> <span class="m">1</span>
-    <span class="k">fi</span>
-    <span class="k">if</span> lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> update cmetcalfe.ca A --name <span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span> --content <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> --ttl<span class="o">=</span><span class="m">900</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">else</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">fi</span>
+<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve<span class="w"> </span>&lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
+<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve<span class="w"> </span>myip.opendns.com<span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">source</span><span class="w"> </span>~/.config/lexicon.rc
+<span class="w">    </span><span class="nb">source</span><span class="w"> </span>~/.config/tempproxy.rc
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>!<span class="w"> </span>lexicon<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span><span class="w"> </span>delete<span class="w"> </span>cmetcalfe.ca<span class="w"> </span>A<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to delete old DNS record, not setting the new one.&quot;</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>lexicon<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span><span class="w"> </span>update<span class="w"> </span>cmetcalfe.ca<span class="w"> </span>A<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="w"> </span>--content<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span><span class="w"> </span>--ttl<span class="o">=</span><span class="m">900</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
 <span class="k">fi</span>
 </code></pre></div></td></tr></table></div>
   </div>

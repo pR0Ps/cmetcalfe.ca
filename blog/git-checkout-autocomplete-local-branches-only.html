@@ -97,10 +97,10 @@ equivalent non-login shell startup script). Now look for the line</p>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;checkoutr&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    __git_complete_refs <span class="nv">$track_opt</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;checkoutr&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>__git_complete_refs<span class="w"> </span><span class="nv">$track_opt</span>
 <span class="k">else</span>
-    __gitcomp_direct <span class="s2">&quot;</span><span class="k">$(</span>__git_heads <span class="s2">&quot;&quot;</span> <span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span> <span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">    </span>__gitcomp_direct<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>__git_heads<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
 <span class="k">fi</span>
 </code></pre></div></td></tr></table></div>
 

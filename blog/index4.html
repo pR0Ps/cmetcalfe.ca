@@ -88,7 +88,7 @@ turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs
 </div>
 <h1>Lets go!</h1>
 <p>Hitting the server without any processing will give the following result:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
@@ -107,23 +107,23 @@ turned into a supported API. See <a href="https://www.bankofcanada.ca/valet/docs
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="nt">&quot;terms&quot;</span><span class="p">:{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span><span class="w"></span>
-<span class="p">},</span><span class="w"></span>
-<span class="nt">&quot;seriesDetail&quot;</span><span class="p">:{</span><span class="w"></span>
-<span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;USD/CAD&quot;</span><span class="p">,</span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;US dollar to Canadian dollar daily exchange rate&quot;</span><span class="p">}</span><span class="w"></span>
-<span class="p">},</span><span class="w"></span>
-<span class="nt">&quot;observations&quot;</span><span class="p">:[</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-02&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;e&quot;</span><span class="p">:</span><span class="mi">-64</span><span class="p">}},</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-03&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3435</span><span class="p">}},</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-04&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3315</span><span class="p">}},</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-05&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3244</span><span class="p">}},</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-06&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3214</span><span class="p">}},</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-09&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3240</span><span class="p">}},</span><span class="w"></span>
-<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span><span class="w"></span>
-<span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span>
+<span class="nt">&quot;terms&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://www.bankofcanada.ca/terms/&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;seriesDetail&quot;</span><span class="p">:{</span>
+<span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;USD/CAD&quot;</span><span class="p">,</span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;US dollar to Canadian dollar daily exchange rate&quot;</span><span class="p">}</span>
+<span class="p">},</span>
+<span class="nt">&quot;observations&quot;</span><span class="p">:[</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-02&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;e&quot;</span><span class="p">:</span><span class="mi">-64</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-03&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3435</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-04&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3315</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-05&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3244</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-06&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3214</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-09&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3240</span><span class="p">}},</span>
+<span class="p">{</span><span class="nt">&quot;d&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-10&quot;</span><span class="p">,</span><span class="nt">&quot;FXUSDCAD&quot;</span><span class="p">:{</span><span class="nt">&quot;v&quot;</span><span class="p">:</span><span class="mf">1.3213</span><span class="p">}}</span>
+<span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
 <p>To get the information we want, we need to iterate over the elements in the <code>observations</code> list and
@@ -133,8 +133,8 @@ single-element dictionaries, we'll also need to "add" (merge) them together.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span><span class="w"> </span><span class="p">|</span><span class="se">\</span>
+jq<span class="w"> </span><span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add</span>
 <span class="s1">&#39;</span>
 </code></pre></div></td></tr></table></div>
@@ -147,15 +147,15 @@ jq <span class="s1">&#39;</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3435</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3315</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3244</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3214</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.324</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3213</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-02&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3435</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3315</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3244</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3214</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.324</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3213</span>
+<span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
 <p>That first <code>null</code> entry where there was no data is going to cause problems later, so let's just
@@ -163,8 +163,8 @@ delete it using the <code>del</code> function:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span><span class="w"> </span><span class="p">|</span><span class="se">\</span>
+jq<span class="w"> </span><span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls)</span>
 <span class="s1">&#39;</span>
 </code></pre></div></td></tr></table></div>
@@ -176,14 +176,14 @@ jq <span class="s1">&#39;</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3435</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3315</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3244</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3214</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.324</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3213</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3435</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3315</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3244</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3214</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.324</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3213</span>
+<span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Now this may be good enough for most purposes, but it would be useful to compute some other
@@ -193,13 +193,13 @@ matter of passing the values to an <code>add / length</code> filter. For example
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span><span class="w"> </span><span class="p">|</span><span class="se">\</span>
+jq<span class="w"> </span><span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) | add / length</span>
 <span class="s1">&#39;</span>
 </code></pre></div></td></tr></table></div>
 
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="mf">1.327683333333333</span><span class="w"></span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="mf">1.327683333333333</span>
 </code></pre></div></td></tr></table></div>
 
 <p><a name="tldr"></a>We can now construct an object that has both the average, as well as all the
@@ -211,8 +211,8 @@ data. Putting it all together we get:</p>
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span> <span class="p">|</span><span class="se">\</span>
-jq <span class="s1">&#39;</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2017-01-01&amp;end_date=2017-01-10&quot;</span><span class="w"> </span><span class="p">|</span><span class="se">\</span>
+jq<span class="w"> </span><span class="s1">&#39;</span>
 <span class="s1">    [.observations[] | {(.d) : .FXUSDCAD.v}] | add | del(.[] | nulls) |</span>
 <span class="s1">    {</span>
 <span class="s1">        &quot;average&quot;: (add / length),</span>
@@ -231,17 +231,17 @@ jq <span class="s1">&#39;</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;average&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.327683333333333</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;values&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3435</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3315</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3244</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3214</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.324</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3213</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;average&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.327683333333333</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;values&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;2017-01-03&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3435</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;2017-01-04&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3315</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;2017-01-05&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3244</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;2017-01-06&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3214</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;2017-01-09&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.324</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;2017-01-10&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3213</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
 <p>And that's it! Hopefully you found this useful, if not for it's stated purpose of retrieving
@@ -258,7 +258,7 @@ out there when it comes to manipulating JSON on the command line.</p>
 <h3>Currency codes</h3>
 <p>A list of codes can be easily scraped from the lookup page. The command and its result are below for
 reference.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>curl -s <span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span> <span class="p">|</span> grep -Eo <span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Eo<span class="w"> </span><span class="s1">&#39;&quot;FX......&quot;.*&lt;&#39;</span>
 </code></pre></div></td></tr></table></div>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>

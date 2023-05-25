@@ -77,7 +77,7 @@ command:  </p>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">#Uses the tar utility to backup files to an external server</span>
 
-tar zcvf - /path/to/backup <span class="p">|</span> ssh user@server:port dd <span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span> <span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
+tar<span class="w"> </span>zcvf<span class="w"> </span>-<span class="w"> </span>/path/to/backup<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span>user@server:port<span class="w"> </span>dd<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="s2">&quot;filename.tgz&quot;</span><span class="w"> </span><span class="nv">obs</span><span class="o">=</span><span class="m">1024</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Of course, this is only practical for a one-off data dump. If regular

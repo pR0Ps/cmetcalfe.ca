@@ -73,7 +73,7 @@ app normally will delete all the data associated with it.</p>
 <p>The way around this is to directly call the package manager from the shell and
 give it the <code>-k</code> argument, which tells it to keep the data and cache directories.</p>
 <p>Simply connect the device to a computer with <a href="http://developer.android.com/tools/help/adb.html">ADB</a> installed and run:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb -d shell <span class="s2">&quot;pm uninstall -k com.package.name&quot;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>-d<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;pm uninstall -k com.package.name&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Then just reinstall the app (either from an apk file or the <a href="https://play.google.com/store">Play Store</a>) and

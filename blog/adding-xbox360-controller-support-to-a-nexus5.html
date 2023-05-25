@@ -89,7 +89,7 @@ less of a coherent tutorial.</p>
 any detail on this because there's already a <a href="https://web.archive.org/web/20161224200646/https://wiki.cyanogenmod.org/w/Development">good overview</a> on the CyanogenMod wiki that covers
 the entire process, as well as a <a href="https://wiki.lineageos.org/devices/hammerhead/build">customized guide for the Nexus 5</a>. If those articles are
 followed correctly, you should be able to build a fresh CyanogenMod image with:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>brunch hammerhead
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>brunch<span class="w"> </span>hammerhead
 </code></pre></div></td></tr></table></div>
 
 <h2>Enabling the kernel module</h2>
@@ -97,12 +97,12 @@ followed correctly, you should be able to build a fresh CyanogenMod image with:<
 <a href="https://www.kernel.org/doc/html/v4.16/input/devices/xpad.html">xpad kernel module</a>.</p>
 <p>Copy current kernel config to the kernel directory for editing:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span> &lt;build dir&gt;/kernel/lge/hammerhead/
-cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>&lt;build<span class="w"> </span>dir&gt;/kernel/lge/hammerhead/
+cp<span class="w"> </span>arch/arm/configs/cyanogenmod_hammerhead_defconfig<span class="w"> </span>.config
 </code></pre></div></td></tr></table></div>
 
 <p>Edit the config:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make menuconfig <span class="nv">ARCH</span><span class="o">=</span>arm
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make<span class="w"> </span>menuconfig<span class="w"> </span><span class="nv">ARCH</span><span class="o">=</span>arm
 </code></pre></div></td></tr></table></div>
 
 <p>At this point, a menu will come up. Search for <code>xpad</code> (type <code>/xpad</code>), and take note of the paths.
@@ -110,8 +110,8 @@ cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
 exit.</p>
 <p>Copy the config back and clean up any stray <code>*.o</code> files:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>cp .config arch/arm/configs/cyanogenmod_hammerhead_defconfig
-make mrproper
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>cp<span class="w"> </span>.config<span class="w"> </span>arch/arm/configs/cyanogenmod_hammerhead_defconfig
+make<span class="w"> </span>mrproper
 </code></pre></div></td></tr></table></div>
 
 <p>After enabling the module, rebuild CyanogenMod using the normal <code>brunch hammerhead</code> and flash it to

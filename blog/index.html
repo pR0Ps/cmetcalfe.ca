@@ -174,13 +174,13 @@ it has stayed exactly the same.</p>
 <p>Given this, as long as we only use the function definition to do the patch, it should work for every
 version of Proxmox VE to date (and hopefully into the future). Using <code>sed</code> to prepend <code>orig_cmd();
 return;</code> to the function should work nicely:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed --in-place <span class="s1">&#39;s/checked_command: function(orig_cmd) {$/&amp; orig_cmd(); return;/&#39;</span> /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed<span class="w"> </span>--in-place<span class="w"> </span><span class="s1">&#39;s/checked_command: function(orig_cmd) {$/&amp; orig_cmd(); return;/&#39;</span><span class="w"> </span>/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 </code></pre></div></td></tr></table></div>
 
 <p>This results in the following change:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="gd">-checked_command: function(orig_cmd) {</span><span class="w"></span>
-<span class="gi">+checked_command: function(orig_cmd) { orig_cmd(); return;</span><span class="w"></span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="gd">-checked_command: function(orig_cmd) {</span>
+<span class="gi">+checked_command: function(orig_cmd) { orig_cmd(); return;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Notice that the <code>sed</code> script is looking for the function definition followed by a line ending (<code>$</code>).
@@ -189,7 +189,7 @@ make any changes, making it safe to blindly run multiple times. This becomes imp
 automating it later.</p>
 <p>Now that we know it works, we should harden it up against whitespace changes by replacing the spaces
 in the regex with <code>\s*</code> (0 or more whitespace characters):</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed --in-place <span class="s1">&#39;s/checked_command:\s*function(orig_cmd)\s*{\s*$/&amp; orig_cmd(); return;/&#39;</span> /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed<span class="w"> </span>--in-place<span class="w"> </span><span class="s1">&#39;s/checked_command:\s*function(orig_cmd)\s*{\s*$/&amp; orig_cmd(); return;/&#39;</span><span class="w"> </span>/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 </code></pre></div></td></tr></table></div>
 
 <p>The only thing left to solve is which file <code>checked_command</code> is defined in. Since it used to be a
@@ -199,8 +199,8 @@ future.</p>
 <p>To deal with this, we use <code>grep</code> to find the file that it's defined in, then run the previous
 command over that file:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>grep --files-with-matches --include <span class="s1">&#39;*.js&#39;</span> --recursive --null <span class="s1">&#39;checked_command:\s*function(orig_cmd)&#39;</span> /usr/share/ <span class="se">\</span>
-  <span class="p">|</span> xargs --null --no-run-if-empty sed --in-place <span class="s1">&#39;s/checked_command:\s*function(orig_cmd)\s*{\s*$/&amp; orig_cmd(); return;/&#39;</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>grep<span class="w"> </span>--files-with-matches<span class="w"> </span>--include<span class="w"> </span><span class="s1">&#39;*.js&#39;</span><span class="w"> </span>--recursive<span class="w"> </span>--null<span class="w"> </span><span class="s1">&#39;checked_command:\s*function(orig_cmd)&#39;</span><span class="w"> </span>/usr/share/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>--null<span class="w"> </span>--no-run-if-empty<span class="w"> </span>sed<span class="w"> </span>--in-place<span class="w"> </span><span class="s1">&#39;s/checked_command:\s*function(orig_cmd)\s*{\s*$/&amp; orig_cmd(); return;/&#39;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Simply run this command on your Proxmox VE server<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>, refresh the web UI, and the notice should be
@@ -220,8 +220,8 @@ that applies our patch just before the web server.</p>
 port 8006, we can use <code>netstat</code> to enumerate all listening TCP ports and <code>grep</code> to filter it down to
 just the port we're interested in:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>$ netstat --listening --tcp --numeric-ports --program <span class="p">|</span> grep <span class="m">8006</span>
-tcp  <span class="m">0</span>  <span class="m">0</span>  <span class="m">0</span>.0.0.0:8006  <span class="m">0</span>.0.0.0:*  LISTEN  <span class="m">15771</span>/pveproxy
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>netstat<span class="w"> </span>--listening<span class="w"> </span>--tcp<span class="w"> </span>--numeric-ports<span class="w"> </span>--program<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">8006</span>
+tcp<span class="w">  </span><span class="m">0</span><span class="w">  </span><span class="m">0</span><span class="w">  </span><span class="m">0</span>.0.0.0:8006<span class="w">  </span><span class="m">0</span>.0.0.0:*<span class="w">  </span>LISTEN<span class="w">  </span><span class="m">15771</span>/pveproxy
 </code></pre></div></td></tr></table></div>
 
 <p>Once we know the PID of the program, running <code>systemctl status &lt;PID&gt;</code> will show the status
@@ -243,16 +243,16 @@ Putting it all together:</p>
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Remove Proxmox VE subscription notice</span><span class="w"></span>
-<span class="na">Before</span><span class="o">=</span><span class="s">pveproxy.service</span><span class="w"></span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Remove Proxmox VE subscription notice</span>
+<span class="na">Before</span><span class="o">=</span><span class="s">pveproxy.service</span>
 
-<span class="k">[Service]</span><span class="w"></span>
-<span class="na">Type</span><span class="o">=</span><span class="s">oneshot</span><span class="w"></span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/bin/sh -c &quot;grep --files-with-matches --include &#39;*.js&#39; --recursive --null &#39;checked_command:\s*function(orig_cmd)&#39; /usr/share/ | xargs --null --no-run-if-empty sed --in-place &#39;s/checked_command:\s*function(orig_cmd)\s*{\s*$/&amp; orig_cmd(); return;/&#39;&quot;</span><span class="w"></span>
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">oneshot</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/bin/sh -c &quot;grep --files-with-matches --include &#39;*.js&#39; --recursive --null &#39;checked_command:\s*function(orig_cmd)&#39; /usr/share/ | xargs --null --no-run-if-empty sed --in-place &#39;s/checked_command:\s*function(orig_cmd)\s*{\s*$/&amp; orig_cmd()</span><span class="c1">; return;/&#39;&quot;</span>
 
-<span class="k">[Install]</span><span class="w"></span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">pveproxy.service</span><span class="w"></span>
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">pveproxy.service</span>
 </code></pre></div></td></tr></table></div>
 
 <p>2. <code>systemctl enable --now no-subscription-notice.service</code></p>

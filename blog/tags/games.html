@@ -158,8 +158,8 @@ data were stored in the folder <code>/data/data/com.vlambeer.RidiculousFishing.h
 (I have the <a href="https://www.humblebundle.com/">Humble Bundle</a> version of the app).</p>
 <p>To pull that folder to my current directory, I used <a href="http://developer.android.com/tools/help/adb.html">ADB</a>:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>adb root <span class="c1">#Restart adbd on the device with root permissions</span>
-adb pull /data/data/com.vlambeer.RidiculousFishing.humble/
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>root<span class="w"> </span><span class="c1">#Restart adbd on the device with root permissions</span>
+adb<span class="w"> </span>pull<span class="w"> </span>/data/data/com.vlambeer.RidiculousFishing.humble/
 </code></pre></div></td></tr></table></div>
 
 <p>A quick <code>du -h</code> revealed that something was very wrong in the
@@ -174,13 +174,13 @@ escaped) followed by about 200MB of garbage.</p>
 <p>Apparently there are <a href="http://stackoverflow.com/questions/908575/how-to-edit-multi-gigabyte-text-files-vim-doesnt-work">ways to load huge files in Vim</a>, as well as other text
 editors that handle them nicely, but since I already knew what line was causing
 the issue, a simple <a href="http://en.wikipedia.org/wiki/Sed">sed</a> command would do the trick.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed <span class="s1">&#39;/Take it to the Smartypants Bar/d&#39;</span> com.vlambeer.RidiculousFishing.humble.plist &gt; temp.plist
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed<span class="w"> </span><span class="s1">&#39;/Take it to the Smartypants Bar/d&#39;</span><span class="w"> </span>com.vlambeer.RidiculousFishing.humble.plist<span class="w"> </span>&gt;<span class="w"> </span>temp.plist
 </code></pre></div></td></tr></table></div>
 
 <p>Total size of <code>temp.plist</code>: 107.11KB. Much better.</p>
 <p>After going though and deleting some lines around the one that was removed (to
 make the XML valid again), I pushed the file back to the device:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb push temp.plist /data/data/com.vlambeer.RidiculousFishing.humble/files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>push<span class="w"> </span>temp.plist<span class="w"> </span>/data/data/com.vlambeer.RidiculousFishing.humble/files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist
 </code></pre></div></td></tr></table></div>
 
 <p>Success! The game opened properly, all the freezing issues were gone, and my

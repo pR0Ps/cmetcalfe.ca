@@ -126,45 +126,45 @@ normal ping times. Running it on my laptop looked like this:</p>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ping pfsense.lan <span class="p">|</span> tee &gt;<span class="o">(</span>grep -oP <span class="s1">&#39;time=\K\S*&#39;</span> <span class="p">|</span> spark<span class="o">)</span>
-PING pfsense.lan <span class="o">(</span><span class="m">192</span>.168.1.1<span class="o">)</span>: <span class="m">56</span> data bytes
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">0</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.574 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">0</span>.996 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.568 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">92</span>.153 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">39</span>.079 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">5</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">14</span>.307 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">6</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.570 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">7</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.636 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">8</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.698 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">9</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.568 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">10</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.550 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">11</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.106 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">12</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.832 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">13</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.816 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">14</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">36</span>.598 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">15</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">42</span>.863 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">16</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">20</span>.747 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">17</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">3</span>.112 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">18</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.695 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">19</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.795 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">20</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.504 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">21</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.644 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">22</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.732 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">23</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.581 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">24</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.794 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">25</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">33</span>.367 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">26</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">124</span>.282 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">27</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">97</span>.719 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">28</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">76</span>.501 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">29</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.734 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">30</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.622 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">31</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.758 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">32</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.578 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">33</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.527 ms
-<span class="m">64</span> bytes from <span class="m">192</span>.168.1.1: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">34</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span><span class="m">1</span>.017 ms
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>ping<span class="w"> </span>pfsense.lan<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>&gt;<span class="o">(</span>grep<span class="w"> </span>-oP<span class="w"> </span><span class="s1">&#39;time=\K\S*&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>spark<span class="o">)</span>
+PING<span class="w"> </span>pfsense.lan<span class="w"> </span><span class="o">(</span><span class="m">192</span>.168.1.1<span class="o">)</span>:<span class="w"> </span><span class="m">56</span><span class="w"> </span>data<span class="w"> </span>bytes
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.574<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">0</span>.996<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.568<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">92</span>.153<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">39</span>.079<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">5</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">14</span>.307<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">6</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.570<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">7</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.636<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">8</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.698<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">9</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.568<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.550<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">11</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.106<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">12</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.832<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">13</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.816<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">14</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">36</span>.598<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">42</span>.863<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">16</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">20</span>.747<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">17</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">3</span>.112<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">18</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.695<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">19</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.795<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">20</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.504<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">21</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.644<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">22</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.732<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">23</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.581<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">24</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.794<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">25</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">33</span>.367<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">26</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">124</span>.282<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">27</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">97</span>.719<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">28</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">76</span>.501<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">29</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.734<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">30</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.622<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">31</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.758<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">32</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.578<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">33</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.527<span class="w"> </span>ms
+<span class="m">64</span><span class="w"> </span>bytes<span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.1.1:<span class="w"> </span><span class="nv">icmp_seq</span><span class="o">=</span><span class="m">34</span><span class="w"> </span><span class="nv">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="nv">time</span><span class="o">=</span><span class="m">1</span>.017<span class="w"> </span>ms
 ^C
- ▁▁▁▆▃▁▁▁▁▁▁▁▁▁▃▃▂▁▁▁▁▁▁▁▁▂█▆▅▁▁▁▁▁▁
+<span class="w"> </span>▁▁▁▆▃▁▁▁▁▁▁▁▁▁▃▃▂▁▁▁▁▁▁▁▁▂█▆▅▁▁▁▁▁▁
 </code></pre></div></td></tr></table></div>
 
 <p>(sweet graph at the end courtesy of <a href="https://github.com/holman/spark/wiki/Wicked-Cool-Usage#visualize-ping-times-jnovinger">spark</a>)</p>
@@ -174,7 +174,7 @@ on WiFi.</p>
 <h2>WiFi debugging</h2>
 <p>Now that I had narrowed the issue down to an issue with the WiFi, I could start trying to debug it.</p>
 <p>After coming across <a href="https://superuser.com/questions/585473/debugging-osx-airport-wifi-connection/735572#735572">this very helpful post</a> explaining how, I enabled WiFi debug logging by running:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport en0 debug +AllUserland
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo<span class="w"> </span>/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport<span class="w"> </span>en0<span class="w"> </span>debug<span class="w"> </span>+AllUserland
 </code></pre></div></td></tr></table></div>
 
 <p>(remember to turn this off after, <code>airport</code> is pretty chatty with debug logs enabled)</p>
@@ -203,30 +203,30 @@ Whenever I saw ping times spike, I also saw the following entries in the WiFi lo
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
-<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code>Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.764 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.765 Info: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; SCAN request received from pid <span class="m">14397</span> <span class="o">(</span>QSyncthingTray<span class="o">)</span> with priority <span class="m">0</span>
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">1</span> does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">2</span> does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">3</span> does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">4</span> does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">5</span> does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray on channel <span class="m">6</span> does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 Scan: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Cache-assisted scan request <span class="k">for</span> QSyncthingTray does not require a live scan
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 AutoJoin: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; Successful cache-assisted scan request <span class="k">for</span> QSyncthingTray with channels <span class="o">{(</span>
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f9073514e70&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">1</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>,
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f90735507b0&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">2</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>,
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f9073526370&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">3</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>,
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f9073526420&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">4</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>,
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f907354ddb0&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">5</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>,
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766     &lt;CWChannel: 0x7f907354c6c0&gt; <span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">6</span><span class="o">(</span>2GHz<span class="o">)</span>, <span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>, active<span class="o">]</span>
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.766 <span class="o">)}</span> took <span class="m">0</span>.0007 seconds, returned <span class="m">5</span> results
-&lt; insert logs like above <span class="k">for</span> all channels all the way up to <span class="m">144</span> <span class="k">in</span> batches of <span class="m">6</span> &gt;
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:33.779 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; INVALIDATED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
-&lt; <span class="m">10</span> seconds pass&gt;
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:43.847 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; ADDED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
-&lt; same scanning logs as above &gt;
-Tue Nov <span class="m">27</span> <span class="m">02</span>:01:46.741 IPC: &lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt; INVALIDATED XPC CLIENT CONNECTION <span class="o">[</span>QSyncthingTray <span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>, <span class="nv">euid</span><span class="o">=</span><span class="m">501</span>, <span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
-&lt; ... and repeat &gt;
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code>Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.764<span class="w"> </span>IPC:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>ADDED<span class="w"> </span>XPC<span class="w"> </span>CLIENT<span class="w"> </span>CONNECTION<span class="w"> </span><span class="o">[</span>QSyncthingTray<span class="w"> </span><span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>,<span class="w"> </span><span class="nv">euid</span><span class="o">=</span><span class="m">501</span>,<span class="w"> </span><span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.765<span class="w"> </span>Info:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>SCAN<span class="w"> </span>request<span class="w"> </span>received<span class="w"> </span>from<span class="w"> </span>pid<span class="w"> </span><span class="m">14397</span><span class="w"> </span><span class="o">(</span>QSyncthingTray<span class="o">)</span><span class="w"> </span>with<span class="w"> </span>priority<span class="w"> </span><span class="m">0</span>
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>on<span class="w"> </span>channel<span class="w"> </span><span class="m">1</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>on<span class="w"> </span>channel<span class="w"> </span><span class="m">2</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>on<span class="w"> </span>channel<span class="w"> </span><span class="m">3</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>on<span class="w"> </span>channel<span class="w"> </span><span class="m">4</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>on<span class="w"> </span>channel<span class="w"> </span><span class="m">5</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>on<span class="w"> </span>channel<span class="w"> </span><span class="m">6</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>Scan:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>a<span class="w"> </span>live<span class="w"> </span>scan
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span>AutoJoin:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>Successful<span class="w"> </span>cache-assisted<span class="w"> </span>scan<span class="w"> </span>request<span class="w"> </span><span class="k">for</span><span class="w"> </span>QSyncthingTray<span class="w"> </span>with<span class="w"> </span>channels<span class="w"> </span><span class="o">{(</span>
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w">     </span>&lt;CWChannel:<span class="w"> </span>0x7f9073514e70&gt;<span class="w"> </span><span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">1</span><span class="o">(</span>2GHz<span class="o">)</span>,<span class="w"> </span><span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>,<span class="w"> </span>active<span class="o">]</span>,
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w">     </span>&lt;CWChannel:<span class="w"> </span>0x7f90735507b0&gt;<span class="w"> </span><span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">2</span><span class="o">(</span>2GHz<span class="o">)</span>,<span class="w"> </span><span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>,<span class="w"> </span>active<span class="o">]</span>,
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w">     </span>&lt;CWChannel:<span class="w"> </span>0x7f9073526370&gt;<span class="w"> </span><span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">3</span><span class="o">(</span>2GHz<span class="o">)</span>,<span class="w"> </span><span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>,<span class="w"> </span>active<span class="o">]</span>,
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w">     </span>&lt;CWChannel:<span class="w"> </span>0x7f9073526420&gt;<span class="w"> </span><span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">4</span><span class="o">(</span>2GHz<span class="o">)</span>,<span class="w"> </span><span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>,<span class="w"> </span>active<span class="o">]</span>,
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w">     </span>&lt;CWChannel:<span class="w"> </span>0x7f907354ddb0&gt;<span class="w"> </span><span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">5</span><span class="o">(</span>2GHz<span class="o">)</span>,<span class="w"> </span><span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>,<span class="w"> </span>active<span class="o">]</span>,
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w">     </span>&lt;CWChannel:<span class="w"> </span>0x7f907354c6c0&gt;<span class="w"> </span><span class="o">[</span><span class="nv">channelNumber</span><span class="o">=</span><span class="m">6</span><span class="o">(</span>2GHz<span class="o">)</span>,<span class="w"> </span><span class="nv">channelWidth</span><span class="o">={</span>20MHz<span class="o">}</span>,<span class="w"> </span>active<span class="o">]</span>
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.766<span class="w"> </span><span class="o">)}</span><span class="w"> </span>took<span class="w"> </span><span class="m">0</span>.0007<span class="w"> </span>seconds,<span class="w"> </span>returned<span class="w"> </span><span class="m">5</span><span class="w"> </span>results
+&lt;<span class="w"> </span>insert<span class="w"> </span>logs<span class="w"> </span>like<span class="w"> </span>above<span class="w"> </span><span class="k">for</span><span class="w"> </span>all<span class="w"> </span>channels<span class="w"> </span>all<span class="w"> </span>the<span class="w"> </span>way<span class="w"> </span>up<span class="w"> </span>to<span class="w"> </span><span class="m">144</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>batches<span class="w"> </span>of<span class="w"> </span><span class="m">6</span><span class="w"> </span>&gt;
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:33.779<span class="w"> </span>IPC:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>INVALIDATED<span class="w"> </span>XPC<span class="w"> </span>CLIENT<span class="w"> </span>CONNECTION<span class="w"> </span><span class="o">[</span>QSyncthingTray<span class="w"> </span><span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>,<span class="w"> </span><span class="nv">euid</span><span class="o">=</span><span class="m">501</span>,<span class="w"> </span><span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
+&lt;<span class="w"> </span><span class="m">10</span><span class="w"> </span>seconds<span class="w"> </span>pass&gt;
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:43.847<span class="w"> </span>IPC:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>ADDED<span class="w"> </span>XPC<span class="w"> </span>CLIENT<span class="w"> </span>CONNECTION<span class="w"> </span><span class="o">[</span>QSyncthingTray<span class="w"> </span><span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>,<span class="w"> </span><span class="nv">euid</span><span class="o">=</span><span class="m">501</span>,<span class="w"> </span><span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
+&lt;<span class="w"> </span>same<span class="w"> </span>scanning<span class="w"> </span>logs<span class="w"> </span>as<span class="w"> </span>above<span class="w"> </span>&gt;
+Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">27</span><span class="w"> </span><span class="m">02</span>:01:46.741<span class="w"> </span>IPC:<span class="w"> </span>&lt;airportd<span class="o">[</span><span class="m">68</span><span class="o">]</span>&gt;<span class="w"> </span>INVALIDATED<span class="w"> </span>XPC<span class="w"> </span>CLIENT<span class="w"> </span>CONNECTION<span class="w"> </span><span class="o">[</span>QSyncthingTray<span class="w"> </span><span class="o">(</span><span class="nv">pid</span><span class="o">=</span><span class="m">14397</span>,<span class="w"> </span><span class="nv">euid</span><span class="o">=</span><span class="m">501</span>,<span class="w"> </span><span class="nv">egid</span><span class="o">=</span><span class="m">20</span><span class="o">)]</span>
+&lt;<span class="w"> </span>...<span class="w"> </span>and<span class="w"> </span>repeat<span class="w"> </span>&gt;
 </code></pre></div></td></tr></table></div>
 
 <p>This pretty clearly indicates that the <a href="https://github.com/sieren/QSyncthingTray">QSyncthingTray</a> application (a tray icon to monitor
@@ -330,17 +330,17 @@ temporary proxy:</p>
 <span class="nv">PID</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$$</span><span class="s2">&quot;</span>
 
 <span class="c1"># Teardown the SSH connection when the script exits</span>
-<span class="nb">trap</span> <span class="s1">&#39;ssh -q -S &quot;.ctrl-socket-$PID&quot; -O exit &quot;$PROXY_DEST&quot;&#39;</span> EXIT
+<span class="nb">trap</span><span class="w"> </span><span class="s1">&#39;ssh -q -S &quot;.ctrl-socket-$PID&quot; -O exit &quot;$PROXY_DEST&quot;&#39;</span><span class="w"> </span>EXIT
 
 <span class="c1"># Set up an SSH tunnel and wait for the port to be forwarded before continuing</span>
-<span class="k">if</span> ! ssh -o <span class="nv">ExitOnForwardFailure</span><span class="o">=</span>yes -M -S <span class="s2">&quot;.ctrl-socket-</span><span class="nv">$PID</span><span class="s2">&quot;</span> -f -N -D <span class="s2">&quot;</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$PROXY_DEST</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;Failed to open SSH tunnel, exiting&quot;</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>ssh<span class="w"> </span>-o<span class="w"> </span><span class="nv">ExitOnForwardFailure</span><span class="o">=</span>yes<span class="w"> </span>-M<span class="w"> </span>-S<span class="w"> </span><span class="s2">&quot;.ctrl-socket-</span><span class="nv">$PID</span><span class="s2">&quot;</span><span class="w"> </span>-f<span class="w"> </span>-N<span class="w"> </span>-D<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROXY_DEST</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to open SSH tunnel, exiting&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 
 <span class="c1"># Set environment variables to redirect HTTP* traffic through the proxy</span>
-<span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
-<span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;socks5://127.0.0.1:</span><span class="nv">$PROXY_PORT</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HTTP_PROXY</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>This script is saved as <code>~/.config/tempproxy.rc</code> and can be sourced to automatically set up a proxy
@@ -361,7 +361,7 @@ variables</a> when making requests.</p>
 <p>The only tricky bit is that the base install of <code>lexicon</code> won't automatically pull in the packages
 required for accessing the Namecheap API. Likewise, <code>requests</code> won't install packages to support
 SOCKS proxies. To install all the required packages you'll need to run a command like:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip install <span class="s1">&#39;requests[socks]&#39;</span> <span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;requests[socks]&#39;</span><span class="w"> </span><span class="s1">&#39;dns-lexicon[namecheap]&#39;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Since lexicon can use environment variables as configuration, I created another small source-able
@@ -378,9 +378,9 @@ file at <code>~/.config/lexicon.rc</code>:</p>
 
 <span class="c1"># Turn on API access and get an API token here:</span>
 <span class="c1"># https://ap.www.namecheap.com/settings/tools/apiaccess/</span>
-<span class="nb">export</span> <span class="nv">PROVIDER</span><span class="o">=</span>namecheap
-<span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
-<span class="nb">export</span> <span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api token&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">PROVIDER</span><span class="o">=</span>namecheap
+<span class="nb">export</span><span class="w"> </span><span class="nv">LEXICON_NAMECHEAP_USERNAME</span><span class="o">=</span>&lt;username&gt;
+<span class="nb">export</span><span class="w"> </span><span class="nv">LEXICON_NAMECHEAP_TOKEN</span><span class="o">=</span>&lt;api<span class="w"> </span>token&gt;
 </code></pre></div></td></tr></table></div>
 
 <p>With that in place, the existing automation script that I had previously set up when I switched to
@@ -425,32 +425,32 @@ some other terrible hacks. This version is <em>much</em> nicer.</p>
 <span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="c1"># Generate/renew Let&#39;s Encrypt certificates using dehydrated and lexicon</span>
 
-<span class="nb">set</span> -e
+<span class="nb">set</span><span class="w"> </span>-e
 
 <span class="c1"># Set configuration variables and setup the proxy</span>
-<span class="nb">source</span> ~/.config/lexicon.rc
-<span class="nb">source</span> ~/.config/tempproxy.rc
+<span class="nb">source</span><span class="w"> </span>~/.config/lexicon.rc
+<span class="nb">source</span><span class="w"> </span>~/.config/tempproxy.rc
 
-<span class="nb">cd</span> /etc/nginx/ssl
+<span class="nb">cd</span><span class="w"> </span>/etc/nginx/ssl
 
 <span class="c1"># Update the certs.</span>
 <span class="c1"># Hook script copied verbatim from</span>
 <span class="c1"># https://github.com/AnalogJ/lexicon/blob/master/examples/dehydrated.default.sh</span>
-<span class="k">if</span> ! dehydrated --accept-terms --cron --challenge dns-01 --hook dehydrated.default.sh<span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;Failed to renew certificates&quot;</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>dehydrated<span class="w"> </span>--accept-terms<span class="w"> </span>--cron<span class="w"> </span>--challenge<span class="w"> </span>dns-01<span class="w"> </span>--hook<span class="w"> </span>dehydrated.default.sh<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to renew certificates&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 
 <span class="c1"># Reload the nginx config if it&#39;s currently running</span>
-<span class="k">if</span> ! systemctl is-active nginx.service &gt; /dev/null<span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;nginx isn&#39;t running, not reloading it&quot;</span>
-    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>systemctl<span class="w"> </span>is-active<span class="w"> </span>nginx.service<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;nginx isn&#39;t running, not reloading it&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> ! systemctl reload nginx.service<span class="p">;</span> <span class="k">then</span>
-    systemctl status nginx.service
-    <span class="nb">echo</span> <span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>nginx.service<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>systemctl<span class="w"> </span>status<span class="w"> </span>nginx.service
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to reload nginx config, check the error log&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 </code></pre></div></td></tr></table></div>
 
@@ -467,20 +467,20 @@ configuration variables.</p>
 <span class="c1"># A simple wrapper around lexicon.</span>
 <span class="c1"># Sets up the proxy and configuration, then passes all the arguments to the configured provider</span>
 
-<span class="nb">source</span> ~/.config/lexicon.rc
-<span class="nb">source</span> ~/.config/tempproxy.rc
-lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+<span class="nb">source</span><span class="w"> </span>~/.config/lexicon.rc
+<span class="nb">source</span><span class="w"> </span>~/.config/tempproxy.rc
+lexicon<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./dns.sh list cmetcalfe.ca A
-ID       TYPE NAME             CONTENT         TTL
--------- ---- ---------------- --------------- ----
-xxxxxxxx A    @.cmetcalfe.ca   xxx.xxx.xxx.xxx <span class="m">1800</span>
-xxxxxxxx A    www.cmetcalfe.ca xxx.xxx.xxx.xxx <span class="m">1800</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./dns.sh<span class="w"> </span>list<span class="w"> </span>cmetcalfe.ca<span class="w"> </span>A
+ID<span class="w">       </span>TYPE<span class="w"> </span>NAME<span class="w">             </span>CONTENT<span class="w">         </span>TTL
+--------<span class="w"> </span>----<span class="w"> </span>----------------<span class="w"> </span>---------------<span class="w"> </span>----
+xxxxxxxx<span class="w"> </span>A<span class="w">    </span>@.cmetcalfe.ca<span class="w">   </span>xxx.xxx.xxx.xxx<span class="w"> </span><span class="m">1800</span>
+xxxxxxxx<span class="w"> </span>A<span class="w">    </span>www.cmetcalfe.ca<span class="w"> </span>xxx.xxx.xxx.xxx<span class="w"> </span><span class="m">1800</span>
 </code></pre></div></td></tr></table></div>
 
 <h3><code>dns-update.sh</code></h3>
@@ -525,27 +525,27 @@ records.</p>
 <span class="c1"># Check the server&#39;s current IP against the IP listed in its DNS entry.</span>
 <span class="c1"># Set the current IP if they differ.</span>
 
-<span class="nb">set</span> -e
+<span class="nb">set</span><span class="w"> </span>-e
 
-resolve<span class="o">()</span> <span class="o">{</span>
-    <span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> @resolver1.opendns.com <span class="m">2</span>&gt; /dev/null <span class="p">|</span> sed <span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span> <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
-    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> <span class="p">|</span> head -1 <span class="p">|</span> cut -f5
+resolve<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span>@resolver1.opendns.com<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f5
 <span class="o">}</span>
 
-<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve &lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
-<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve myip.opendns.com<span class="k">)</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">source</span> ~/.config/lexicon.rc
-    <span class="nb">source</span> ~/.config/tempproxy.rc
-    <span class="k">if</span> ! lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> delete cmetcalfe.ca A --name <span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Failed to delete old DNS record, not setting the new one.&quot;</span>
-        <span class="nb">exit</span> <span class="m">1</span>
-    <span class="k">fi</span>
-    <span class="k">if</span> lexicon <span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span> update cmetcalfe.ca A --name <span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span> --content <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> --ttl<span class="o">=</span><span class="m">900</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">else</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">fi</span>
+<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve<span class="w"> </span>&lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
+<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve<span class="w"> </span>myip.opendns.com<span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">source</span><span class="w"> </span>~/.config/lexicon.rc
+<span class="w">    </span><span class="nb">source</span><span class="w"> </span>~/.config/tempproxy.rc
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>!<span class="w"> </span>lexicon<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span><span class="w"> </span>delete<span class="w"> </span>cmetcalfe.ca<span class="w"> </span>A<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to delete old DNS record, not setting the new one.&quot;</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>lexicon<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROVIDER</span><span class="s2">&quot;</span><span class="w"> </span>update<span class="w"> </span>cmetcalfe.ca<span class="w"> </span>A<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;&lt;subdomain&gt;.cmetcalfe.ca&quot;</span><span class="w"> </span>--content<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span><span class="w"> </span>--ttl<span class="o">=</span><span class="m">900</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
 <span class="k">fi</span>
 </code></pre></div></td></tr></table></div>
   </div>
@@ -589,10 +589,10 @@ visualize the chunks and structure of it so I could figure out what to cut.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>python3 -m venv .venv
-<span class="nb">source</span> .venv/bin/activate
-pip install construct
-wget <span class="s2">&quot;https://raw.githubusercontent.com/construct/construct/abd48c4892ceddc60c11d25f4a955573e2c61111/deprecated_gallery/png.py&quot;</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>construct
+wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/construct/construct/abd48c4892ceddc60c11d25f4a955573e2c61111/deprecated_gallery/png.py&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Create <code>pngview.py</code>:</p>
@@ -663,58 +663,58 @@ wget <span class="s2">&quot;https://raw.githubusercontent.com/construct/construc
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png
-Size: <span class="m">146</span> bytes
-Container: 
-    <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
-    <span class="nv">image_header</span> <span class="o">=</span> Container: 
-        <span class="nv">length</span> <span class="o">=</span> <span class="m">13</span>
-        <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;IHDR&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-        <span class="nv">width</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">height</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">bit_depth</span> <span class="o">=</span> <span class="m">8</span>
-        <span class="nv">color_type</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> truecolor <span class="m">2</span>
-        <span class="nv">compression_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> deflate <span class="m">0</span>
-        <span class="nv">filter_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> adaptive5 <span class="m">0</span>
-        <span class="nv">interlace_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> none <span class="m">0</span>
-        <span class="nv">crc</span> <span class="o">=</span> <span class="m">2423739358</span>
-    <span class="nv">chunks</span> <span class="o">=</span> ListContainer: 
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">9</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;pHYs&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> Container: 
-                <span class="nv">pixels_per_unit_x</span> <span class="o">=</span> <span class="m">11811</span>
-                <span class="nv">pixels_per_unit_y</span> <span class="o">=</span> <span class="m">11811</span>
-                <span class="nv">unit</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> meter <span class="m">1</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2024095606</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">7</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;tIME&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> Container: 
-                <span class="nv">year</span> <span class="o">=</span> <span class="m">2018</span>
-                <span class="nv">month</span> <span class="o">=</span> <span class="m">12</span>
-                <span class="nv">day</span> <span class="o">=</span> <span class="m">11</span>
-                <span class="nv">hour</span> <span class="o">=</span> <span class="m">5</span>
-                <span class="nv">minute</span> <span class="o">=</span> <span class="m">2</span>
-                <span class="nv">second</span> <span class="o">=</span> <span class="m">19</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">904567710</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">25</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;tEXt&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> Container: 
-                <span class="nv">keyword</span> <span class="o">=</span> u<span class="s1">&#39;Comment&#39;</span> <span class="o">(</span>total <span class="m">7</span><span class="o">)</span>
-                <span class="nv">text</span> <span class="o">=</span> b<span class="s1">&#39;Created with GIM&#39;</span>... <span class="o">(</span>truncated, total <span class="m">17</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">1468075543</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">12</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IDAT&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">12</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">657729290</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">0</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> None
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./pngview.py<span class="w"> </span>pixel.png
+Size:<span class="w"> </span><span class="m">146</span><span class="w"> </span>bytes
+Container:<span class="w"> </span>
+<span class="w">    </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">image_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">        </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span>
+<span class="w">        </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IHDR&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">bit_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<span class="w">        </span><span class="nv">color_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>truecolor<span class="w"> </span><span class="m">2</span>
+<span class="w">        </span><span class="nv">compression_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>deflate<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">filter_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>adaptive5<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">interlace_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>none<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2423739358</span>
+<span class="w">    </span><span class="nv">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ListContainer:<span class="w"> </span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;pHYs&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">                </span><span class="nv">pixels_per_unit_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11811</span>
+<span class="w">                </span><span class="nv">pixels_per_unit_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11811</span>
+<span class="w">                </span><span class="nv">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>meter<span class="w"> </span><span class="m">1</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2024095606</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;tIME&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">                </span><span class="nv">year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2018</span>
+<span class="w">                </span><span class="nv">month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span>
+<span class="w">                </span><span class="nv">day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11</span>
+<span class="w">                </span><span class="nv">hour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
+<span class="w">                </span><span class="nv">minute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+<span class="w">                </span><span class="nv">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">904567710</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">25</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;tEXt&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">                </span><span class="nv">keyword</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>u<span class="s1">&#39;Comment&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">7</span><span class="o">)</span>
+<span class="w">                </span><span class="nv">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;Created with GIM&#39;</span>...<span class="w"> </span><span class="o">(</span>truncated,<span class="w"> </span>total<span class="w"> </span><span class="m">17</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1468075543</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IDAT&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">12</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">657729290</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IEND&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>None
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2923585666</span>
 </code></pre></div></td></tr></table></div>
 
 <p>After removing the unneeded <code>pHYs</code>, <code>tIME</code>, and <code>tEXt</code> chunks using a hex editor, it looks like this:</p>
@@ -743,32 +743,32 @@ Container:
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png 
-Size: <span class="m">69</span> bytes
-Container: 
-    <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
-    <span class="nv">image_header</span> <span class="o">=</span> Container: 
-        <span class="nv">length</span> <span class="o">=</span> <span class="m">13</span>
-        <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;IHDR&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-        <span class="nv">width</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">height</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">bit_depth</span> <span class="o">=</span> <span class="m">8</span>
-        <span class="nv">color_type</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> truecolor <span class="m">2</span>
-        <span class="nv">compression_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> deflate <span class="m">0</span>
-        <span class="nv">filter_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> adaptive5 <span class="m">0</span>
-        <span class="nv">interlace_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> none <span class="m">0</span>
-        <span class="nv">crc</span> <span class="o">=</span> <span class="m">2423739358</span>
-    <span class="nv">chunks</span> <span class="o">=</span> ListContainer: 
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">12</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IDAT&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">12</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">657729290</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">0</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> None
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./pngview.py<span class="w"> </span>pixel.png<span class="w"> </span>
+Size:<span class="w"> </span><span class="m">69</span><span class="w"> </span>bytes
+Container:<span class="w"> </span>
+<span class="w">    </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">image_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">        </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span>
+<span class="w">        </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IHDR&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">bit_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<span class="w">        </span><span class="nv">color_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>truecolor<span class="w"> </span><span class="m">2</span>
+<span class="w">        </span><span class="nv">compression_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>deflate<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">filter_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>adaptive5<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">interlace_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>none<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2423739358</span>
+<span class="w">    </span><span class="nv">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ListContainer:<span class="w"> </span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IDAT&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">12</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">657729290</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IEND&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>None
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2923585666</span>
 </code></pre></div></td></tr></table></div>
 
 <p>At this point, all that's left to optimize is the image data itself. This is where <code>pngcrush</code>
@@ -798,32 +798,32 @@ shines. After running <code>pngcrush -brute -ow pixel.png</code> we see:</p>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png
-Size: <span class="m">67</span> bytes
-Container: 
-    <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
-    <span class="nv">image_header</span> <span class="o">=</span> Container: 
-        <span class="nv">length</span> <span class="o">=</span> <span class="m">13</span>
-        <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;IHDR&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-        <span class="nv">width</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">height</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">bit_depth</span> <span class="o">=</span> <span class="m">8</span>
-        <span class="nv">color_type</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> greyscale <span class="m">0</span>
-        <span class="nv">compression_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> deflate <span class="m">0</span>
-        <span class="nv">filter_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> adaptive5 <span class="m">0</span>
-        <span class="nv">interlace_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> none <span class="m">0</span>
-        <span class="nv">crc</span> <span class="o">=</span> <span class="m">981375829</span>
-    <span class="nv">chunks</span> <span class="o">=</span> ListContainer: 
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">10</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IDAT&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">3486004709</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">0</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> None
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./pngview.py<span class="w"> </span>pixel.png
+Size:<span class="w"> </span><span class="m">67</span><span class="w"> </span>bytes
+Container:<span class="w"> </span>
+<span class="w">    </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">image_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">        </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span>
+<span class="w">        </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IHDR&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">bit_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<span class="w">        </span><span class="nv">color_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>greyscale<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">compression_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>deflate<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">filter_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>adaptive5<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">interlace_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>none<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">981375829</span>
+<span class="w">    </span><span class="nv">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ListContainer:<span class="w"> </span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IDAT&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3486004709</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IEND&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>None
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2923585666</span>
 </code></pre></div></td></tr></table></div>
 
 <p>The 2 byte savings in the data seem to have come from setting the <code>color_type</code> to <code>greyscale</code>
@@ -865,8 +865,8 @@ least one of these will achieve the same results, but in a different way. For st
 first 9:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span> x <span class="k">in</span> <span class="k">$(</span>seq <span class="m">9</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
-    pngcrush -m <span class="s2">&quot;</span><span class="nv">$x</span><span class="s2">&quot;</span> pixel.png pixel_alt<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.png<span class="p">;</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span><span class="w"> </span>x<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">9</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span>pngcrush<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$x</span><span class="s2">&quot;</span><span class="w"> </span>pixel.png<span class="w"> </span>pixel_alt<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.png<span class="p">;</span>
 <span class="k">done</span>
 </code></pre></div></td></tr></table></div>
 
@@ -882,17 +882,17 @@ to find one that has different data. <code>sha1sum</code> is the perfect utility
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sha1sum pixel.png pixel_alt*.png
-d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel.png
-7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt1.png
-7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt2.png
-7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt3.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt4.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt5.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt6.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt7.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt8.png
-d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel_alt9.png
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>sha1sum<span class="w"> </span>pixel.png<span class="w"> </span>pixel_alt*.png
+d99a9d63b1cd9e4b3f823d4d03144ccd95328f48<span class="w">  </span>pixel.png
+7487dcce2b2bb81a442faf139b0a547bf070d5e2<span class="w">  </span>pixel_alt1.png
+7487dcce2b2bb81a442faf139b0a547bf070d5e2<span class="w">  </span>pixel_alt2.png
+7487dcce2b2bb81a442faf139b0a547bf070d5e2<span class="w">  </span>pixel_alt3.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt4.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt5.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt6.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt7.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt8.png
+d99a9d63b1cd9e4b3f823d4d03144ccd95328f48<span class="w">  </span>pixel_alt9.png
 </code></pre></div></td></tr></table></div>
 
 <p><code>pixel_alt1.png</code> looks like a good candidate, let's see what changed:</p>
@@ -902,13 +902,13 @@ d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel_alt9.png
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>$ diff &lt;<span class="o">(</span>./pngview.py pixel.png<span class="o">)</span> &lt;<span class="o">(</span>./pngview.py pixel_alt1.png<span class="o">)</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>diff<span class="w"> </span>&lt;<span class="o">(</span>./pngview.py<span class="w"> </span>pixel.png<span class="o">)</span><span class="w"> </span>&lt;<span class="o">(</span>./pngview.py<span class="w"> </span>pixel_alt1.png<span class="o">)</span>
 <span class="m">20</span>,21c20,21
-&lt;             <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
-&lt;             <span class="nv">crc</span> <span class="o">=</span> <span class="m">3486004709</span>
+&lt;<span class="w">             </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+&lt;<span class="w">             </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3486004709</span>
 ---
-&gt;             <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08[c`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
-&gt;             <span class="nv">crc</span> <span class="o">=</span> <span class="m">1648381800</span>
+&gt;<span class="w">             </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08[c`\x00\x00\x00\x02\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+&gt;<span class="w">             </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1648381800</span>
 </code></pre></div></td></tr></table></div>
 
 <p>There's the same amount of data, but it's different. Let's check if it decompresses to the same

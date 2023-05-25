@@ -73,7 +73,7 @@ mounted.</p>
 intent.</p>
 <p>For example, if you wanted to run a media refresh of the entire SD
 card:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb -d shell <span class="s2">&quot;am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard&quot;</span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>-d<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>To refresh different directory, just change "/sdcard" to the absolute

@@ -100,23 +100,23 @@ script.</p>
 <span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
 <span class="c1"># Abort if anything goes wrong (negates the need for error-checking)</span>
-<span class="nb">set</span> -e
+<span class="nb">set</span><span class="w"> </span>-e
 
 <span class="c1"># Uses drill instead of dig</span>
-resolve<span class="o">()</span> <span class="o">{</span>
-    <span class="c1">#dig &quot;$1&quot; @resolver1.opendns.com +short 2&gt; /dev/null</span>
-    <span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> @resolver1.opendns.com <span class="m">2</span>&gt; /dev/null <span class="p">|</span> sed <span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span> <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
-    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span> <span class="p">|</span> head -1 <span class="p">|</span> cut -f5
+resolve<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1">#dig &quot;$1&quot; @resolver1.opendns.com +short 2&gt; /dev/null</span>
+<span class="w">    </span><span class="nv">line</span><span class="o">=</span><span class="k">$(</span>drill<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span>@resolver1.opendns.com<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;/;;.*$/d;/^\s*$/d&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$line</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f5
 <span class="o">}</span>
 
-<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve &lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
-<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve myip.opendns.com<span class="k">)</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="k">if</span> curl -s <span class="s2">&quot;https://dynamicdns.park-your-domain.com/update?host=&lt;subdomain&gt;&amp;domain=cmetcalfe.ca&amp;password=&lt;my passkey&gt;&quot;</span> <span class="p">|</span> grep -q <span class="s2">&quot;&lt;ErrCount&gt;0&lt;/ErrCount&gt;&quot;</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">else</span>
-        <span class="nb">echo</span> <span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
-    <span class="k">fi</span>
+<span class="nv">dns</span><span class="o">=</span><span class="k">$(</span>resolve<span class="w"> </span>&lt;subdomain&gt;.cmetcalfe.ca<span class="k">)</span>
+<span class="nv">curr</span><span class="o">=</span><span class="k">$(</span>resolve<span class="w"> </span>myip.opendns.com<span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$dns</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$curr</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://dynamicdns.park-your-domain.com/update?host=&lt;subdomain&gt;&amp;domain=cmetcalfe.ca&amp;password=&lt;my passkey&gt;&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;&lt;ErrCount&gt;0&lt;/ErrCount&gt;&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Server DNS record updated (</span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Server DNS record update FAILED (tried </span><span class="nv">$dns</span><span class="s2"> -&gt; </span><span class="nv">$curr</span><span class="s2">)&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
 <span class="k">fi</span>
 </code></pre></div></td></tr></table></div>
 
@@ -127,7 +127,7 @@ to output some record of the IP changing. Maybe I'll do some analysis of it at
 some point.</p>
 <p>To run the script every 30 minutes and redirect any output from it to the
 syslog, the following <a href="http://en.wikipedia.org/wiki/Cron">crontab</a> entry can be used:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>*/30 * * * * /path/to/dns-update <span class="p">|</span> /usr/bin/logger -t dns-update
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>*/30<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>/path/to/dns-update<span class="w"> </span><span class="p">|</span><span class="w"> </span>/usr/bin/logger<span class="w"> </span>-t<span class="w"> </span>dns-update
 </code></pre></div></td></tr></table></div>
 
 <p>With the script automatically running every 30 minutes I can now be confident
@@ -171,10 +171,10 @@ look something like this:</p>
 <span class="normal">7</span>
 <span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
-<span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;plist</span><span class="w"> </span><span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;dict&gt;</span>
-<span class="hll">    <span class="nt">&lt;key&gt;</span>LSUIElement<span class="nt">&lt;/key&gt;&lt;true/&gt;</span>
-</span>    <span class="cm">&lt;!-- The rest of the plist data --&gt;</span>
+<span class="hll"><span class="w">    </span><span class="nt">&lt;key&gt;</span>LSUIElement<span class="nt">&lt;/key&gt;&lt;true/&gt;</span>
+</span><span class="w">    </span><span class="cm">&lt;!-- The rest of the plist data --&gt;</span>
 <span class="nt">&lt;/dict&gt;</span>
 <span class="nt">&lt;/plist&gt;</span>
 </code></pre></div></td></tr></table></div>
@@ -214,7 +214,7 @@ less of a coherent tutorial.</p>
 any detail on this because there's already a <a href="https://web.archive.org/web/20161224200646/https://wiki.cyanogenmod.org/w/Development">good overview</a> on the CyanogenMod wiki that covers
 the entire process, as well as a <a href="https://wiki.lineageos.org/devices/hammerhead/build">customized guide for the Nexus 5</a>. If those articles are
 followed correctly, you should be able to build a fresh CyanogenMod image with:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>brunch hammerhead
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>brunch<span class="w"> </span>hammerhead
 </code></pre></div></td></tr></table></div>
 
 <h2>Enabling the kernel module</h2>
@@ -222,12 +222,12 @@ followed correctly, you should be able to build a fresh CyanogenMod image with:<
 <a href="https://www.kernel.org/doc/html/v4.16/input/devices/xpad.html">xpad kernel module</a>.</p>
 <p>Copy current kernel config to the kernel directory for editing:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span> &lt;build dir&gt;/kernel/lge/hammerhead/
-cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>&lt;build<span class="w"> </span>dir&gt;/kernel/lge/hammerhead/
+cp<span class="w"> </span>arch/arm/configs/cyanogenmod_hammerhead_defconfig<span class="w"> </span>.config
 </code></pre></div></td></tr></table></div>
 
 <p>Edit the config:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make menuconfig <span class="nv">ARCH</span><span class="o">=</span>arm
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>make<span class="w"> </span>menuconfig<span class="w"> </span><span class="nv">ARCH</span><span class="o">=</span>arm
 </code></pre></div></td></tr></table></div>
 
 <p>At this point, a menu will come up. Search for <code>xpad</code> (type <code>/xpad</code>), and take note of the paths.
@@ -235,8 +235,8 @@ cp arch/arm/configs/cyanogenmod_hammerhead_defconfig .config
 exit.</p>
 <p>Copy the config back and clean up any stray <code>*.o</code> files:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>cp .config arch/arm/configs/cyanogenmod_hammerhead_defconfig
-make mrproper
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>cp<span class="w"> </span>.config<span class="w"> </span>arch/arm/configs/cyanogenmod_hammerhead_defconfig
+make<span class="w"> </span>mrproper
 </code></pre></div></td></tr></table></div>
 
 <p>After enabling the module, rebuild CyanogenMod using the normal <code>brunch hammerhead</code> and flash it to

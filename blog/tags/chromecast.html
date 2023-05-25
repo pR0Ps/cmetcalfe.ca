@@ -97,10 +97,10 @@ visualize the chunks and structure of it so I could figure out what to cut.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>python3 -m venv .venv
-<span class="nb">source</span> .venv/bin/activate
-pip install construct
-wget <span class="s2">&quot;https://raw.githubusercontent.com/construct/construct/abd48c4892ceddc60c11d25f4a955573e2c61111/deprecated_gallery/png.py&quot;</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>construct
+wget<span class="w"> </span><span class="s2">&quot;https://raw.githubusercontent.com/construct/construct/abd48c4892ceddc60c11d25f4a955573e2c61111/deprecated_gallery/png.py&quot;</span>
 </code></pre></div></td></tr></table></div>
 
 <p>Create <code>pngview.py</code>:</p>
@@ -171,58 +171,58 @@ wget <span class="s2">&quot;https://raw.githubusercontent.com/construct/construc
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png
-Size: <span class="m">146</span> bytes
-Container: 
-    <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
-    <span class="nv">image_header</span> <span class="o">=</span> Container: 
-        <span class="nv">length</span> <span class="o">=</span> <span class="m">13</span>
-        <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;IHDR&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-        <span class="nv">width</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">height</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">bit_depth</span> <span class="o">=</span> <span class="m">8</span>
-        <span class="nv">color_type</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> truecolor <span class="m">2</span>
-        <span class="nv">compression_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> deflate <span class="m">0</span>
-        <span class="nv">filter_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> adaptive5 <span class="m">0</span>
-        <span class="nv">interlace_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> none <span class="m">0</span>
-        <span class="nv">crc</span> <span class="o">=</span> <span class="m">2423739358</span>
-    <span class="nv">chunks</span> <span class="o">=</span> ListContainer: 
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">9</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;pHYs&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> Container: 
-                <span class="nv">pixels_per_unit_x</span> <span class="o">=</span> <span class="m">11811</span>
-                <span class="nv">pixels_per_unit_y</span> <span class="o">=</span> <span class="m">11811</span>
-                <span class="nv">unit</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> meter <span class="m">1</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2024095606</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">7</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;tIME&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> Container: 
-                <span class="nv">year</span> <span class="o">=</span> <span class="m">2018</span>
-                <span class="nv">month</span> <span class="o">=</span> <span class="m">12</span>
-                <span class="nv">day</span> <span class="o">=</span> <span class="m">11</span>
-                <span class="nv">hour</span> <span class="o">=</span> <span class="m">5</span>
-                <span class="nv">minute</span> <span class="o">=</span> <span class="m">2</span>
-                <span class="nv">second</span> <span class="o">=</span> <span class="m">19</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">904567710</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">25</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;tEXt&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> Container: 
-                <span class="nv">keyword</span> <span class="o">=</span> u<span class="s1">&#39;Comment&#39;</span> <span class="o">(</span>total <span class="m">7</span><span class="o">)</span>
-                <span class="nv">text</span> <span class="o">=</span> b<span class="s1">&#39;Created with GIM&#39;</span>... <span class="o">(</span>truncated, total <span class="m">17</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">1468075543</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">12</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IDAT&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">12</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">657729290</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">0</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> None
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./pngview.py<span class="w"> </span>pixel.png
+Size:<span class="w"> </span><span class="m">146</span><span class="w"> </span>bytes
+Container:<span class="w"> </span>
+<span class="w">    </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">image_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">        </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span>
+<span class="w">        </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IHDR&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">bit_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<span class="w">        </span><span class="nv">color_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>truecolor<span class="w"> </span><span class="m">2</span>
+<span class="w">        </span><span class="nv">compression_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>deflate<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">filter_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>adaptive5<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">interlace_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>none<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2423739358</span>
+<span class="w">    </span><span class="nv">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ListContainer:<span class="w"> </span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;pHYs&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">                </span><span class="nv">pixels_per_unit_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11811</span>
+<span class="w">                </span><span class="nv">pixels_per_unit_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11811</span>
+<span class="w">                </span><span class="nv">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>meter<span class="w"> </span><span class="m">1</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2024095606</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;tIME&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">                </span><span class="nv">year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2018</span>
+<span class="w">                </span><span class="nv">month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span>
+<span class="w">                </span><span class="nv">day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11</span>
+<span class="w">                </span><span class="nv">hour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
+<span class="w">                </span><span class="nv">minute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+<span class="w">                </span><span class="nv">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">19</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">904567710</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">25</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;tEXt&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">                </span><span class="nv">keyword</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>u<span class="s1">&#39;Comment&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">7</span><span class="o">)</span>
+<span class="w">                </span><span class="nv">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;Created with GIM&#39;</span>...<span class="w"> </span><span class="o">(</span>truncated,<span class="w"> </span>total<span class="w"> </span><span class="m">17</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1468075543</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IDAT&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">12</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">657729290</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IEND&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>None
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2923585666</span>
 </code></pre></div></td></tr></table></div>
 
 <p>After removing the unneeded <code>pHYs</code>, <code>tIME</code>, and <code>tEXt</code> chunks using a hex editor, it looks like this:</p>
@@ -251,32 +251,32 @@ Container:
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png 
-Size: <span class="m">69</span> bytes
-Container: 
-    <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
-    <span class="nv">image_header</span> <span class="o">=</span> Container: 
-        <span class="nv">length</span> <span class="o">=</span> <span class="m">13</span>
-        <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;IHDR&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-        <span class="nv">width</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">height</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">bit_depth</span> <span class="o">=</span> <span class="m">8</span>
-        <span class="nv">color_type</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> truecolor <span class="m">2</span>
-        <span class="nv">compression_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> deflate <span class="m">0</span>
-        <span class="nv">filter_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> adaptive5 <span class="m">0</span>
-        <span class="nv">interlace_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> none <span class="m">0</span>
-        <span class="nv">crc</span> <span class="o">=</span> <span class="m">2423739358</span>
-    <span class="nv">chunks</span> <span class="o">=</span> ListContainer: 
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">12</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IDAT&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">12</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">657729290</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">0</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> None
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./pngview.py<span class="w"> </span>pixel.png<span class="w"> </span>
+Size:<span class="w"> </span><span class="m">69</span><span class="w"> </span>bytes
+Container:<span class="w"> </span>
+<span class="w">    </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">image_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">        </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span>
+<span class="w">        </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IHDR&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">bit_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<span class="w">        </span><span class="nv">color_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>truecolor<span class="w"> </span><span class="m">2</span>
+<span class="w">        </span><span class="nv">compression_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>deflate<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">filter_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>adaptive5<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">interlace_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>none<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2423739358</span>
+<span class="w">    </span><span class="nv">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ListContainer:<span class="w"> </span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IDAT&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\xd7c```\x00\x00\x00\x04\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">12</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">657729290</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IEND&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>None
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2923585666</span>
 </code></pre></div></td></tr></table></div>
 
 <p>At this point, all that's left to optimize is the image data itself. This is where <code>pngcrush</code>
@@ -306,32 +306,32 @@ shines. After running <code>pngcrush -brute -ow pixel.png</code> we see:</p>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ./pngview.py pixel.png
-Size: <span class="m">67</span> bytes
-Container: 
-    <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span> <span class="o">(</span>total <span class="m">8</span><span class="o">)</span>
-    <span class="nv">image_header</span> <span class="o">=</span> Container: 
-        <span class="nv">length</span> <span class="o">=</span> <span class="m">13</span>
-        <span class="nv">signature</span> <span class="o">=</span> b<span class="s1">&#39;IHDR&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-        <span class="nv">width</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">height</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="nv">bit_depth</span> <span class="o">=</span> <span class="m">8</span>
-        <span class="nv">color_type</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> greyscale <span class="m">0</span>
-        <span class="nv">compression_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> deflate <span class="m">0</span>
-        <span class="nv">filter_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> adaptive5 <span class="m">0</span>
-        <span class="nv">interlace_method</span> <span class="o">=</span> <span class="o">(</span>enum<span class="o">)</span> none <span class="m">0</span>
-        <span class="nv">crc</span> <span class="o">=</span> <span class="m">981375829</span>
-    <span class="nv">chunks</span> <span class="o">=</span> ListContainer: 
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">10</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IDAT&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">3486004709</span>
-        Container: 
-            <span class="nv">length</span> <span class="o">=</span> <span class="m">0</span>
-            <span class="nb">type</span> <span class="o">=</span> b<span class="s1">&#39;IEND&#39;</span> <span class="o">(</span>total <span class="m">4</span><span class="o">)</span>
-            <span class="nv">data</span> <span class="o">=</span> None
-            <span class="nv">crc</span> <span class="o">=</span> <span class="m">2923585666</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>./pngview.py<span class="w"> </span>pixel.png
+Size:<span class="w"> </span><span class="m">67</span><span class="w"> </span>bytes
+Container:<span class="w"> </span>
+<span class="w">    </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x89PNG\r\n\x1a\n&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">image_header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Container:<span class="w"> </span>
+<span class="w">        </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span>
+<span class="w">        </span><span class="nv">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IHDR&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">        </span><span class="nv">bit_depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<span class="w">        </span><span class="nv">color_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>greyscale<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">compression_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>deflate<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">filter_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>adaptive5<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">interlace_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>enum<span class="o">)</span><span class="w"> </span>none<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">981375829</span>
+<span class="w">    </span><span class="nv">chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>ListContainer:<span class="w"> </span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IDAT&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3486004709</span>
+<span class="w">        </span>Container:<span class="w"> </span>
+<span class="w">            </span><span class="nv">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">            </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;IEND&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">4</span><span class="o">)</span>
+<span class="w">            </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>None
+<span class="w">            </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2923585666</span>
 </code></pre></div></td></tr></table></div>
 
 <p>The 2 byte savings in the data seem to have come from setting the <code>color_type</code> to <code>greyscale</code>
@@ -373,8 +373,8 @@ least one of these will achieve the same results, but in a different way. For st
 first 9:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span> x <span class="k">in</span> <span class="k">$(</span>seq <span class="m">9</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
-    pngcrush -m <span class="s2">&quot;</span><span class="nv">$x</span><span class="s2">&quot;</span> pixel.png pixel_alt<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.png<span class="p">;</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span><span class="w"> </span>x<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">9</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span>pngcrush<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$x</span><span class="s2">&quot;</span><span class="w"> </span>pixel.png<span class="w"> </span>pixel_alt<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.png<span class="p">;</span>
 <span class="k">done</span>
 </code></pre></div></td></tr></table></div>
 
@@ -390,17 +390,17 @@ to find one that has different data. <code>sha1sum</code> is the perfect utility
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sha1sum pixel.png pixel_alt*.png
-d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel.png
-7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt1.png
-7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt2.png
-7487dcce2b2bb81a442faf139b0a547bf070d5e2  pixel_alt3.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt4.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt5.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt6.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt7.png
-c3ea09bfcfcb36ce22d3f19eacada359f3984ed1  pixel_alt8.png
-d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel_alt9.png
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>sha1sum<span class="w"> </span>pixel.png<span class="w"> </span>pixel_alt*.png
+d99a9d63b1cd9e4b3f823d4d03144ccd95328f48<span class="w">  </span>pixel.png
+7487dcce2b2bb81a442faf139b0a547bf070d5e2<span class="w">  </span>pixel_alt1.png
+7487dcce2b2bb81a442faf139b0a547bf070d5e2<span class="w">  </span>pixel_alt2.png
+7487dcce2b2bb81a442faf139b0a547bf070d5e2<span class="w">  </span>pixel_alt3.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt4.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt5.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt6.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt7.png
+c3ea09bfcfcb36ce22d3f19eacada359f3984ed1<span class="w">  </span>pixel_alt8.png
+d99a9d63b1cd9e4b3f823d4d03144ccd95328f48<span class="w">  </span>pixel_alt9.png
 </code></pre></div></td></tr></table></div>
 
 <p><code>pixel_alt1.png</code> looks like a good candidate, let's see what changed:</p>
@@ -410,13 +410,13 @@ d99a9d63b1cd9e4b3f823d4d03144ccd95328f48  pixel_alt9.png
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>$ diff &lt;<span class="o">(</span>./pngview.py pixel.png<span class="o">)</span> &lt;<span class="o">(</span>./pngview.py pixel_alt1.png<span class="o">)</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>$<span class="w"> </span>diff<span class="w"> </span>&lt;<span class="o">(</span>./pngview.py<span class="w"> </span>pixel.png<span class="o">)</span><span class="w"> </span>&lt;<span class="o">(</span>./pngview.py<span class="w"> </span>pixel_alt1.png<span class="o">)</span>
 <span class="m">20</span>,21c20,21
-&lt;             <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
-&lt;             <span class="nv">crc</span> <span class="o">=</span> <span class="m">3486004709</span>
+&lt;<span class="w">             </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08\x1dc`\x00\x00\x00\x02\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+&lt;<span class="w">             </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3486004709</span>
 ---
-&gt;             <span class="nv">data</span> <span class="o">=</span> b<span class="s1">&#39;\x08[c`\x00\x00\x00\x02\x00\x01&#39;</span> <span class="o">(</span>total <span class="m">10</span><span class="o">)</span>
-&gt;             <span class="nv">crc</span> <span class="o">=</span> <span class="m">1648381800</span>
+&gt;<span class="w">             </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>b<span class="s1">&#39;\x08[c`\x00\x00\x00\x02\x00\x01&#39;</span><span class="w"> </span><span class="o">(</span>total<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+&gt;<span class="w">             </span><span class="nv">crc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1648381800</span>
 </code></pre></div></td></tr></table></div>
 
 <p>There's the same amount of data, but it's different. Let's check if it decompresses to the same

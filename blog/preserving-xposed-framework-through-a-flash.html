@@ -89,16 +89,16 @@ executable permissions.</p>
 <p>This can be done on the device with a few different programs, but it's much
 easier to do from a computer with <a href="https://developer.android.com/tools/help/adb.html">adb</a>.</p>
 <p>Download the script and push it to the SD card of the Android device with</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb push <span class="m">90</span>-xposed.sh /sdcard/
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>push<span class="w"> </span><span class="m">90</span>-xposed.sh<span class="w"> </span>/sdcard/
 </code></pre></div></td></tr></table></div>
 
 <p>Once the file is on the device, log into it (using <code>adb shell</code>) and run the
 following commands:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>su  <span class="c1"># Get root permissions</span>
-cp /sdcard/90-xposed.sh /system/addon.d/  <span class="c1"># Copy the file to the correct folder</span>
-chmod <span class="m">755</span> /system/addon.d/90-xposed.sh  <span class="c1"># Make the file executable</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>su<span class="w">  </span><span class="c1"># Get root permissions</span>
+cp<span class="w"> </span>/sdcard/90-xposed.sh<span class="w"> </span>/system/addon.d/<span class="w">  </span><span class="c1"># Copy the file to the correct folder</span>
+chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>/system/addon.d/90-xposed.sh<span class="w">  </span><span class="c1"># Make the file executable</span>
 </code></pre></div></td></tr></table></div>
 
 <p>After logging out of the device, the Xposed framework will stay installed and
