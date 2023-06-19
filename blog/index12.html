@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, canada, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -60,6 +60,40 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/how-to-set-up-queens-university-webmail-on-an-iphone.html">How to set up Queen's University Webmail on an iPhone</a></h1>
+  </div>
+  <div class="article_text">
+    <p>Before you start, make sure the iPhone is connected to the internet via 3G or WiFi.</p>
+<ol>
+<li>Navigate to the main settings screen</li>
+<li>Tap "Mail, Contacts, Calendars"</li>
+<li>Tap "Add Account..."</li>
+<li>Tap "Other"</li>
+<li>Tap "Add Mail Account"</li>
+<li>Enter your name, the address of the account you want to access
+    ([your NetID]@queensu.ca), your password, and an optional description</li>
+<li>Tap "Save"</li>
+<li>Tap "IMAP"</li>
+<li>Scroll down to "Incoming Mail Server" and enter the following info:<ul>
+<li>Host Name: mail.queensu.ca</li>
+<li>User Name: [your NetID]</li>
+<li>Password: [your password]</li>
+</ul>
+</li>
+<li>Scroll down to "Outgoing Mail Server" and enter the following info:  <ul>
+<li>Host Name: mail.queensu.ca:465</li>
+<li>User Name: [your NetID]</li>
+<li>Password: [your password]</li>
+</ul>
+</li>
+<li>Save and exit.</li>
+</ol>
+<p>Good Luck!</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/setting-up-tortisehg-on-windows.html">Setting up TortiseHg on Windows</a></h1>
@@ -118,21 +152,6 @@ they'll be able to download the file you shared.</p>
 being uploaded anywhere between. This also makes it easy to stop sharing the
 file. Just close the browser window and the file becomes inaccessable.</p>
 <p>Sharefest is open-source! Check out the code on <a href="https://github.com/Peer5/ShareFest/">GitHub</a>.</p>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/back-up-restore-a-gmail-account.html">Backup/Restore a Gmail account</a></h1>
-  </div>
-  <div class="article_text">
-    <p><a href="http://gmvault.org/">Gmvault</a> is an <a href="https://github.com/gaubert/gmvault/">open source</a> project that allows users to download all of
-their emails, as well as the labels.</p>
-<p>From there it's as simple as opening them up in a program like <a href="http://office.microsoft.com/en-us/outlook/">Outlook</a> or
-<a href="http://www.mozilla.org/en-US/thunderbird/">Thunderbird</a> to view them. It also includes an option to restore the emails.</p>
-<p>Most email clients have the capability of doing this, but this was by far the
-quickest way. Automatic incremental backups can also be done by running a
-'quick sync' regularly.</p>
   </div>
 </article>
 

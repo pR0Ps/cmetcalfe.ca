@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Carey Metcalfe - Carey Metcalfe</title><link>https://cmetcalfe.ca/</link><description></description><lastBuildDate>Sun, 23 May 2021 00:00:00 -0400</lastBuildDate><item><title>Only record audio from specific applications with NVIDIA ShadowPlay</title><link>https://cmetcalfe.ca/blog/record-audio-from-specific-applications-with-shadowplay.html</link><description>&lt;p&gt;&lt;a href="https://www.nvidia.com/en-us/geforce/geforce-experience/shadowplay/"&gt;ShadowPlay&lt;/a&gt; is a feature of modern NVIDIA graphics cards that allows for recording games and
+<rss version="2.0"><channel><title>Carey Metcalfe - Carey Metcalfe</title><link>https://cmetcalfe.ca/</link><description></description><lastBuildDate>Sun, 18 Jun 2023 00:00:00 -0400</lastBuildDate><item><title>Only record audio from specific applications with NVIDIA ShadowPlay</title><link>https://cmetcalfe.ca/blog/record-audio-from-specific-applications-with-shadowplay.html</link><description>&lt;p&gt;&lt;a href="https://www.nvidia.com/en-us/geforce/geforce-experience/shadowplay/"&gt;ShadowPlay&lt;/a&gt; is a feature of modern NVIDIA graphics cards that allows for recording games and
 other applications at native resolution with only a minimal performance hit. It also includes some
 genuinely useful features like instant replay.&lt;/p&gt;
 &lt;p&gt;Unfortunately, the audio options for recording are pretty limited. By default, all audio is recorded
@@ -181,6 +181,10 @@ Putting it all together:&lt;/p&gt;
 &lt;p&gt;2. &lt;code&gt;systemctl enable --now no-subscription-notice.service&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;And that's it! The subscription notice should now be gone for good. I'll update this post if it
 breaks, but that hopefully won't be for a while.&lt;/p&gt;
+&lt;div class="admonition update"&gt;
+&lt;p class="admonition-title"&gt;Update&lt;/p&gt;
+&lt;p&gt;This is still working as of Proxmox VE 7.4-13&lt;/p&gt;
+&lt;/div&gt;
 &lt;div class="footnote"&gt;
 &lt;hr&gt;
 &lt;ol&gt;
@@ -200,7 +204,7 @@ breaks, but that hopefully won't be for a while.&lt;/p&gt;
     distros).&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Wed, 28 Apr 2021 10:03:00 -0400</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2021-04-28:/blog/remove-proxmox-subscription-notice.html</guid><category>blog</category><category>proxmox</category><category>linux</category><category>shell script</category></item><item><title>Preventing auto-locking and sleeping by simulating user activity</title><link>https://cmetcalfe.ca/blog/prevent-auto-lock-by-simulating-activity.html</link><description>&lt;p&gt;This post will detail how to simulate activity on your computer in order to prevent it from
+&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Wed, 28 Apr 2021 10:03:00 -0400</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2021-04-28:/blog/remove-proxmox-subscription-notice.html</guid><category>blog</category><category>proxmox</category><category>linux</category><category>shell script</category><category>homelab</category></item><item><title>Preventing auto-locking and sleeping by simulating user activity</title><link>https://cmetcalfe.ca/blog/prevent-auto-lock-by-simulating-activity.html</link><description>&lt;p&gt;This post will detail how to simulate activity on your computer in order to prevent it from
 auto-locking or going into sleep mode. Note that this will usually also prevent the "auto-away"
 functionality of various chat programs from ever marking you as "away".&lt;/p&gt;
 &lt;p&gt;Generally you should change your operating system's settings to disable sleeping and auto-locking if
@@ -282,7 +286,159 @@ done
 &lt;h2&gt;Wayland-based Linux&lt;/h2&gt;
 &lt;p&gt;Some preliminary research suggests that this is possible on Wayland using &lt;a href="https://github.com/ReimuNotMoe/ydotool"&gt;&lt;code&gt;ydotool&lt;/code&gt;&lt;/a&gt; as a
 replacement for &lt;code&gt;xdotool&lt;/code&gt;. I don't currently run a Wayland-based setup so I can't test it. If you
-manage to find a solution for Wayland feel free to send it to me and I'll update the post.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Thu, 10 Dec 2020 23:12:00 -0500</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2020-12-10:/blog/prevent-auto-lock-by-simulating-activity.html</guid><category>blog</category><category>windows</category><category>macOS</category><category>linux</category><category>shell script</category></item><item><title>Diagnosing periodic high ping times on macOS</title><link>https://cmetcalfe.ca/blog/diagnosing-periodic-high-ping-times-on-macos.html</link><description>&lt;h2&gt;Background&lt;/h2&gt;
+manage to find a solution for Wayland feel free to send it to me and I'll update the post.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Thu, 10 Dec 2020 23:12:00 -0500</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2020-12-10:/blog/prevent-auto-lock-by-simulating-activity.html</guid><category>blog</category><category>windows</category><category>macOS</category><category>linux</category><category>shell script</category></item><item><title>Disabling emergency alerts on Android</title><link>https://cmetcalfe.ca/blog/disabling-emergency-alerts-on-android.html</link><description>&lt;div class="admonition warning"&gt;
+&lt;p class="admonition-title"&gt;Warning&lt;/p&gt;
+&lt;p&gt;You probably shouldn't do this. If you already know this and don't care, read on.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2&gt;Background&lt;/h2&gt;
+&lt;p&gt;In Canada, the &lt;a href="https://crtc.gc.ca/"&gt;CRTC&lt;/a&gt; mandates that telecommunications companies and other organizations broadcast
+warning messages over various mediums, one of which is via cell phones.&lt;/p&gt;
+&lt;p&gt;Overall, this is a good idea that saves lives. However, the implementation is incredibly bad. All
+alerts, no matter the severity, are broadcast at the very highest level (called "Presidential" by
+Android phones), meaning that they can't be silenced or disabled by the user. In fact, the CRTC
+actually &lt;a href="https://crtc.gc.ca/eng/publications/reports/alertmobil/alertmobil.htm#a13"&gt;tested this&lt;/a&gt; and
+found that the only reliable way to silence the alerts was to put the phone on airplane mode.&lt;/p&gt;
+&lt;p&gt;After I received three alerts all about an hour apart starting at 2am telling me about a missing
+child over 1,300km away, I'd had enough.&lt;/p&gt;
+&lt;p&gt;This is a "boy who cried wolf" situation here. If these alerts ever:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Implement a basic distance filter so I'm not woken up by things happening nowhere near me&lt;/li&gt;
+&lt;li&gt;Start using an appropriate alert level instead of using the highest level for everything&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I'll re-enable them. For now though, I don't want to be repeatedly woken up in the middle of the
+night because someone a full day's drive from me went missing. Maybe that's cold-hearted, but
+realistically what was I even going to do about it?&lt;/p&gt;
+&lt;p&gt;On Android at least, the lower-level emergency alerts can be configured to not make noise when the
+device is silenced, but not disabled entirely. This seems a lot better as it won't wake people up,
+but will show them the information the next time they look at the phone. Let's do that instead.&lt;/p&gt;
+&lt;p&gt;For now though, I'm turning everything off. Hopefully I don't get killed by a tornado or something.&lt;/p&gt;
+&lt;h2&gt;How to disable ALL alerts&lt;/h2&gt;
+&lt;p&gt;This is surprisingly simple - the application responsible for handling the broadcasts can be
+uninstalled.&lt;/p&gt;
+&lt;div class="admonition warning"&gt;
+&lt;p class="admonition-title"&gt;Warning&lt;/p&gt;
+&lt;p&gt;This will disable ALL emergency broadcasts. If you live in an area that regularly has severe
+weather or don't have a backup method for receiving these alerts, this is definitely not a good
+idea. It also probably violates some sort of policy or something (not a lawyer). You are
+responsible for your own decisions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;To uninstall it, enable developer options and debugging on the phone, connect it to a computer with
+&lt;a href="http://developer.android.com/tools/help/adb.html"&gt;ADB&lt;/a&gt; installed and run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;adb&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;shell&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;pm uninstall -k com.android.cellbroadcastreceiver&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+
+&lt;p&gt;Thanks to &lt;a href="https://web.archive.org/web/20230420065952/https://www.reddit.com/r/ontario/comments/boxx11/how_to_disable_amber_alerts/"&gt;this reddit post&lt;/a&gt; for the method of disabling
+the alerts.&lt;/p&gt;
+&lt;h2&gt;Why is it like this?&lt;/h2&gt;
+&lt;p&gt;Which organization is responsible? Can this be changed?&lt;/p&gt;
+&lt;p&gt;Below is a rough dump of some details I found while trying to dig up which organization is
+responsible for this with the hopes of actually affecting some change.&lt;/p&gt;
+&lt;p&gt;On 2017-04-06 the &lt;a href="https://crtc.gc.ca/"&gt;CRTC&lt;/a&gt; issued &lt;a href="https://crtc.gc.ca/eng/archive/2017/2017-91.htm"&gt;Telecom Regulatory Policy CRTC 2017-91&lt;/a&gt; which "directs wireless
+service providers to implement wireless public alerting capability on their long-term evolution
+networks by 6 April 2018". Relevant information pulled from that page:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;34. SOREM has established a definitive list of emergency alert message types for immediate
+    broadcast by alert distributors. These messages are defined as “Broadcast Immediately” (BI).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In a footnote on the page it defines SOREM as:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;SOREM is a federal/provincial/territorial body that works to harmonize and improve emergency
+practices across the country. It includes representatives from provincial and territorial
+emergency management organizations as well as Public Safety Canada.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;There was some disagreement on making the alerts mandatory:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;35. Individual interveners’ views were divided among mandatory receipt, an opt-in mechanism, and
+    the choice to opt out. Technology solutions providers indicated mixed support between
+    mandatory reception and the choice to opt out. EMOs strongly supported mandatory receipt.&lt;/p&gt;
+&lt;p&gt;36. The OPC submitted that many people consider their mobile devices to be private and personal,
+    and that some individuals could consider emergency alerts to be intrusive. It recommended
+    that the Commission review how opt-out mechanisms have been implemented in the United States
+    and other jurisdictions, and whether the ability to opt out has had a significant negative
+    effect on alerting individuals in an emergency situation. It submitted that individuals should
+    be allowed to opt out if the effect is found to be minimal.&lt;/p&gt;
+&lt;p&gt;39. Some WSPs provided insight on past experiences regarding the distribution of AMBER Alerts over
+    their parent BDUs. For example, in March 2016, the Ontario Provincial Police issued an AMBER
+    Alert, which was distributed by BDUs. Many television viewers were upset by the interruption
+    of their television viewing and contacted their BDU customer service centres and, in some
+    cases, 9-1-1 to complain.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And finally, in a section titled "Commission’s analysis and determinations", a decision was made:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;41. Although some interveners suggested modifying the BI list, there was no consensus on which
+    specific categories should be added or removed.&lt;/p&gt;
+&lt;p&gt;42. However, the question in this proceeding is not whether the BI list used in the broadcasting
+    context should be changed, but whether the same or a different approach should be taken with
+    respect to emergency alert messages sent to mobile devices compared to those sent via
+    broadcasting emergency alerting. The current BI list is designed to protect against threats to
+    life and property. It is therefore important to promote consistency between broadcasting and
+    wireless emergency alerts so that Canadians can receive the same alerts regardless of
+    transmission medium.&lt;/p&gt;
+&lt;p&gt;43. In light of the above, the Commission mandates the reception of emergency alert messages on
+    mobile devices, based on the BI list developed by SOREM, as amended from time to time.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This seems to say that the list of what alerts exist and their priority is managed by SOREM.&lt;/p&gt;
+&lt;p&gt;To back this up, the CRTC's &lt;a href="https://crtc.gc.ca/eng/television/services/alert.htm"&gt;Emergency Alerts and the National Public Alerting System&lt;/a&gt; page has a section titled "Consistent appearance and sound of alerts" with the
+quote:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The visual appearance, sound, content, and other aspects of emergency alerts are guided by the
+Senior Officials Responsible for Emergency Management. This federal, provincial and territorial
+body works to harmonize and improve emergency practices across the country.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;That section also includes a link to the &lt;a href="https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/npas/clf-lng-20-en.aspx"&gt;National Public Alerting System's Common Look and Feel
+Guidance&lt;/a&gt; which has some more information in it:&lt;/p&gt;
+&lt;p&gt;From the &lt;a href="https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/npas/clf-lng-20-en.aspx#s73"&gt;7.3 SOREM Public Alerting Layer&lt;/a&gt; section:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The SOREM Public Alerting Layer establishes parameters that are referred to by the CLF. The
+current version of the specification can be found in Appendix B.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;From the &lt;a href="https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/npas/clf-lng-20-en.aspx#sb"&gt;APPENDIX B – SOREM Public Alerting Layer&lt;/a&gt; section:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The SOREM Public Alerting Layer establishes a number of CAP &lt;parameter&gt;s which are used to support
+the public alerting community in Canada. In a separate document, SOREM maintains the “Broadcast
+Immediate Events List”, which works in conjunction with this layer. The current version of this
+list is available at &lt;a href="https://alerts.pelmorex.com/highpriorityalerts/"&gt;https://alerts.pelmorex.com/highpriorityalerts/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;That link goes to a page that doesn't exist, but by visiting &lt;a href="https://alerts.pelmorex.com"&gt;https://alerts.pelmorex.com&lt;/a&gt; directly
+and looking around, it looks like it should point to: &lt;a href="https://alerts.pelmorex.com/wp-content/uploads/2022/07/List-of-Event-Codes-for-Broadcast-Immediate-Alerts_version-2.1.pdf"&gt;List of Event Codes for Broadcast
+Immediate Alerts (version 2.1)&lt;/a&gt; (last updated 2022-05-25).&lt;/p&gt;
+&lt;p&gt;This document contains a table titled "EVENT CODE DESCRIPTIONS FOR EMERGENCY PUBLIC ALERT BROADCAST
+IMMEDIATE EVENTS" that defines what codes map to what alert severity. For example, the reason why an
+AMBER alert is sent at the highest level is because of this entry:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Event Code&lt;/strong&gt;: amber &lt;br&gt;
+&lt;strong&gt;CAP Code for Urgency&lt;/strong&gt;: Immediate &lt;br&gt;
+&lt;strong&gt;CAP Code for Severity&lt;/strong&gt;: Severe or Extreme &lt;br&gt;
+&lt;strong&gt;CAP Code for Certainty&lt;/strong&gt;: Observed &lt;br&gt;
+&lt;strong&gt;Description&lt;/strong&gt;: Amber Alert:
+    Issued by police services when a child has been abducted and it is believed that his/her life
+    is in grave danger. An Amber Alert provides the public with immediate and up-to-date
+    information about a child abduction and solicits the public's help in the safe and swift
+    return of the child.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Where the following definitions for the CAP codes are used:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;"Immediate" - Responsive action SHOULD be taken immediately&lt;/li&gt;
+&lt;li&gt;"Extreme" - Extraordinary threat to life&lt;/li&gt;
+&lt;li&gt;"Severe" - Significant threat to life&lt;/li&gt;
+&lt;li&gt;"Observed" - Determined to have occurred or to be ongoing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is where the "everything at the highest alert level" issue comes from. Aside from
+&lt;code&gt;testMessage&lt;/code&gt;, literally every other event code on this list has the same Immediate + Severe/Extreme
+classification. This includes everything from &lt;code&gt;silver&lt;/code&gt; (&lt;em&gt;"a missing, wandering older adult who may
+be suffering from a documented cognitive disability or degenerative memory disorder"&lt;/em&gt;) to &lt;code&gt;meteor&lt;/code&gt;
+(&lt;em&gt;"A natural object of extraterrestrial origin [...] hits the ground with the potential for
+catastrophic damage."&lt;/em&gt;) &lt;/p&gt;
+&lt;h3&gt;Summary&lt;/h3&gt;
+&lt;p&gt;The CRTC requires that Wireless Service Providers (WSPs) implement the alerts as defined by SOREM.
+SOREM's list of alerts defines an AMBER alert as requiring the same amount of urgency and disruption
+as a planet-killing meteor dropping from the sky.&lt;/p&gt;
+&lt;p&gt;This seems to be by design, but if not, SOREM is the organization that would need to fix it. As an
+aside, it seems like the CRTC wouldn't even have to get involved as the policy just defers to the
+&lt;em&gt;"BI list developed by SOREM, as amended from time to time"&lt;/em&gt; which seems pretty loose. Maybe I'm
+missing something though.&lt;/p&gt;
+&lt;p&gt;I didn't find anything that specified any details about how wide the affected range for these alerts
+should or should not be. It seems like that's left up to the organization issuing the alert.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Carey Metcalfe</dc:creator><pubDate>Sat, 15 Aug 2020 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:cmetcalfe.ca,2020-08-15:/blog/disabling-emergency-alerts-on-android.html</guid><category>blog</category><category>android</category><category>canada</category></item><item><title>Diagnosing periodic high ping times on macOS</title><link>https://cmetcalfe.ca/blog/diagnosing-periodic-high-ping-times-on-macos.html</link><description>&lt;h2&gt;Background&lt;/h2&gt;
 &lt;p&gt;Up until a few months ago, my home network setup was pretty terrible. The entire house ran off the
 WiFi provided by an &lt;a href="https://openwrt.org/"&gt;OpenWRT&lt;/a&gt;-powered &lt;a href="https://www.tp-link.com/us/products/details/TL-WDR3600.html"&gt;TP-Link WDR3600&lt;/a&gt; from 2013 in the far corner of the
 house. So when I fired up a game on my laptop via &lt;a href="https://store.steampowered.com/streaming/"&gt;Steam in-home streaming&lt;/a&gt; and got unplayable lag

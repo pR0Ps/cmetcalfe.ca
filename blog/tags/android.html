@@ -59,6 +59,167 @@
 
 <article>
   <div class="article_title">
+    <h1><a href="../../blog/disabling-emergency-alerts-on-android.html">Disabling emergency alerts on Android</a></h1>
+  </div>
+  <div class="article_text">
+    <div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You probably shouldn't do this. If you already know this and don't care, read on.</p>
+</div>
+<h2>Background</h2>
+<p>In Canada, the <a href="https://crtc.gc.ca/">CRTC</a> mandates that telecommunications companies and other organizations broadcast
+warning messages over various mediums, one of which is via cell phones.</p>
+<p>Overall, this is a good idea that saves lives. However, the implementation is incredibly bad. All
+alerts, no matter the severity, are broadcast at the very highest level (called "Presidential" by
+Android phones), meaning that they can't be silenced or disabled by the user. In fact, the CRTC
+actually <a href="https://crtc.gc.ca/eng/publications/reports/alertmobil/alertmobil.htm#a13">tested this</a> and
+found that the only reliable way to silence the alerts was to put the phone on airplane mode.</p>
+<p>After I received three alerts all about an hour apart starting at 2am telling me about a missing
+child over 1,300km away, I'd had enough.</p>
+<p>This is a "boy who cried wolf" situation here. If these alerts ever:</p>
+<ol>
+<li>Implement a basic distance filter so I'm not woken up by things happening nowhere near me</li>
+<li>Start using an appropriate alert level instead of using the highest level for everything</li>
+</ol>
+<p>I'll re-enable them. For now though, I don't want to be repeatedly woken up in the middle of the
+night because someone a full day's drive from me went missing. Maybe that's cold-hearted, but
+realistically what was I even going to do about it?</p>
+<p>On Android at least, the lower-level emergency alerts can be configured to not make noise when the
+device is silenced, but not disabled entirely. This seems a lot better as it won't wake people up,
+but will show them the information the next time they look at the phone. Let's do that instead.</p>
+<p>For now though, I'm turning everything off. Hopefully I don't get killed by a tornado or something.</p>
+<h2>How to disable ALL alerts</h2>
+<p>This is surprisingly simple - the application responsible for handling the broadcasts can be
+uninstalled.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This will disable ALL emergency broadcasts. If you live in an area that regularly has severe
+weather or don't have a backup method for receiving these alerts, this is definitely not a good
+idea. It also probably violates some sort of policy or something (not a lawyer). You are
+responsible for your own decisions.</p>
+</div>
+<p>To uninstall it, enable developer options and debugging on the phone, connect it to a computer with
+<a href="http://developer.android.com/tools/help/adb.html">ADB</a> installed and run:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>-d<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;pm uninstall -k com.android.cellbroadcastreceiver&quot;</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Thanks to <a href="https://web.archive.org/web/20230420065952/https://www.reddit.com/r/ontario/comments/boxx11/how_to_disable_amber_alerts/">this reddit post</a> for the method of disabling
+the alerts.</p>
+<h2>Why is it like this?</h2>
+<p>Which organization is responsible? Can this be changed?</p>
+<p>Below is a rough dump of some details I found while trying to dig up which organization is
+responsible for this with the hopes of actually affecting some change.</p>
+<p>On 2017-04-06 the <a href="https://crtc.gc.ca/">CRTC</a> issued <a href="https://crtc.gc.ca/eng/archive/2017/2017-91.htm">Telecom Regulatory Policy CRTC 2017-91</a> which "directs wireless
+service providers to implement wireless public alerting capability on their long-term evolution
+networks by 6 April 2018". Relevant information pulled from that page:</p>
+<blockquote>
+<p>34. SOREM has established a definitive list of emergency alert message types for immediate
+    broadcast by alert distributors. These messages are defined as “Broadcast Immediately” (BI).</p>
+</blockquote>
+<p>In a footnote on the page it defines SOREM as:</p>
+<blockquote>
+<p>SOREM is a federal/provincial/territorial body that works to harmonize and improve emergency
+practices across the country. It includes representatives from provincial and territorial
+emergency management organizations as well as Public Safety Canada.</p>
+</blockquote>
+<p>There was some disagreement on making the alerts mandatory:</p>
+<blockquote>
+<p>35. Individual interveners’ views were divided among mandatory receipt, an opt-in mechanism, and
+    the choice to opt out. Technology solutions providers indicated mixed support between
+    mandatory reception and the choice to opt out. EMOs strongly supported mandatory receipt.</p>
+<p>36. The OPC submitted that many people consider their mobile devices to be private and personal,
+    and that some individuals could consider emergency alerts to be intrusive. It recommended
+    that the Commission review how opt-out mechanisms have been implemented in the United States
+    and other jurisdictions, and whether the ability to opt out has had a significant negative
+    effect on alerting individuals in an emergency situation. It submitted that individuals should
+    be allowed to opt out if the effect is found to be minimal.</p>
+<p>39. Some WSPs provided insight on past experiences regarding the distribution of AMBER Alerts over
+    their parent BDUs. For example, in March 2016, the Ontario Provincial Police issued an AMBER
+    Alert, which was distributed by BDUs. Many television viewers were upset by the interruption
+    of their television viewing and contacted their BDU customer service centres and, in some
+    cases, 9-1-1 to complain.</p>
+</blockquote>
+<p>And finally, in a section titled "Commission’s analysis and determinations", a decision was made:</p>
+<blockquote>
+<p>41. Although some interveners suggested modifying the BI list, there was no consensus on which
+    specific categories should be added or removed.</p>
+<p>42. However, the question in this proceeding is not whether the BI list used in the broadcasting
+    context should be changed, but whether the same or a different approach should be taken with
+    respect to emergency alert messages sent to mobile devices compared to those sent via
+    broadcasting emergency alerting. The current BI list is designed to protect against threats to
+    life and property. It is therefore important to promote consistency between broadcasting and
+    wireless emergency alerts so that Canadians can receive the same alerts regardless of
+    transmission medium.</p>
+<p>43. In light of the above, the Commission mandates the reception of emergency alert messages on
+    mobile devices, based on the BI list developed by SOREM, as amended from time to time.</p>
+</blockquote>
+<p>This seems to say that the list of what alerts exist and their priority is managed by SOREM.</p>
+<p>To back this up, the CRTC's <a href="https://crtc.gc.ca/eng/television/services/alert.htm">Emergency Alerts and the National Public Alerting System</a> page has a section titled "Consistent appearance and sound of alerts" with the
+quote:</p>
+<blockquote>
+<p>The visual appearance, sound, content, and other aspects of emergency alerts are guided by the
+Senior Officials Responsible for Emergency Management. This federal, provincial and territorial
+body works to harmonize and improve emergency practices across the country.</p>
+</blockquote>
+<p>That section also includes a link to the <a href="https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/npas/clf-lng-20-en.aspx">National Public Alerting System's Common Look and Feel
+Guidance</a> which has some more information in it:</p>
+<p>From the <a href="https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/npas/clf-lng-20-en.aspx#s73">7.3 SOREM Public Alerting Layer</a> section:</p>
+<blockquote>
+<p>The SOREM Public Alerting Layer establishes parameters that are referred to by the CLF. The
+current version of the specification can be found in Appendix B.</p>
+</blockquote>
+<p>From the <a href="https://www.publicsafety.gc.ca/cnt/mrgnc-mngmnt/mrgnc-prprdnss/npas/clf-lng-20-en.aspx#sb">APPENDIX B – SOREM Public Alerting Layer</a> section:</p>
+<blockquote>
+<p>The SOREM Public Alerting Layer establishes a number of CAP <parameter>s which are used to support
+the public alerting community in Canada. In a separate document, SOREM maintains the “Broadcast
+Immediate Events List”, which works in conjunction with this layer. The current version of this
+list is available at <a href="https://alerts.pelmorex.com/highpriorityalerts/">https://alerts.pelmorex.com/highpriorityalerts/</a></p>
+</blockquote>
+<p>That link goes to a page that doesn't exist, but by visiting <a href="https://alerts.pelmorex.com">https://alerts.pelmorex.com</a> directly
+and looking around, it looks like it should point to: <a href="https://alerts.pelmorex.com/wp-content/uploads/2022/07/List-of-Event-Codes-for-Broadcast-Immediate-Alerts_version-2.1.pdf">List of Event Codes for Broadcast
+Immediate Alerts (version 2.1)</a> (last updated 2022-05-25).</p>
+<p>This document contains a table titled "EVENT CODE DESCRIPTIONS FOR EMERGENCY PUBLIC ALERT BROADCAST
+IMMEDIATE EVENTS" that defines what codes map to what alert severity. For example, the reason why an
+AMBER alert is sent at the highest level is because of this entry:</p>
+<blockquote>
+<p><strong>Event Code</strong>: amber <br>
+<strong>CAP Code for Urgency</strong>: Immediate <br>
+<strong>CAP Code for Severity</strong>: Severe or Extreme <br>
+<strong>CAP Code for Certainty</strong>: Observed <br>
+<strong>Description</strong>: Amber Alert:
+    Issued by police services when a child has been abducted and it is believed that his/her life
+    is in grave danger. An Amber Alert provides the public with immediate and up-to-date
+    information about a child abduction and solicits the public's help in the safe and swift
+    return of the child.</p>
+</blockquote>
+<p>Where the following definitions for the CAP codes are used:</p>
+<ul>
+<li>"Immediate" - Responsive action SHOULD be taken immediately</li>
+<li>"Extreme" - Extraordinary threat to life</li>
+<li>"Severe" - Significant threat to life</li>
+<li>"Observed" - Determined to have occurred or to be ongoing</li>
+</ul>
+<p>This is where the "everything at the highest alert level" issue comes from. Aside from
+<code>testMessage</code>, literally every other event code on this list has the same Immediate + Severe/Extreme
+classification. This includes everything from <code>silver</code> (<em>"a missing, wandering older adult who may
+be suffering from a documented cognitive disability or degenerative memory disorder"</em>) to <code>meteor</code>
+(<em>"A natural object of extraterrestrial origin [...] hits the ground with the potential for
+catastrophic damage."</em>) </p>
+<h3>Summary</h3>
+<p>The CRTC requires that Wireless Service Providers (WSPs) implement the alerts as defined by SOREM.
+SOREM's list of alerts defines an AMBER alert as requiring the same amount of urgency and disruption
+as a planet-killing meteor dropping from the sky.</p>
+<p>This seems to be by design, but if not, SOREM is the organization that would need to fix it. As an
+aside, it seems like the CRTC wouldn't even have to get involved as the policy just defers to the
+<em>"BI list developed by SOREM, as amended from time to time"</em> which seems pretty loose. Maybe I'm
+missing something though.</p>
+<p>I didn't find anything that specified any details about how wide the affected range for these alerts
+should or should not be. It seems like that's left up to the organization issuing the alert.</p>
+  </div>
+</article>
+<hr />
+<article>
+  <div class="article_title">
     <h1><a href="../../blog/recovering-data-off-a-bootlooping-nexus5.html">Recovering data off a bootlooping Nexus 5</a></h1>
   </div>
   <div class="article_text">
@@ -231,61 +392,6 @@ onto more devices that I own. I like being able to tweak things and feel like I 
 hardware and software.</p>
   </div>
 </article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../../blog/fixing-save-corruption-ridiculous-fishing.html">Fixing save file corruption in Ridiculous Fishing</a></h1>
-  </div>
-  <div class="article_text">
-    <p><a href="https://play.google.com/store/apps/details?id=com.vlambeer.RidiculousFishing">Ridiculous Fishing</a> is a game by <a href="http://www.vlambeer.com/">Vlambeer</a> about fishing. That's if you
-can call chainsawing fish and blowing them out of the sky with a bazooka "fishing".</p>
-<p>I've been playing this game on and off for a while now, but just recently I had
-a problem where my save file somehow got corrupted, making the app refuse to open.</p>
-<p>The problem first manifested as the game freezing for up to 5 seconds when
-navigating around the UI or buying items in the in-game store. Since I was
-running the game on a <a href="http://en.wikipedia.org/wiki/Nexus_5">Nexus 5</a> (not the latest and greatest, but pretty
-close), it seemed weird. The delay got longer and longer until the game
-eventually crashed and refused to reopen.</p>
-<p>Since I was pretty far into the game (I only needed to catch one more species
-of fish!), I opted to try to fix it instead of just wiping the app's data and
-starting again. I initially tried clearing the app's cache and
-<a href="../../blog/reinstall-android-app-without-losing-data.html">reinstalling the app</a>, but the problem persisted.</p>
-<p>The next step was to dump the games's data to my computer so I could do some
-analysis on it. Some exploration on the device revealed that the settings and
-data were stored in the folder <code>/data/data/com.vlambeer.RidiculousFishing.humble</code>
-(I have the <a href="https://www.humblebundle.com/">Humble Bundle</a> version of the app).</p>
-<p>To pull that folder to my current directory, I used <a href="http://developer.android.com/tools/help/adb.html">ADB</a>:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>root<span class="w"> </span><span class="c1">#Restart adbd on the device with root permissions</span>
-adb<span class="w"> </span>pull<span class="w"> </span>/data/data/com.vlambeer.RidiculousFishing.humble/
-</code></pre></div></td></tr></table></div>
-
-<p>A quick <code>du -h</code> revealed that something was very wrong in the
-<code>files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist</code> file.
-It should've been just a text document, but was well over 200MB.</p>
-<p>After trying out of habit to open the file in <a href="http://www.vim.org/">Vim</a> and having it hang (oops),
-I paged through the document with <a href="http://en.wikipedia.org/wiki/Less_%28Unix%29">less</a>. About halfway through the file,
-there was a line containing <code>&amp;amp;lt;message&amp;amp;gt;@eggbirdTBA Take it to the
-Smartypants Bar</code> (no, that's not a formatting error, in the plist there's XML
-data stored in a <code>&lt;string&gt;</code> element, requiring the <code>&lt;</code> and <code>&gt;</code> characters to be
-escaped) followed by about 200MB of garbage.</p>
-<p>Apparently there are <a href="http://stackoverflow.com/questions/908575/how-to-edit-multi-gigabyte-text-files-vim-doesnt-work">ways to load huge files in Vim</a>, as well as other text
-editors that handle them nicely, but since I already knew what line was causing
-the issue, a simple <a href="http://en.wikipedia.org/wiki/Sed">sed</a> command would do the trick.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>sed<span class="w"> </span><span class="s1">&#39;/Take it to the Smartypants Bar/d&#39;</span><span class="w"> </span>com.vlambeer.RidiculousFishing.humble.plist<span class="w"> </span>&gt;<span class="w"> </span>temp.plist
-</code></pre></div></td></tr></table></div>
-
-<p>Total size of <code>temp.plist</code>: 107.11KB. Much better.</p>
-<p>After going though and deleting some lines around the one that was removed (to
-make the XML valid again), I pushed the file back to the device:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>adb<span class="w"> </span>push<span class="w"> </span>temp.plist<span class="w"> </span>/data/data/com.vlambeer.RidiculousFishing.humble/files/Library/Preferences/com.vlambeer.RidiculousFishing.humble.plist
-</code></pre></div></td></tr></table></div>
-
-<p>Success! The game opened properly, all the freezing issues were gone, and my
-save data was still there.</p>
-<p>Now to find that stupid <a href="http://gaming.stackexchange.com/questions/159564/how-to-catch-the-mimic-fish">Mimic Fish</a>...</p>
-  </div>
-</article>
 
 <footer>
 <div id="paginator">
@@ -297,6 +403,7 @@ save data was still there.</p>
   <div>
       <a href="../../blog/tags/android.html">[1]</a>
       <a href="../../blog/tags/android2.html"> 2 </a>
+      <a href="../../blog/tags/android3.html"> 3 </a>
   </div>
 </div>
 </footer>

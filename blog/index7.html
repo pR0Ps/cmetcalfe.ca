@@ -15,7 +15,7 @@
 
   <link href="https://cmetcalfe.ca/feeds/all.rss" type="application/rss+xml" rel="alternate" title="Carey Metcalfe Full RSS Feed" />
 
-  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
+  <meta name="keywords" content="blog, carey, cmetcalfe, metcalfe, pr0ps, pr0pscm, android, application, audio, automation, backup, canada, chromecast, code, data recovery, electronics, email, games, git, hardware, homelab, iphone, let's encrypt, linux, macOS, mercurial, networking, nvidia, png, proxmox, python, queen's university, router, security, shell script, sites, steam, vim, website, windows, wine">
 
   <title>Blog | Carey Metcalfe</title>
 
@@ -60,6 +60,57 @@
 &#124; <a href="../blog/archives.html">Archive</a>
 </p>    </header>
 
+<article>
+  <div class="article_title">
+    <h1><a href="../blog/git-checkout-autocomplete-local-branches-only.html">Git checkout - autocomplete local branches only</a></h1>
+  </div>
+  <div class="article_text">
+    <p>Having Git autocomplete branch names when doing a checkout is super useful.  Having the autocomplete
+hang for 30 seconds because it has to look up all 3000 of the remote branches in a massive repo is
+not so useful. It's actually pretty frustrating.</p>
+<p>My solution: changing the <code>git checkout</code> autocomplete to only look at local branches, while using a
+<code>git checkoutr</code> alias to preserve the original behaviour (because sometimes it's actually needed).</p>
+<p>How it's done:</p>
+<h2>Define an alias for checkout</h2>
+<p>We're going to use the same checkout command for the remote checkout, but need to have a different
+command so the script can differentiate between them.  Making an alias does exactly this.</p>
+<p>Create the alias by running <code>git config --global alias.checkoutr checkout</code></p>
+<h2>Change the autocompletion function</h2>
+<p>The checkout autocomplete behaviour is defined in a function called <code>_git_checkout</code> in the git
+autocompletion file. We're going to override the function with our own version that has different
+autocomplete logic in it.</p>
+<p>The location of the file varies over different operating systems and configurations, but here are a
+few spots to look:</p>
+<ul>
+<li><code>/etc/bash_completion.d/git</code></li>
+<li><code>/usr/share/bash-completion/completions/git</code></li>
+</ul>
+<p>For a brew-installed git autocomplete on macOS, the file will probably be
+<code>$(brew --prefix)/etc/bash_completion.d/git-completion.bash</code></p>
+<p>Once you've found the file, copy the entire <code>_git_checkout</code> function into your <code>.bashrc</code> (or
+equivalent non-login shell startup script). Now look for the line</p>
+<p><code>__git_complete_refs $track_opt</code></p>
+<p>We're going to replace that line with:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$command</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;checkoutr&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>__git_complete_refs<span class="w"> </span><span class="nv">$track_opt</span>
+<span class="k">else</span>
+<span class="w">    </span>__gitcomp_direct<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>__git_heads<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$cur</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="k">fi</span>
+</code></pre></div></td></tr></table></div>
+
+<p>After saving and re-sourcing your <code>.bashrc</code> file, git will autocomplete local branches and tags when
+using <code>git checkout</code>, but will go back to the default behaviour of autocompleting all references
+when using <code>git checkoutr</code>.</p>
+<p>Credits to a combination of answers on <a href="disable-auto-completion-of-remote-branches-in-git-bash">this</a> StackOverflow post.</p>
+<p>EDIT 2017-10-02: Updated to work with <a href="https://github.com/git/git/commit/15b4a163950c2e8660a7797ce3975ccea8705f80#diff-f37c4f4a898819f0ca4b5ff69e81d4d9">git v2.13.0</a> thanks to <a href="https://gist.github.com/mmrko/b3ec6da9bea172cdb6bd83bdf95ee817#gistcomment-2218059">Alexander Ko's comment</a>.<br>
+EDIT 2018-03-24: Updated to <a href="https://github.com/git/git/commit/227307a639c96b3579b7fe60840fdae123d1ee88">speed up branch and tag completion</a>.</p>
+  </div>
+</article>
+<hr />
 <article>
   <div class="article_title">
     <h1><a href="../blog/preserving-xposed-framework-through-a-flash.html">Preserving the Xposed Framework through a ROM flash</a></h1>
@@ -185,24 +236,6 @@ install the Xposed Framework again.</p>
 <li>http://lartc.org/lartc.html</li>
 <li>http://www.docum.org/faq/cache/62.html</li>
 </ul>
-  </div>
-</article>
-<hr />
-<article>
-  <div class="article_title">
-    <h1><a href="../blog/preventing-wine-from-registering-mimetypes.html">Preventing Wine from registering mimetypes</a></h1>
-  </div>
-  <div class="article_text">
-    <p>When installing <a href="http://winehq.org/">Wine for Linux</a>, the install script insists on associating all text files with its built-in notepad.exe</p>
-<p>As someone who uses <a href="http://www.vim.org/">Vim</a> almost exculsively, this is definitely not the desired behaviour.</p>
-<p>To stop this from happening, run the following command <em>before</em> installing Wine.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">WINEDLLOVERRIDES</span><span class="o">=</span><span class="s1">&#39;winemenubuilder.exe=a&#39;</span>
-</code></pre></div></td></tr></table></div>
-
-<p>This sets the path of the winemenubuilder library (the library that creates mimetype associations) to something invalid,
-preventing the associations from being made when Wine installs.</p>
-<p>Once Wine is installed, it won't try to associate notepad.exe again. However, if needed,
-the library can be properly disabled via the libraries tab of wineconf.</p>
   </div>
 </article>
 
